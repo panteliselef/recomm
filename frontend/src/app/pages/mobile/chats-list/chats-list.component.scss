@@ -1,0 +1,41 @@
+@import '../../../../declarations.scss';
+ul.chat-list {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+
+    .chat-message {
+        border-radius: .5rem;
+        padding: 0.7rem .9rem;
+        margin: 0 0.5rem;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+
+        &:hover {
+            background-color: $mid-black;
+        }
+
+        img {
+            margin-right: 1rem;
+            width: 50px;
+            height: 50px;
+        }
+
+
+        .sender-name {
+        }
+
+        .message-line {
+            font-family: 'Roboto', sans-serif;
+            color: #ccc;
+            font-size: 0.8rem;
+        }
+
+        .info {
+            margin-left: auto;
+            font-size: 0.9rem;
+            margin-right: 0.4rem;
+        }
+    }
+}

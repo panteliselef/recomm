@@ -1,0 +1,51 @@
+<div class="page">
+
+
+    <app-bar
+        img="https://images.unsplash.com/photo-1496345875659-11f7dd282d1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80"
+        title="Contacts" icon="person_add"></app-bar>
+
+
+    <main class="contacts-page">
+
+        <span class="list-title" style="margin-top: 1rem;">
+            Favorites
+        </span>
+
+        <ul class="h-list favorites">
+            <li *ngFor="let person of favContacts">
+                <img class="profile-img" [src]="person.photoURL" />
+            </li>
+            <li class="space"></li>
+        </ul>
+
+
+        <ul class="contacts-list">
+            <li *ngFor="let group of contacts">
+                <div>
+                    <span class="list-title-sticky" style="margin-top: 1rem;">{{group.firstLetter}}</span>
+                    <ul class="contact-list">
+                        <li class="contact-item" *ngFor="let person of group.people">
+                            <img class="profile-img" [src]="person.photoURL" />
+                            <span>{{person.name}}</span>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+
+
+        <div style="padding-bottom:2rem;width: 100%; font-size: 1rem; color:#8A8A8B; text-align: center">{{totalContacts}} Contacts</div>
+
+
+
+
+
+    </main>
+
+
+    <bottom-nav-menu>
+
+    </bottom-nav-menu>
+
+</div>

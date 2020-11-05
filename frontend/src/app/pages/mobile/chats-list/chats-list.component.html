@@ -1,0 +1,36 @@
+<div class="page">
+
+    <app-bar
+    img="https://images.unsplash.com/photo-1496345875659-11f7dd282d1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80"
+    title="Chats"
+    icon="post_add"></app-bar>
+
+
+    <main class="">
+        <ul class="chat-list">
+
+            <li *ngFor="let msg of messages; let i = index;" class="chat-message" [routerLink]="'./'+i">
+                <img class="profile-img" [src]="msg.photoURL" />
+
+                <div style="display:flex;flex-direction:column;">
+                    <span class="sender-name">{{msg.senderName}}</span>
+                    <span class="message-line">{{msg.message}}</span>
+                </div>
+
+
+                <div class="info">
+                    <span>{{msg.day}}</span>
+                </div>
+
+            </li>
+
+
+        </ul>
+
+        <div style="padding:2rem 0;width: 100%; font-size: 1rem; color:#8A8A8B; text-align: center">No more chats</div>
+
+    </main>
+
+    <bottom-nav-menu></bottom-nav-menu>
+
+</div>

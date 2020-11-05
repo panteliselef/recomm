@@ -1,0 +1,33 @@
+@import '../../../declarations.scss';
+
+.bottom-nav-menu {
+  flex: 0 0 auto;
+  width: 100%;
+  background-color: $primary-bg-color;
+  padding: 0 5px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .nav-item {
+    padding-top: 3px;
+    width: calc(100% / 3);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #8A8A8B;
+    font-size: 0.875rem; // 14px
+
+    i {
+      font-size: 1.875rem; //30px
+      line-height: 1.2;
+    }
+
+    &.active {
+      color: #fff
+    }
+  }
+
+}
