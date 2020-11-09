@@ -8,8 +8,12 @@ import { Component, Input, OnInit } from '@angular/core';
 export class AppBarComponent implements OnInit {
 
     @Input('title') pageTitle: String;
-    @Input('icon') iconName: String;
     @Input('img') imgSrc: String;
+
+    @Input('hasImage') hasImage: boolean;
+
+    @Input('leadingIcon') leadingIconName: String;
+    @Input('trailingIcon') trailingIconName: String;
 
     constructor() { }
 

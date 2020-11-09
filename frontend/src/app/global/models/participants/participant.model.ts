@@ -1,9 +1,9 @@
 export class ParticipantModel {
 
-    public _id: string;
+    public _id: Number;
     public firstName: string;
     public lastName: string;
-    public photosURL: URL;
+    public photoURL: string;
 
 
 
@@ -13,6 +13,11 @@ export class ParticipantModel {
 
     constructor(model?: any) {
         // Object.assign(this, model);
+    }
+
+
+    public getDisplayName(): string {
+        return `${this.firstName} ${this.lastName}`;
     }
 
 }

@@ -13,12 +13,10 @@ export class AppComponent {
     this.socketsService.initAndConnect();
 
 
-
-
     //How to consume an event
     this.socketsService.syncMessages('eventName').subscribe((data)=>{
       console.log('The message i received for this event is: ', data);
     });
-    
+
   }
 }

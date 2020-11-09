@@ -1,2 +1,99 @@
-<p>chat works!</p>
-<p>orestis faltakas</p>
+<div class="page">
+    <app-chat-bar
+        [chatName]="participant.getDisplayName()"
+        [icons]="icons"
+        [img]="participant.photoURL"
+
+    >
+
+    </app-chat-bar>
+
+    <main #scroll>
+
+        <span class="in-page-status-info "> Conversation Started</span>
+
+
+        <div class="msg-group-day">
+
+            <h4 class="day">Sept 29th</h4>
+
+            <ul class="messages">
+                <li *ngFor="let msg of dayOneMessages" class="message-layout">
+                    <img class="profile-img" [src]="users[msg.user_id].photoURL"/>
+                    <div>
+                        <div class="message-info">
+                            <span class="sender-name">{{
+                                users[msg.user_id].name
+                                }}
+                                </span>
+                            <span class="sender-time">{{msg.timestamp}}</span>
+                        </div>
+
+                        <ul class="inline-messages">
+                            <li *ngFor="let ilnMsg of msg.msgs" class="inline-message">
+                                {{ilnMsg}}
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+            </ul>
+
+        </div>
+
+
+        <div class="msg-group-day">
+
+            <h4 class="day">Yesterday</h4>
+
+            <ul class="messages">
+                <li *ngFor="let msg of yestMessages" class="message-layout">
+                    <img class="profile-img" [src]="users[msg.user_id].photoURL"/>
+                    <div>
+                        <div class="message-info">
+                            <span class="sender-name">{{
+                                users[msg.user_id].name
+                                }}
+                                </span>
+                            <span class="sender-time">{{msg.timestamp}}</span>
+                        </div>
+
+                        <ul class="inline-messages">
+                            <li *ngFor="let ilnMsg of msg.msgs" class="inline-message">
+
+                                <img class="inline-msg-image" *ngIf="ilnMsg.type === 'image'" [src]="ilnMsg.assetPath" />
+                                <span *ngIf="ilnMsg.type === 'text'" [innerHTML]="ilnMsg.text | linkify"></span>
+
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+            </ul>
+
+        </div>
+
+    </main>
+
+    <div class="new-message-section">
+
+        <i class="material-icons-round">insert_photo</i>
+        <i class="material-icons-round">mic</i>
+
+        <div class="message-bar">
+            <textarea #message
+                      (keydown)="resize()"
+                      (input)="resize()"
+                      (cut)="resize()"
+                      (copy)="resize()"
+                      (paste)="resize()"
+                      placeholder="Message"
+            ></textarea>
+            <!--            <i class="material-icons-round">sentiment_satisfied_alt</i>-->
+        </div>
+        <i class="material-icons-round">send</i>
+
+
+    </div>
+
+</div>

@@ -4,6 +4,7 @@ import {ChatsListComponent} from "./pages/mobile/chats-list/chats-list.component
 import {ContactsComponent} from "./pages/mobile/contacts/contacts.component";
 import {ChatComponent} from "./pages/mobile/chat/chat.component";
 import {EditProfileComponent} from "./pages/mobile/edit-profile/edit-profile.component";
+import {NewChatComponent} from "./pages/mobile/new-chat/new-chat.component";
 
 const routes: Routes = [
     // { path: '', redirectTo:'chats' },
@@ -11,6 +12,7 @@ const routes: Routes = [
     { path: 'chats/:id', component: ChatComponent, },
     { path: 'contacts', component: ContactsComponent, },
     { path: 'profile', component: EditProfileComponent},
+    { path: 'new-chat', component: NewChatComponent, },
     { path: '**', redirectTo: 'chats', pathMatch: 'full' }
 
 ];

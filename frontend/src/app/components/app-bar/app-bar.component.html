@@ -1,9 +1,16 @@
 <div class="app-bar">
-    <img class="profile-img" [src]="imgSrc"/>
+
+    <div class="left-actions actions">
+        <img *ngIf="hasImage" class="profile-img" [src]="imgSrc"/>
+        <i *ngIf="!hasImage" class="material-icons-round">{{leadingIconName}}</i>
+    </div>
+
+
 
     <span class="page-title">{{pageTitle}}</span>
 
-    <i class="material-icons-round">{{iconName}}</i>
-    <!-- <i class="material-icons-round  md-36">accessibility_new</i> -->
+    <div class="right-actions actions">
+        <i class="material-icons-round">{{trailingIconName}}</i>
+    </div>
 
 </div>

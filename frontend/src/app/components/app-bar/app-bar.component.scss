@@ -1,16 +1,38 @@
 .app-bar {
     flex: 0 0 70px;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    //justify-content: spa;
     width: 100%;
     height: 70px;
     align-items: center;
     padding: 0 1.2rem;
 
+
+
+    .actions {
+        display: flex;
+        flex: 1 1 20%;
+        align-items: center;
+    }
+
+    .left-actions {
+        margin-right: auto;
+    }
+
+
+    .right-actions {
+        justify-content: flex-end;
+        margin-left: auto;
+    }
+
     .page-title {
         font-size: 1rem;
+        flex: 1 1 auto;
+        text-align: center;
         font-family: 'Circular Std';
         font-weight: bold;
+        margin: auto;
     }
 
     i {

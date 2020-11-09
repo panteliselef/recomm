@@ -1,0 +1,15 @@
+<div class="app-chat-bar">
+
+    <i class="material-icons-round">arrow_back</i>
+<!--    <img class="profile-img" [src]="imgSrc"/>-->
+
+    <div style="display: flex;flex-direction: column; margin-left: .8rem">
+        <span class="chat-name">{{chatName}}</span>
+        <span class="chat-status sub-text">{{chatStatus}}</span>
+    </div>
+
+    <div class="trailing-icons">
+        <i *ngFor="let icon of icons" class="material-icons-round">{{icon.name}}</i>
+    </div>
+
+</div>

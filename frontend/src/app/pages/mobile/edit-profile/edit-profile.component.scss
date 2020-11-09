@@ -20,10 +20,11 @@ main {
     flex-direction: column;
 
     img {
+        margin-left: auto;
+        margin-right: auto;
         width: 150px;
         height: 150px;
         text-align: center;
-        margin: auto;
     }
 
     .profile-options {
@@ -31,8 +32,9 @@ main {
 
         i {
             font-size: 30px;
+            margin: .2rem 0;
             margin-right: 1.3rem;
-            padding: 1rem 0;
+            padding: .7rem 0;
         }
 
         li {

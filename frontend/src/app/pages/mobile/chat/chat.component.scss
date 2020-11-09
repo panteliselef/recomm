@@ -1,0 +1,128 @@
+@import '../../../../declarations.scss';
+
+main {
+
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+
+
+    &:first-child {
+        margin-top: auto !important;
+    }
+
+
+    .msg-group-day {
+        margin: 0 1rem;
+
+
+        .day {
+            font-size: 1.25rem;
+        }
+
+        .message-layout {
+            margin-top: 1rem;
+            display: flex;
+
+            img.profile-img {
+                flex: 0 0 auto;
+                margin-right: 1rem;
+            }
+
+            .message-info .sender-name {
+                font-size: 1rem;
+                font-weight: 500;
+                line-height: 1.3;
+                margin-right: 1rem;
+            }
+
+            .message-info .sender-time {
+                font-size: 0.825rem;
+                font-weight: normal;
+                line-height: 1.35;
+                color: $light-black;
+            }
+
+
+            .inline-message {
+                font-size: 1rem;
+
+
+                a {
+                    word-break: break-all;
+                    color: #0094FF;
+                }
+            }
+
+            .inline-msg-image {
+                max-height: 200px;
+                border-radius: .8rem;
+                max-width: 100%;
+                min-height: 200px;
+                min-width: 100px;
+                margin: .25rem 0;
+            }
+        }
+
+        .messages {
+
+
+            .message {
+
+            }
+        }
+    }
+}
+
+
+
+.new-message-section{
+    display: flex;
+    align-items: flex-end;
+    padding: .5rem 1rem;
+    //padding-bottom: 1rem;
+
+
+    i {
+        color: $orange-color;
+        &:last-child {
+            padding-right: 0;
+        }
+        &:first-child{
+            padding-left: 0;
+        }
+        padding: .6rem .3rem;
+    }
+
+
+    .message-bar {
+        flex: 1 1 auto;
+        display: flex;
+        background-color: $mid-black;
+        border-radius: 20px;
+        align-items: center;
+        padding: .6rem;
+        overflow: hidden;
+
+        textarea {
+            height: 22px;
+            flex: 1 1 auto;
+            font-size: 14px;
+            background-color: inherit;
+            text-align: left;
+            font-family: 'Circular Std',sans-serif;
+            color: #fff;
+            border: 0;
+            resize: none;
+            line-height: 1.3;
+            outline: none;
+            max-height: 80px;
+
+            &::placeholder {
+                color:  $light-black;
+                font-size: 14px;
+                line-height: 1.3;
+            }
+        }
+    }
+}

@@ -1,0 +1,45 @@
+@import '../../../declarations.scss';
+
+.app-chat-bar {
+    flex: 0 0 70px;
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+    height: 70px;
+    align-items: center;
+    padding: 0 1rem;
+
+    .chat-name {
+        font-size: 1.125rem;
+        font-family: 'Circular Std', sans-serif;
+        font-weight: 500;
+        line-height: 1.25;
+    }
+    .chat-status {
+        font-size: .875rem;
+        text-transform: capitalize;
+        color: $light-black;
+        font-weight: 500;
+        line-height: 1.125;
+    }
+
+    i {
+        font-size: 24px;
+    }
+
+    .trailing-icons {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        margin-left: auto;
+
+        i{
+            padding: .2rem .3rem;
+
+            &:last-of-type {
+                padding-right: 0;
+
+            }
+        }
+    }
+}
