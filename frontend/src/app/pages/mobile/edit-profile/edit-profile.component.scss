@@ -1,0 +1,46 @@
+#bar {
+    display: flex;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+
+    i {
+        font-size: 24px;
+        margin-left: 0.8rem;
+
+    }
+
+    span {
+        font-size: 18px;
+        text-align: center;
+    }
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+
+    img {
+        width: 150px;
+        height: 150px;
+        text-align: center;
+        margin: auto;
+    }
+
+    .profile-options {
+        padding: 1rem;
+
+        i {
+            font-size: 30px;
+            margin-right: 1.3rem;
+            padding: 1rem 0;
+        }
+
+        li {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin-left: 1rem;
+        }
+    }
+}
+

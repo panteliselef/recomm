@@ -6,6 +6,7 @@ import {ContactsComponent} from "./pages/mobile/contacts/contacts.component";
 import {SharedComponentsModule} from "./components/shared-components.module";
 import {MobileRoutingModule} from "./mobile.routing";
 import {ChatComponent} from "./pages/mobile/chat/chat.component";
+import {EditProfileComponent} from "./pages/mobile/edit-profile/edit-profile.component";
 
 @NgModule({
     imports: [
@@ -16,7 +17,8 @@ import {ChatComponent} from "./pages/mobile/chat/chat.component";
     declarations: [
         ChatsListComponent,
         ContactsComponent,
-        ChatComponent
+        ChatComponent,
+        EditProfileComponent
     ]
 })
 export class MobileModule {}
