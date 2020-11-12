@@ -1,0 +1,74 @@
+@import "../../../declarations";
+
+.video-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    width: calc(100% - 1.4rem);
+    height: 100%;
+    border-radius: .5rem;
+    overflow: hidden;
+    margin: 0 .7rem;
+    background-color: $mid-black;
+
+    img {
+        width: 120px;
+        height: 120px;
+    }
+
+    img.video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+}
+
+.page-actions {
+    display: flex;
+    flex-direction: column;
+    padding: .7rem;
+
+
+    .action-section {
+        display: flex;
+        justify-content: center;
+        margin: .3rem 0;
+    }
+
+    div.toggle-button  {
+        display: flex;
+        align-items: center;
+        padding: .5rem;
+        margin: 0 1rem;
+        min-width: 120px;
+        border-radius: .5rem;
+        transition: all .3s ease;
+
+        i {
+            font-size: 24px;
+            margin-right: 1rem;
+        }
+
+        &:hover {
+            background-color: $mid-black;
+
+        }
+
+    }
+
+
+
+    button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: $orange-color;
+        color: #fff;
+        border-radius: 40px;
+        border: none;
+        width: 204px;
+        height: 60px;
+    }
+}

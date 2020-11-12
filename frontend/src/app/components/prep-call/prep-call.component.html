@@ -1,0 +1,50 @@
+<div class="page">
+
+    <app-bar
+        leadingIcon="arrow_back"
+        [hasImage]="false"
+        title="Join Video"
+    >
+    </app-bar>
+
+
+    <main>
+
+        <div class="video-container">
+            <img *ngIf="isCameraEnabled" class="video" src="https://images.unsplash.com/photo-1604772659841-a1612db7000f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80"/>
+
+            <img *ngIf="!isCameraEnabled" class="profile-img" src="https://images.unsplash.com/photo-1604772659841-a1612db7000f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80"/>
+
+
+        </div>
+
+
+    </main>
+
+    <div class="page-actions">
+        <div class="action-section">
+            <div class="toggle-button" (click)="isMicEnabled = !isMicEnabled">
+                <i *ngIf="isMicEnabled" class="material-icons-round">mic</i>
+                <span *ngIf="isMicEnabled">Mic On</span>
+
+                <i *ngIf="!isMicEnabled" class="material-icons-round">mic_off</i>
+                <span *ngIf="!isMicEnabled">Mic Off</span>
+            </div>
+
+            <div class="toggle-button" (click)="isCameraEnabled = !isCameraEnabled">
+                <i *ngIf="isCameraEnabled" class="material-icons-round">videocam</i>
+                <span *ngIf="isCameraEnabled">Camera On</span>
+
+                <i *ngIf="!isCameraEnabled" class="material-icons-round">videocam_off</i>
+                <span *ngIf="!isCameraEnabled">Camera Off</span>
+            </div>
+        </div>
+        <div class="action-section">
+            <button>
+                Ready
+            </button>
+        </div>
+    </div>
+
+
+</div>

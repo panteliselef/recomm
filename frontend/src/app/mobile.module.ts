@@ -8,6 +8,7 @@ import {MobileRoutingModule} from "./mobile.routing";
 import {ChatComponent} from "./pages/mobile/chat/chat.component";
 import {EditProfileComponent} from "./pages/mobile/edit-profile/edit-profile.component";
 import {NewChatComponent} from "./pages/mobile/new-chat/new-chat.component";
+import {PrepCallComponent} from "./components/prep-call/prep-call.component";
 
 @NgModule({
     imports: [
@@ -20,7 +21,8 @@ import {NewChatComponent} from "./pages/mobile/new-chat/new-chat.component";
         ContactsComponent,
         ChatComponent,
         EditProfileComponent,
-        NewChatComponent
+        NewChatComponent,
+        PrepCallComponent
     ]
 })
 export class MobileModule {}

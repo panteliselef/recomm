@@ -61,7 +61,7 @@
                         <ul class="inline-messages">
                             <li *ngFor="let ilnMsg of msg.msgs" class="inline-message">
 
-                                <img class="inline-msg-image" *ngIf="ilnMsg.type === 'image'" [src]="ilnMsg.assetPath" />
+                                <img class="inline-msg-image" *ngIf="ilnMsg.type === 'image'" [src]="ilnMsg.assetPath"/>
                                 <span *ngIf="ilnMsg.type === 'text'" [innerHTML]="ilnMsg.text | linkify"></span>
 
                             </li>
@@ -78,7 +78,7 @@
     <div class="new-message-section">
 
         <i class="material-icons-round">insert_photo</i>
-        <i class="material-icons-round">mic</i>
+        <i (click)="isAudioRecordOpen = !isAudioRecordOpen" class="material-icons-round">mic</i>
 
         <div class="message-bar">
             <textarea #message
@@ -89,10 +89,27 @@
                       (paste)="resize()"
                       placeholder="Message"
             ></textarea>
-            <!--            <i class="material-icons-round">sentiment_satisfied_alt</i>-->
+            <i style="padding: 0" class="material-icons-round">sentiment_satisfied_alt</i>
         </div>
         <i class="material-icons-round">send</i>
 
+
+    </div>
+    <div *ngIf="isAudioRecordOpen" class="audio-caption-container">
+
+        <div class="audio-caption">
+
+            <div class="elipse" id="elipse1">
+                <div class="elipse" id="elipse2"></div>
+            </div>
+            <i class="material-icons-round">
+                keyboard_voice
+            </i>
+        </div>
+
+        <div class="audio-time-counter">
+            00:26
+        </div>
 
     </div>
 
