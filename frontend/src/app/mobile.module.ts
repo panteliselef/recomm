@@ -9,6 +9,7 @@ import {ChatComponent} from "./pages/mobile/chat/chat.component";
 import {EditProfileComponent} from "./pages/mobile/edit-profile/edit-profile.component";
 import {NewChatComponent} from "./pages/mobile/new-chat/new-chat.component";
 import {PrepCallComponent} from "./components/prep-call/prep-call.component";
+import {EditChatComponent} from "./pages/mobile/edit-chat/edit-chat.component";
 
 @NgModule({
     imports: [
@@ -22,7 +23,8 @@ import {PrepCallComponent} from "./components/prep-call/prep-call.component";
         ChatComponent,
         EditProfileComponent,
         NewChatComponent,
-        PrepCallComponent
+        PrepCallComponent,
+        EditChatComponent
     ]
 })
 export class MobileModule {}

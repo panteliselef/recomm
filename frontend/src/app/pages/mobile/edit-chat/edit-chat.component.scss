@@ -1,0 +1,42 @@
+img {
+    display: flex;
+    flex-direction: column;
+    margin-left: auto;
+    margin-right: auto;
+    width: 150px;
+    height: 150px;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+
+main {
+    margin-left: 2.125rem;
+
+    #files {
+        font-size: 12px;
+    }
+
+    #manage {
+        font-size: 12px;
+    }
+
+    i {
+        font-size: 24px;
+        margin: .2rem 0;
+        margin-right: 1.3rem;
+        padding: .7rem 0;
+    }
+
+    li {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+
+        span{
+            font-size: 16px;
+        }
+    }
+
+
+}
