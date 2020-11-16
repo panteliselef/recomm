@@ -1,11 +1,11 @@
 <div class="app-chat-bar">
 
     <i class="material-icons-round">arrow_back</i>
-<!--    <img class="profile-img" [src]="imgSrc"/>-->
 
     <div style="display: flex;flex-direction: column; margin-left: .8rem">
         <span class="chat-name">{{chatName}}</span>
-        <span class="chat-status sub-text">{{chatStatus}}</span>
+        <span *ngIf="!reply_id" ng class="chat-status sub-text">{{chatStatus}}</span>
+        <a *ngIf="reply_id" class="chat-status sub-text" [routerLink]="'/chat/'+chat_id">LOL</a>
     </div>
 
     <div class="trailing-icons">

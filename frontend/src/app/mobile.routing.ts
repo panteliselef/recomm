@@ -7,15 +7,19 @@ import {EditProfileComponent} from "./pages/mobile/edit-profile/edit-profile.com
 import {NewChatComponent} from "./pages/mobile/new-chat/new-chat.component";
 import {PrepCallComponent} from "./components/prep-call/prep-call.component";
 import {EditChatComponent} from "./pages/mobile/edit-chat/edit-chat.component";
+import {ChatReplyComponent} from "./pages/mobile/chat-reply/chat-reply.component";
+import {ChatCallComponent} from "./pages/mobile/chat-call/chat-call.component";
 
 const routes: Routes = [
     // { path: '', redirectTo:'chats' },
     { path: 'chats', component: ChatsListComponent,},
     { path: 'chats/:id', component: ChatComponent, },
+    { path: 'chats/:id/reply/:rid', component: ChatReplyComponent},
     { path: 'contacts', component: ContactsComponent, },
     { path: 'profile', component: EditProfileComponent},
     { path: 'new-chat', component: NewChatComponent, },
     { path: 'prep-call', component: PrepCallComponent, },
+    { path: 'call', component: ChatCallComponent},
 
     { path: 'edit-chat', component: EditChatComponent},
 

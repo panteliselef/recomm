@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
     selector: 'app-chat-bar',
@@ -6,13 +7,17 @@ import {Component, Input, OnInit} from '@angular/core';
     styleUrls: ['./app-chat-bar.component.scss']
 })
 export class AppChatBarComponent implements OnInit {
-    @Input('chatName') chatName: String;
-    @Input('icons') icons: { name:String, onClick: Function }[];
-    @Input('img') imgSrc: String;
+    @Input('chatName') chatName: string;
+    @Input('icons') icons: { name:string, onClick: Function }[];
 
-    chatStatus: String = 'online';
+    chatStatus: string = 'online';
 
-    constructor() {
+    chat_id: number;
+    reply_id: number;
+
+    constructor(private activatedRoute: ActivatedRoute) {
+        this.chat_id = this.activatedRoute.snapshot.params['id'];
+        this.reply_id = this.activatedRoute.snapshot.params['rid'];
     }
 
     ngOnInit() {

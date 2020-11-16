@@ -1,0 +1,73 @@
+<div class="page">
+
+    <app-chat-bar
+        chatName="Replies"
+        [icons]="icons"
+    >
+
+    </app-chat-bar>
+
+
+    <main #scroll>
+
+
+        <div class="msg-group-day">
+
+            <div class="message-layout message-layout-vertical">
+                <img class="profile-img" [src]="users[getReplyMessage(reply_id).senderId].photoURL"/>
+                <div>
+                    <div class="message-info">
+                                <span class="sender-name">{{
+                                    users[getReplyMessage(reply_id).senderId].name
+                                    }}
+                                    </span>
+                        <span class="sender-time">{{getReplyMessage(reply_id)._timestamp}}</span>
+                    </div>
+
+                    <div class="inline-message">
+                        <span *ngIf="getReplyMessage(reply_id).msg.type === 'text'"
+                              [innerHTML]="getReplyMessage(reply_id).msg.text | linkify"></span>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chat-reply-divider">
+            3 replies
+        </div>
+
+        <div class="msg-group-day">
+            <ul class="messages">
+                <li *ngFor="let msg of yestMessages" class="message-layout">
+                    <img class="profile-img" [src]="users[msg.user_id].photoURL"/>
+                    <div>
+                        <div class="message-info">
+                            <span class="sender-name">{{
+                                users[msg.user_id].name
+                                }}
+                                </span>
+                            <span class="sender-time">{{msg.timestamp}}</span>
+                        </div>
+
+                        <ul class="inline-messages">
+                            <li *ngFor="let ilnMsg of msg.msgs" class="inline-message">
+
+                                <img class="inline-msg-image" *ngIf="ilnMsg.type === 'image'" [src]="ilnMsg.assetPath"/>
+                                <span *ngIf="ilnMsg.type === 'text'" [innerHTML]="ilnMsg.text | linkify"></span>
+
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+            </ul>
+
+
+        </div>
+
+
+    </main>
+
+
+</div>

@@ -1,0 +1,26 @@
+@import '../../../../declarations.scss';
+
+.message-layout-vertical {
+    margin-top: 0 !important;
+
+    .message-info {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+    }
+
+
+    .inline-message
+    {
+        margin: .5rem 0;
+        span {
+            font-size: 1.2rem;
+        }
+    }
+}
+
+.chat-reply-divider {
+    padding: .2rem 1rem;
+    font-size: .8725rem;
+    border-bottom: 1px solid $mid-black;
+}
