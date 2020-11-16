@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import {NgModule} from '@angular/core';
 
 import {CommonModule} from '@angular/common';
 import {ChatsListComponent} from "./pages/mobile/chats-list/chats-list.component";
@@ -10,8 +10,13 @@ import {EditProfileComponent} from "./pages/mobile/edit-profile/edit-profile.com
 import {NewChatComponent} from "./pages/mobile/new-chat/new-chat.component";
 import {PrepCallComponent} from "./components/prep-call/prep-call.component";
 import {EditChatComponent} from "./pages/mobile/edit-chat/edit-chat.component";
+
 import {ChatReplyComponent} from "./pages/mobile/chat-reply/chat-reply.component";
 import {ChatCallComponent} from "./pages/mobile/chat-call/chat-call.component";
+
+import {PreviewImageComponent} from "./pages/mobile/preview-image/preview-image.component";
+import {BrowseImagesComponent} from "./pages/mobile/browse-images/browse-images.component";
+
 
 @NgModule({
     imports: [
@@ -26,9 +31,16 @@ import {ChatCallComponent} from "./pages/mobile/chat-call/chat-call.component";
         EditProfileComponent,
         NewChatComponent,
         PrepCallComponent,
+
         EditChatComponent,
         ChatReplyComponent,
-        ChatCallComponent
+        ChatCallComponent,
+
+        PreviewImageComponent,
+        BrowseImagesComponent,
+        EditChatComponent
+
     ]
 })
-export class MobileModule {}
+export class MobileModule {
+}

@@ -1,0 +1,19 @@
+main {
+    .images {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+
+        img {
+            width: 125px;
+            height: 125px;
+        }
+    }
+
+    span{
+
+        font-size: 18px;
+        display: flex;
+        align-items: center;
+        
+    }
+}
