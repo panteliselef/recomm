@@ -7,12 +7,14 @@ import {EditProfileComponent} from "./pages/mobile/edit-profile/edit-profile.com
 import {NewChatComponent} from "./pages/mobile/new-chat/new-chat.component";
 import {PrepCallComponent} from "./components/prep-call/prep-call.component";
 import {EditChatComponent} from "./pages/mobile/edit-chat/edit-chat.component";
-
 import {ChatReplyComponent} from "./pages/mobile/chat-reply/chat-reply.component";
 import {ChatCallComponent} from "./pages/mobile/chat-call/chat-call.component";
 import {PreviewImageComponent} from "./pages/mobile/preview-image/preview-image.component";
 import {BrowseImagesComponent} from "./pages/mobile/browse-images/browse-images.component";
 import {CalendarComponent} from "./pages/mobile/calendar/calendar.component";
+import {SearchComponent} from "./pages/mobile/search/search.component";
+import {SmartTvComponent} from "./pages/mobile/smart-tv/smart-tv.component";
+import {SmartTvDuringCallComponent} from "./pages/mobile/smart-tv-during-call/smart-tv-during-call.component";
 
 const routes: Routes = [
     // { path: '', redirectTo:'chats' },
@@ -27,11 +29,11 @@ const routes: Routes = [
     {path: 'preview-image', component: PreviewImageComponent},
     {path: 'browse-images', component: BrowseImagesComponent},
     {path: 'calendar', component: CalendarComponent},
-
+    {path: 'smart-tv', component: SmartTvComponent},
+    {path: 'smart-tv-during-call', component: SmartTvDuringCallComponent},
+    {path: 'search', component: SearchComponent},
     {path: 'edit-chat', component: EditChatComponent},
-
     {path: '**', redirectTo: 'chats', pathMatch: 'full'}
-
 ];
 
 @NgModule({

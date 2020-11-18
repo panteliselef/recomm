@@ -1,0 +1,27 @@
+main {
+
+
+
+    div {
+        #recentSearches {
+            display: flex;
+            flex-direction: column;
+
+        }
+    }
+
+    span{
+        font-size: 18px;
+        margin-left: 1.4rem;
+    }
+
+    ul{
+        li{
+            img{
+                font-size: 50px;
+                margin-left: 1.4rem;
+                margin-top: 0.6rem;
+            }
+        }
+    }
+}
