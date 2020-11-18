@@ -1,0 +1,86 @@
+main{
+    .uprow{
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+        display: flex;
+        width: 100%;
+        align-items: center;
+        margin-top: 35rem;
+        margin-left: 1.8rem;
+
+        div{
+            ul{
+                li{
+                    img{
+                        font-size: 100px;
+                    }
+                    .name{
+                        font-size: 24px;
+                    }
+                    .activation{
+                        font-size: 20px;
+                        color: #8A8A8B;
+                    }
+                    button{
+                        width: 173px;
+                        height: 50px;
+                        border-radius: 15px;
+                        color: #ffffff;
+                        background: #FF7C53;
+                        border: none;
+                    }
+                }
+            }
+        }
+    }
+    .downrow{
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+        display: flex;
+        width: 100%;
+        align-items: center;
+        margin-left: 1.8rem;
+
+        div{
+            ul{
+                li{
+                    img{
+                        font-size: 100px;
+                    }
+                    .name{
+                        font-size: 24px;
+                    }
+                    .activation{
+                        font-size: 20px;
+                        color: #8A8A8B;
+                    }
+                    button{
+                        width: 173px;
+                        height: 50px;
+                        border-radius: 15px;
+                        color: #ffffff;
+                        background: #FF7C53;
+                        border: none;
+                    }
+                }
+            }
+        }
+    }
+
+    div{
+
+        width: 100%;
+        margin-top: 2rem;
+        margin-left: 2rem;
+        i{
+            font-size: 50px;
+        }
+        .addPeople{
+            font-size: 48px;
+        }
+        .recomm{
+            text-align: right;
+            font-size: 24px;
+        }
+    }
+}
