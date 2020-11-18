@@ -1,13 +1,62 @@
 <div class="table-dashboard">
     <div class="side-nav">
+        <h1>recomm</h1>
 
-        recomm
+        <div class="side-nav-item" style="margin-top: 30px">
+            <img class="profile-img" src="https://images.unsplash.com/photo-1604936725386-22a475291f50?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80"/>
+            <span class="big">
+                Pantelis Elef
+            </span>
+        </div>
 
+
+        <div class="side-nav-divider" style="margin-top: 30px">Chats</div>
+
+        <ul>
+            <li  *ngFor="let one of testArr" class="side-nav-item">
+                <img class="profile-img" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80" />
+                <span class="mid">
+                    Emma Bailey
+                </span>
+            </li>
+
+        </ul>
 
     </div>
 
 
     <main>
+
+        <div class="top-bar">
+            <div style="display: flex; align-items: center">
+                <img class="profile-img" src="https://images.unsplash.com/photo-1604936725386-22a475291f50?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80"/>
+                <div style="display: flex;flex-direction: column; margin-left: .8rem">
+                    <span class="chat-name">Team Power</span>
+                    <span class="chat-status sub-text">8 members</span>
+                </div>
+            </div>
+            <div class="">
+                Images
+            </div>
+        </div>
+
+
+        <div class="scroll-area">
+
+            <div class="images">
+
+                <div *ngFor="let one of testArr" class="thumbnail">
+                    <img
+                        src="https://images.unsplash.com/photo-1601758174493-45d0a4d3e407?ixlib=rb-1.2.1&auto=format&fit=crop&w=1534&q=80">
+
+                </div>
+
+
+            </div>
+
+            <div style="display: flex; justify-content: center; align-items: center;width: 100%;margin-bottom: 1rem">23 photos</div>
+        </div>
+
 
 
     </main>

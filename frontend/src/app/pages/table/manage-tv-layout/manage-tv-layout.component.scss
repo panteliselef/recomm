@@ -1,0 +1,68 @@
+@import "../../../../declarations";
+
+main {
+    padding: 2rem;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+
+
+    .action-button {
+        background-color: $orange-color;
+        margin-top: 1rem;
+        width: 173px;
+        height: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 11px;
+    }
+
+    .video-collection-container-big {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: 40vh;
+        grid-gap: 2rem;
+
+        .big-tile {
+            border-radius: 5px;
+            background-color: $mid-black;
+            position: relative;
+            overflow: hidden;
+
+            .video-info {
+            }
+        }
+    }
+
+    video {
+        border-radius: 5px;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .video-collection-container-small {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr) 100px;
+        grid-template-rows: 15vh;
+        grid-gap: 1rem;
+        .small-tile {
+            position: relative;
+            overflow: hidden;
+
+            border-radius: 5px;
+            background-color: $mid-black;
+
+            .video-info {
+
+            }
+        }
+    }
+
+    .page-title {
+        margin-left: 2rem;
+        font-size: 3rem;
+        font-weight: bold;
+    }
+}

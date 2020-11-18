@@ -1,15 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
-  selector: 'ami-fullstack-view-images',
-  templateUrl: './view-images.component.html',
-  styleUrls: ['./view-images.component.scss']
+    selector: 'ami-fullstack-view-images',
+    templateUrl: './view-images.component.html',
+    styleUrls: [
+        './view-images.component.scss',
+
+    ]
 })
 export class ViewImagesComponent implements OnInit {
 
-  constructor() { }
+    testArr = Array(23).fill(5)
 
-  ngOnInit() {
-  }
+    constructor() {
+    }
+
+    ngOnInit() {
+    }
 
 }

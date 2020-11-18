@@ -13,8 +13,6 @@ import {PreviewImageComponent} from "./pages/mobile/preview-image/preview-image.
 import {BrowseImagesComponent} from "./pages/mobile/browse-images/browse-images.component";
 import {CalendarComponent} from "./pages/mobile/calendar/calendar.component";
 import {SearchComponent} from "./pages/mobile/search/search.component";
-import {SmartTvComponent} from "./pages/mobile/smart-tv/smart-tv.component";
-import {SmartTvDuringCallComponent} from "./pages/mobile/smart-tv-during-call/smart-tv-during-call.component";
 
 const routes: Routes = [
     // { path: '', redirectTo:'chats' },
@@ -29,8 +27,6 @@ const routes: Routes = [
     {path: 'preview-image', component: PreviewImageComponent},
     {path: 'browse-images', component: BrowseImagesComponent},
     {path: 'calendar', component: CalendarComponent},
-    {path: 'smart-tv', component: SmartTvComponent},
-    {path: 'smart-tv-during-call', component: SmartTvDuringCallComponent},
     {path: 'search', component: SearchComponent},
     {path: 'edit-chat', component: EditChatComponent},
     {path: '**', redirectTo: 'chats', pathMatch: 'full'}

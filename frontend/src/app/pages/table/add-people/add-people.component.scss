@@ -1,86 +1,59 @@
-main{
-    .uprow{
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-        display: flex;
-        width: 100%;
-        align-items: center;
-        margin-top: 35rem;
-        margin-left: 1.8rem;
+@import "../../../../declarations";
 
-        div{
-            ul{
-                li{
-                    img{
-                        font-size: 100px;
-                    }
-                    .name{
-                        font-size: 24px;
-                    }
-                    .activation{
-                        font-size: 20px;
-                        color: #8A8A8B;
-                    }
-                    button{
-                        width: 173px;
-                        height: 50px;
-                        border-radius: 15px;
-                        color: #ffffff;
-                        background: #FF7C53;
-                        border: none;
-                    }
-                }
+main {
+    padding: 2rem;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+
+    .uprow {
+        display: grid;
+        grid-template-columns: repeat(5,1fr);
+        width: 100%;
+        max-width: 1250px;
+        align-items: center;
+        grid-row-gap: 2rem;
+        grid-column-gap: 1rem;
+
+        .grid-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            img.profile-img {
+                width: 100px;
+                height: 100px;
             }
-        }
-    }
-    .downrow{
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-        display: flex;
-        width: 100%;
-        align-items: center;
-        margin-left: 1.8rem;
 
-        div{
-            ul{
-                li{
-                    img{
-                        font-size: 100px;
-                    }
-                    .name{
-                        font-size: 24px;
-                    }
-                    .activation{
-                        font-size: 20px;
-                        color: #8A8A8B;
-                    }
-                    button{
-                        width: 173px;
-                        height: 50px;
-                        border-radius: 15px;
-                        color: #ffffff;
-                        background: #FF7C53;
-                        border: none;
-                    }
-                }
+            .name {
+                width: 100%;
+                text-align: center;
+                font-size: 24px;
+                font-weight: 500;
+            }
+            .status {
+                font-size: 20px;
+                color: $light-black;
+            }
+
+            .add-button {
+                width: 100%;
+                max-width: 173px;
+                height: 50px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background-color: $orange-color;
+                border-radius: 11px;
             }
         }
     }
 
-    div{
 
-        width: 100%;
-        margin-top: 2rem;
+    .add-people {
         margin-left: 2rem;
-        i{
-            font-size: 50px;
-        }
-        .addPeople{
-            font-size: 48px;
-        }
-        .recomm{
-            text-align: right;
-            font-size: 24px;
-        }
+        font-size: 3rem;
+        font-weight: bold;
     }
 }

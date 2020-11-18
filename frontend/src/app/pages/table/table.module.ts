@@ -5,6 +5,7 @@ import {TableRoutingModule} from "./table.routing";
 import {HomeTableComponent} from "./home-table/home-table.component";
 import {ViewImagesComponent} from "./view-images/view-images.component";
 import {AddPeopleComponent} from "./add-people/add-people.component";
+import {ManageTvLayoutComponent} from "./manage-tv-layout/manage-tv-layout.component";
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import {AddPeopleComponent} from "./add-people/add-people.component";
     declarations: [
         HomeTableComponent,
         ViewImagesComponent,
-        AddPeopleComponent
+        AddPeopleComponent,
+        ManageTvLayoutComponent
     ]
 })
 export class TableModule {

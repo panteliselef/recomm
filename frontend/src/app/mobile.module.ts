@@ -18,9 +18,6 @@ import {PreviewImageComponent} from "./pages/mobile/preview-image/preview-image.
 import {BrowseImagesComponent} from "./pages/mobile/browse-images/browse-images.component";
 import {CalendarComponent} from "./pages/mobile/calendar/calendar.component";
 import {SearchComponent} from "./pages/mobile/search/search.component";
-import {NewChatsComponent} from "./pages/mobile/new-chats/new-chats.component";
-import {SmartTvComponent} from "./pages/mobile/smart-tv/smart-tv.component";
-import {SmartTvDuringCallComponent} from "./pages/mobile/smart-tv-during-call/smart-tv-during-call.component";
 
 
 @NgModule({
@@ -41,8 +38,6 @@ import {SmartTvDuringCallComponent} from "./pages/mobile/smart-tv-during-call/sm
         ChatReplyComponent,
         ChatCallComponent,
 
-        SmartTvComponent,
-        SmartTvDuringCallComponent,
         SearchComponent,
 
         PreviewImageComponent,
