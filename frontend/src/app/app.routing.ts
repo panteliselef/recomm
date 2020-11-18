@@ -9,6 +9,7 @@ const routes: Routes = [
     },
     {path: 'tasks', loadChildren: () => import('./pages/tasks/tasks.module').then(m => m.TasksModule)},
     {path: 'mobile', pathMatch: 'prefix', loadChildren: () => import('./mobile.module').then(m => m.MobileModule)},
+    {path: 'table', pathMatch: 'prefix', loadChildren: () => import('./pages/table/table.module').then(m => m.TableModule)},
     // { path: 'mobile/chats', loadChildren: () => import('./pages/chats-list/chats-list.module').then(m => m.ChatsListModule)},
     // { path: 'mobile/contacts', loadChildren: () => import('./pages/contacts/contacts.module').then(m => m.ContactsModule)},
     {path: '**', redirectTo: 'home', pathMatch: 'full'},

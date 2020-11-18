@@ -1,6 +1,7 @@
 @import '../../../declarations.scss';
 
-.app-chat-bar {
+.app-chat-bar,
+.app-call-bar {
     flex: 0 0 70px;
     display: flex;
     justify-content: flex-start;

@@ -1,0 +1,140 @@
+@import "../../../../declarations";
+
+h2 {
+    padding: 0 1rem;
+}
+
+.calendar-weekly-view {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 1rem;
+
+    .calendar-weekly-view-month {
+        font-size: .825rem;
+    }
+
+    .calendar-weekly-view-week-days {
+        width: 100%;
+
+        ul.week-days {
+            position: relative;
+            display: flex;
+            margin: 0;
+            padding: 0;
+            li {
+                width: calc(100% / 7);
+                height: auto;
+                text-align: center;
+                position: relative;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                span {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 35px;
+                    height: 35px;
+                    border-radius: 50%;
+
+                    &.active-today {
+                        background-color: $orange-color;
+                    }
+                }
+            }
+        }
+
+    }
+
+
+    .calendar-weekly-view-controls {
+        padding: 0 1rem;
+        display: flex;
+        width: 100%;
+        align-items: center;
+        justify-content: space-between;
+
+        span,i {
+            padding: 1rem 0;
+
+        }
+
+        i.inverted-icon {
+            transform: rotate(180deg);
+        }
+    }
+
+}
+
+
+.calendar-event {
+    width: calc(100% - 2rem);
+    background-color: $mid-black;
+    display: flex;
+    flex-wrap: nowrap;
+    padding: .7rem;
+    border-radius: 6px;
+    align-items: center;
+    margin: 1rem;
+    box-shadow: 0px 2px 7px rgba(0, 0, 0, 0.15);
+
+
+    .line {
+        width: 6px;
+        height: inherit;
+        align-self: stretch;
+        border-radius: 10px;
+        background-color: $orange-color;
+    }
+
+    .calendar-event-details {
+        padding: .2rem .5rem;
+        //padding-top: .3rem;
+        display: flex;
+        flex-direction: column;
+
+        p {
+            margin: 0;
+        }
+
+        .calendar-event-time {
+            font-size: 0.875rem;
+            font-family: 'Roboto', sans-serif;
+            margin: .1rem 0;
+        }
+
+        .participants-images {
+            margin-left: 7px;
+
+            img {
+                width: 25px;
+                height: 25px;
+                margin-left: -7px;
+            }
+        }
+
+    }
+
+    .calendar-event-button {
+        //margin-left: auto;
+        flex: 0 0 auto;
+        border-radius: 100px;
+        width: 96px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 40px;
+        background-color: $orange-color;
+        padding: 1rem;
+        font-weight: 500;
+        color: #fff;
+
+        &.reverse {
+            color: $mid-black;
+            background-color: #fff;
+        }
+    }
+}

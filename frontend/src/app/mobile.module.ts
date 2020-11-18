@@ -16,6 +16,7 @@ import {ChatCallComponent} from "./pages/mobile/chat-call/chat-call.component";
 
 import {PreviewImageComponent} from "./pages/mobile/preview-image/preview-image.component";
 import {BrowseImagesComponent} from "./pages/mobile/browse-images/browse-images.component";
+import {CalendarComponent} from "./pages/mobile/calendar/calendar.component";
 
 
 @NgModule({
@@ -38,7 +39,9 @@ import {BrowseImagesComponent} from "./pages/mobile/browse-images/browse-images.
 
         PreviewImageComponent,
         BrowseImagesComponent,
-        EditChatComponent
+        EditChatComponent,
+
+        CalendarComponent
 
     ]
 })

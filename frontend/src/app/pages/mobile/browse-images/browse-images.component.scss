@@ -1,19 +1,30 @@
+@import "../../../../declarations";
+
 main {
+
     .images {
+        margin-bottom: 2rem;
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
 
-        img {
-            width: 125px;
-            height: 125px;
+        .thumbnail{
+            position: relative;
         }
-    }
-
-    span{
-
-        font-size: 18px;
-        display: flex;
-        align-items: center;
-        
+        .thumbnail:before{
+            content: ' ';
+            display: block;
+            width: 100%;
+            padding-top: 100%;
+        }
+        .thumbnail > img{
+            object-fit: cover;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            bottom: 0px;
+            right: 0px;
+            width: 100%;
+            height: 100%;
+        }
     }
 }

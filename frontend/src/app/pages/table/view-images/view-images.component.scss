@@ -1,0 +1,15 @@
+@import "../../../../declarations";
+
+.table-dashboard {
+    display: flex;
+
+
+    .side-nav {
+        flex: 0 0 340px;
+        height: 100vh;
+        background-color: $primary-bg-color;
+    }
+    main {
+        flex: 1 1 auto;
+    }
+}

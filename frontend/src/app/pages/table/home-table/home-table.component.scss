@@ -1,0 +1,22 @@
+@import "../../../../declarations";
+
+.table-page {
+
+    background-color: $table-bg-color;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+
+    &>div{
+        flex: 1 1 auto;
+    }
+
+
+    .control-panel {
+        flex: 0 0 304px;
+        height: 100vh;
+        background-color: $primary-bg-color;
+    }
+
+
+}

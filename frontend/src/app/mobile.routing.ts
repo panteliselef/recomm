@@ -12,6 +12,7 @@ import {ChatReplyComponent} from "./pages/mobile/chat-reply/chat-reply.component
 import {ChatCallComponent} from "./pages/mobile/chat-call/chat-call.component";
 import {PreviewImageComponent} from "./pages/mobile/preview-image/preview-image.component";
 import {BrowseImagesComponent} from "./pages/mobile/browse-images/browse-images.component";
+import {CalendarComponent} from "./pages/mobile/calendar/calendar.component";
 
 const routes: Routes = [
     // { path: '', redirectTo:'chats' },
@@ -25,6 +26,7 @@ const routes: Routes = [
     {path: 'call', component: ChatCallComponent},
     {path: 'preview-image', component: PreviewImageComponent},
     {path: 'browse-images', component: BrowseImagesComponent},
+    {path: 'calendar', component: CalendarComponent},
 
     {path: 'edit-chat', component: EditChatComponent},
 

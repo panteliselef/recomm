@@ -1,0 +1,78 @@
+<div class="page">
+    <app-bar
+        img="https://images.unsplash.com/photo-1496345875659-11f7dd282d1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80"
+        title="Calendar"
+        [hasImage]="true"
+        trailingIcon="add_circle_outline">
+    </app-bar>
+
+    <main>
+
+        <div class="calendar-weekly-view">
+            <div class="calendar-weekly-view-month">{{ months[calendar.relative.month]}} {{calendar.relative.year}}</div>
+            <div class="calendar-weekly-view-week-days">
+                <ul class="week-days">
+                    <li *ngFor="let day of weekDays">{{day}}</li>
+                </ul>
+
+                <ul class="week-days">
+                    <li *ngFor="let _date of weekDates">
+                        <span [ngClass]="{'active-today': isEqualToDate(_date,date)}">
+                           {{_date.getDate()}}
+                        </span>
+                    </li>
+                </ul>
+
+            </div>
+            <div class="calendar-weekly-view-controls">
+                <div>
+                    <span>Expand</span>
+                </div>
+                <div>
+                    <i (click)="prevWeek()" class="material-icons-round">arrow_back_ios</i>
+                    <i (click)="nextWeek()" class="material-icons-round inverted-icon">arrow_back_ios</i>
+                </div>
+            </div>
+        </div>
+
+        <h2>Upcoming Meetings</h2>
+
+        <ul>
+            <li *ngFor="let event of events">
+                <div class="calendar-event">
+                    <div class="line"></div>
+
+                    <div class="calendar-event-details">
+                        <p>{{event.chatName}}</p>
+                        <p class="calendar-event-time">{{event.startTime}} - {{event.endTime}}</p>
+                        <div class="participants-images">
+                            <img class="profile-img"
+                                 src="https://images.unsplash.com/photo-1604772659841-a1612db7000f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80">
+                            <img class="profile-img"
+                                 src="https://images.unsplash.com/photo-1604772659841-a1612db7000f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80">
+                            <img class="profile-img"
+                                 src="https://images.unsplash.com/photo-1604772659841-a1612db7000f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80">
+                        </div>
+                    </div>
+
+                    <div
+                        style="margin-left: auto; display: flex; justify-content: center;align-items: center;flex-direction: column">
+                        <div *ngIf="event.hasStarted" class="calendar-event-button">Join</div>
+                        <div *ngIf="!event.hasStarted" class="calendar-event-button reverse">More</div>
+                        <span *ngIf="event.hasStarted" style="font-size: .75rem;">
+                            in progress
+                        </span>
+                    </div>
+
+                </div>
+            </li>
+        </ul>
+
+    </main>
+
+    <bottom-nav-menu>
+
+    </bottom-nav-menu>
+
+
+</div>
