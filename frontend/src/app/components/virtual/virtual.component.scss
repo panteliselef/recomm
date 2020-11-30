@@ -1,0 +1,23 @@
+.vcursor {
+  opacity: 0.5;
+  border-radius: 100%;
+  z-index: 10000;
+  position: absolute;
+}
+
+.cursor-outer {
+  background-color: transparent;
+  border-radius: 100%;
+  position: absolute;
+  z-index: 10000;
+}
+
+.loading{
+  position: absolute;
+  overflow: hidden;
+}
+
+.black {
+  border-radius: 100%;
+  position:relative;
+}

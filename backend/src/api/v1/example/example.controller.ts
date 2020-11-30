@@ -36,7 +36,7 @@ export class ExampleController {
         const message: string = req.body.message;
         const event: string = req.body.event;
 
-        //Sending a broadcast message to all clients
+        // Sending a broadcast message to all clients
         const socketService = DIContainer.get(SocketsService);
         socketService.broadcast(event, message);
 

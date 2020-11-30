@@ -1,7 +1,8 @@
 import * as express from 'express';
 import { ResourceController } from '../shared';
-import { ITask, TaskModel } from '@app/models';
+import { ITask, TaskModel, IUser, UserModel, IChat, ChatModel } from '@app/models';
 import { FilesController } from './files/files.controller';
+import { ChatsController } from './chats/chats.controller';
 import { SocketEventsController } from './socket-events/socket-events.controller';
 import { ExampleController } from './example/example.controller';
 
@@ -25,6 +26,19 @@ apiV1Router
   .use(
     '/tasks',
     new ResourceController<ITask>(TaskModel).applyRoutes()
+  )
+
+
+  // User routes
+  .use(
+    '/users',
+    new ResourceController<IUser>(UserModel).applyRoutes()
+  )
+
+  // Chat routes
+  .use(
+    '/chats',
+    new ChatsController().applyRoutes()
   )
 
   // Example routes

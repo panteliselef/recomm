@@ -14,7 +14,6 @@ export class FilesController {
    */
   public applyRoutes(): Router {
     const router = Router();
-
     router
       .post('/upload', this.upload())
       .get('/download/:filename', this.download());

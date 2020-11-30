@@ -7,37 +7,52 @@
 
     <main>
 
-        <span>Recent Searches</span>
-        <ul>
-        </ul>
+        <div class="input-container">
+            <i *ngIf="searchStr === ''" class="material-icons-round">search</i>
+            <i *ngIf="searchStr !== ''" class="material-icons-round" (click)="clearResults()">close</i>
 
-        <span>Online</span>
+
+
+            <input [(ngModel)]="searchStr"
+                   autofocus
+                    placeholder="Search Users"
+                   (ngModelChange)="filterSearchResults($event)" type="text">
+        </div>
+
+        <span class="list-title" style="margin-top: 1rem;">
+            All Users
+        </span>
+
+        <!--        <span>Recent Searches</span>-->
+        <!--        <ul>-->
+        <!--        </ul>-->
+
 
         <ul>
-            <li>
-                <img class="profile-img" src="https://images.unsplash.com/photo-1496345875659-11f7dd282d1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80">
-                <span>Emma Bailey</span>
+            <li *ngFor="let user of usersToShow" (click)="goToChat(user._id)">
+                <img class="profile-img" [src]="user.getPhoto()">
+                <span>{{user.getFullName()}}</span>
             </li>
-            <li>
-                <img class="profile-img" src="https://images.unsplash.com/photo-1496345875659-11f7dd282d1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80">
-                <span>Emma Bailey</span>
-            </li>
-            <li>
-                <img class="profile-img" src="https://images.unsplash.com/photo-1496345875659-11f7dd282d1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80">
-                <span>Emma Bailey</span>
-            </li>
-            <li>
-                <img class="profile-img" src="https://images.unsplash.com/photo-1496345875659-11f7dd282d1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80">
-                <span>Emma Bailey</span>
-            </li>
-            <li>
-                <img class="profile-img" src="https://images.unsplash.com/photo-1496345875659-11f7dd282d1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80">
-                <span>Emma Bailey</span>
-            </li>
-            <li>
-                <img class="profile-img" src="https://images.unsplash.com/photo-1496345875659-11f7dd282d1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80">
-                <span>Emma Bailey</span>
-            </li>
+            <!--            <li>-->
+            <!--                <img class="profile-img" src="https://images.unsplash.com/photo-1496345875659-11f7dd282d1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80">-->
+            <!--                <span>Emma Bailey</span>-->
+            <!--            </li>-->
+            <!--            <li>-->
+            <!--                <img class="profile-img" src="https://images.unsplash.com/photo-1496345875659-11f7dd282d1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80">-->
+            <!--                <span>Emma Bailey</span>-->
+            <!--            </li>-->
+            <!--            <li>-->
+            <!--                <img class="profile-img" src="https://images.unsplash.com/photo-1496345875659-11f7dd282d1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80">-->
+            <!--                <span>Emma Bailey</span>-->
+            <!--            </li>-->
+            <!--            <li>-->
+            <!--                <img class="profile-img" src="https://images.unsplash.com/photo-1496345875659-11f7dd282d1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80">-->
+            <!--                <span>Emma Bailey</span>-->
+            <!--            </li>-->
+            <!--            <li>-->
+            <!--                <img class="profile-img" src="https://images.unsplash.com/photo-1496345875659-11f7dd282d1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80">-->
+            <!--                <span>Emma Bailey</span>-->
+            <!--            </li>-->
         </ul>
     </main>
 

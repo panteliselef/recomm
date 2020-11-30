@@ -18,6 +18,7 @@ import {PreviewImageComponent} from "./pages/mobile/preview-image/preview-image.
 import {BrowseImagesComponent} from "./pages/mobile/browse-images/browse-images.component";
 import {CalendarComponent} from "./pages/mobile/calendar/calendar.component";
 import {SearchComponent} from "./pages/mobile/search/search.component";
+import {FormsModule} from "@angular/forms";
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import {SearchComponent} from "./pages/mobile/search/search.component";
         CommonModule,
         SharedComponentsModule,
         MobileRoutingModule,
+        FormsModule,
     ],
     declarations: [
         ChatsListComponent,

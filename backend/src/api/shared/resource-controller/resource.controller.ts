@@ -58,6 +58,7 @@ export class ResourceController<T extends Document> implements ICrudController {
 
         case CrudOperations.Delete:
           router.delete('/:id', middleware, this.delete());
+          router.delete('/', middleware, this.deleteAll());
           break;
       }
     });
@@ -190,6 +191,28 @@ export class ResourceController<T extends Document> implements ICrudController {
 
         await this.modelSchema
           .findOneAndDelete({ _id: modelId })
+          .orFail(new NotFound())
+          .exec();
+
+        return res
+          .sendStatus(NO_CONTENT);
+
+      } catch (e) {
+        next(e);
+      }
+    };
+  }
+
+    /**
+   * Delete All resource models
+   */
+  public deleteAll() {
+    return async (req: Request, res: Response, next?: NextFunction): Promise<Response> => {
+      try {
+        // const modelId: any = id || req.params.id;
+
+        await this.modelSchema
+          .remove({})
           .orFail(new NotFound())
           .exec();
 
