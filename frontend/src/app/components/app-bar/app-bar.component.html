@@ -2,7 +2,7 @@
 
     <div class="left-actions actions">
         <img *ngIf="hasImage" class="profile-img" [src]="imgSrc"/>
-        <i *ngIf="!hasImage" class="material-icons-round">{{leadingIconName}}</i>
+        <i *ngIf="!hasImage" (click)="goBack()" class="material-icons-round">{{leadingIconName}}</i>
     </div>
 
 

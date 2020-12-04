@@ -1,6 +1,7 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {UsersService} from "../../../global/services/users/users.service";
 import {UserModel} from "../../../global/models";
+import {SmartSpeakerService} from "../../../global/services/core/smart-speaker.service";
 
 
 @Component({
@@ -16,9 +17,13 @@ export class SearchComponent implements OnInit {
     public usersToShow: UserModel[];
     public searchStr: string;
 
-    constructor(private users: UsersService) {
+    constructor(private users: UsersService, private speaker: SmartSpeakerService) {
         this.searchStr = '';
         this.allUsers = [];
+        speaker.initializeArtyom();
+
+
+        // speaker.speak('Hello');
 
     }
 

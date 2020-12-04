@@ -6,7 +6,7 @@ export class ChatModel {
     public isOnline: boolean;
     public displayName: string;
     public photoUrl: string;
-    public messages: MessageModel[];
+    public messages: MessageWithRepliesModel[];
 
     constructor(model?: any) {
         Object.assign(this, model);
@@ -23,6 +23,8 @@ export enum MessageType {
     STATUS = 'STATUS',
 }
 
+
+
 export class MessageModel {
     public _id: string;
     public senderId: string;
@@ -34,6 +36,9 @@ export class MessageModel {
     constructor(model?: any) {
         Object.assign(this, model);
     }
+}
 
 
+export class MessageWithRepliesModel extends MessageModel{
+    public replies: MessageModel[]
 }

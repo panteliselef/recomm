@@ -11,7 +11,10 @@ import {ActivatedRoute} from "@angular/router";
 import {ParticipantModel} from "../../../global/models/participants/participant.model";
 import {ChatsService} from "../../../global/services/chats/chats.service";
 import {UsersService} from "../../../global/services/users/users.service";
-import {ChatModel, MessageModel, MessageType, UserModel} from "../../../global/models";
+import {ChatModel, MessageModel, MessageType, MessageWithRepliesModel, UserModel} from "../../../global/models";
+import {SocketsService} from "../../../global/services";
+import {Subject, Subscription} from "rxjs";
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
     selector: 'ami-fullstack-chat',
@@ -21,14 +24,16 @@ import {ChatModel, MessageModel, MessageType, UserModel} from "../../../global/m
 })
 
 
-export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
+export class ChatComponent implements OnInit, AfterViewChecked {
 
-    @ViewChild('message', {static: false}) textarea: ElementRef;
-    @ViewChild('scroll', {static:false, read: ElementRef }) public scroll: ElementRef<any>;
+    @ViewChild('scroll', {static: false, read: ElementRef }) public scroll: ElementRef<any>;
+
+
+
     chatId: Number;
     participant: UserModel;
 
-    isAudioRecordOpen = false;
+
     private URLRegex = new RegExp("([a-zA-Z0-9]+://)?([a-zA-Z0-9_]+:[a-zA-Z0-9_]+@)?([a-zA-Z0-9.-]+\\.[A-Za-z]{2,4})(:[0-9]+)?(/.*)?");
 
 
@@ -124,20 +129,30 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
     chat: ChatModel;
     me: UserModel;
     chatName: string;
-    messages: MessageModel[];
+    messages: Array<{
+        _id: string,
+        messages: MessageWithRepliesModel[]
+    }>;
 
 
-    constructor(private route: ActivatedRoute, private chatService: ChatsService, private userService: UsersService) {
+    constructor(private route: ActivatedRoute, private chatService: ChatsService, private userService: UsersService,private socketService: SocketsService) {
         const chatId = this.route.snapshot.params.id;
         this.fetchChatData(chatId);
     }
 
+
     private async fetchChatData(chatId: string) {
         this.chat = await this.chatService.getById(chatId).toPromise()
 
-        const reducer = async (accumulator, currentValue: UserModel) => {
-            accumulator[currentValue._id] = currentValue;
-        }
+
+
+        this.socketService
+            .syncMessages(`/${this.chat._id}/newMessage`)
+            .subscribe((msg) => {
+                this.onReceiveMessage(msg.message)
+                // this.socketEvents.push(msg);
+                console.log(msg);
+            });
 
         this.participants = await Promise.all<UserModel>(this.chat.participants.map( async (memberId) => {
             return await this.userService.getById(memberId).toPromise();
@@ -151,55 +166,56 @@ export class ChatComponent implements OnInit, AfterViewInit, AfterViewChecked {
 
         this.chatName =  this.chat.displayName || this.participant.getFullName()
 
-        this.messages = this.chat.messages;
+        this.messages = await this.chatService.getMessages(chatId).toPromise();
 
-        console.log(this.messages)
+
+
     }
 
-    resize() {
-        this.textarea.nativeElement.style.height = '22px';
-        this.textarea.nativeElement.style.height = `${this.textarea.nativeElement.scrollHeight}px`;
+    trackByMethod(index:number, item:MessageModel): string {
+        return item._id;
     }
 
-    getUserById = (id: Number): ParticipantModel => {
-        const p = new ParticipantModel();
-        p._id = id;
-        p.firstName = "Emma";
-        p.lastName = "Bailey";
-        p.photoURL = "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80"
-        return p;
+    private onReceiveMessage(message: MessageModel) {
+        this.messages[this.messages.length-1].messages = [
+            ...this.messages[this.messages.length-1].messages,
+            message
+        ]
     }
+
+
+
+
+
+    // getUserById = (id: Number): ParticipantModel => {
+    //     const p = new ParticipantModel();
+    //     p._id = id;
+    //     p.firstName = "Emma";
+    //     p.lastName = "Bailey";
+    //     p.photoURL = "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80"
+    //     return p;
+    // }
 
     ngOnInit() {
         // this.chatId = +this.route.snapshot.params.id;
         // this.participant = this.getUserById(this.chatId);
+
+
     }
 
-    ngAfterViewInit() {
-        this.scrollBottom()
-    }
-    ngAfterViewChecked() {
-        // this.scrollBottom()
+
+    ngAfterViewChecked(): void {
+        this.scrollBottom();
     }
 
     scrollBottom() {
         this.scroll.nativeElement.scrollTop = this.scroll.nativeElement.scrollHeight - 200;
-        console.log(this.scroll.nativeElement.scrollHeight)
     }
 
 
     parseUrl(textMsg: string) {
-
-
         const matches = textMsg.match(this.URLRegex);
         if(!matches) return textMsg;
-        console.log(matches.input)
-
         return textMsg.replace(this.URLRegex, 'Link')
-        // matches[]
-        // this.URLRegex.match(textMsg);
-
-
     }
-
 }

@@ -1,7 +1,7 @@
 <div class="page">
     <app-bar
         leadingIcon="arrow_back"
-        title="New Chat"
+        title="Search"
     >
     </app-bar>
 
@@ -13,9 +13,10 @@
 
 
 
-            <input [(ngModel)]="searchStr"
+            <input
+                   placeholder="Search Users"
                    autofocus
-                    placeholder="Search Users"
+                   [(ngModel)]="searchStr"
                    (ngModelChange)="filterSearchResults($event)" type="text">
         </div>
 

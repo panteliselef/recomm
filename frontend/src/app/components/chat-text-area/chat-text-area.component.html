@@ -1,0 +1,51 @@
+<div class="new-message-section">
+
+    <div class="text-area-items">
+        <label>
+            <input type="file" (change)="onFileSelect($event)">
+            <span>
+            <i class="material-icons-round">insert_photo</i>
+
+            </span>
+        </label>
+        <!--        <i class="material-icons-round">insert_photo</i>-->
+
+        <i (click)="isAudioRecordOpen = !isAudioRecordOpen" class="material-icons-round">mic</i>
+
+        <div class="message-bar">
+            <textarea #message
+                      [(ngModel)]="textareaValue"
+                      (ngModelChange)="resize()"
+                      [placeholder]="replyMessage?'Reply to message':'Message'"
+            ></textarea>
+            <i style="padding: 0" class="material-icons-round" (click)="isStickersOpen = !isStickersOpen" >sentiment_satisfied_alt</i>
+        </div>
+        <i class="material-icons-round" (click)="sendMessage()">send</i>
+
+    </div>
+
+
+    <div *ngIf="isAudioRecordOpen" class="audio-caption-container">
+
+        <div class="audio-caption">
+
+            <div class="elipse" id="elipse1">
+                <div class="elipse" id="elipse2"></div>
+            </div>
+            <i class="material-icons-round">
+                keyboard_voice
+            </i>
+        </div>
+
+        <div class="audio-time-counter">
+            00:26
+        </div>
+
+    </div>
+
+
+    <section class="gif-sticker-drawer" [ngClass]="{'visible':isStickersOpen}" >
+
+    </section>
+
+</div>

@@ -8,55 +8,105 @@
     </app-chat-bar>
 
 
-    <main #scroll>
+    <main>
 
+
+        <!--        <div class="msg-group-day">-->
+
+        <!--            <div class="message-layout message-layout-vertical">-->
+        <!--                <img class="profile-img" [src]="users[getReplyMessage(reply_id).senderId].photoURL"/>-->
+        <!--                <div>-->
+        <!--                    <div class="message-info">-->
+        <!--                                <span class="sender-name">{{-->
+        <!--                                    users[getReplyMessage(reply_id).senderId].name-->
+        <!--                                    }}-->
+        <!--                                    </span>-->
+        <!--                        <span class="sender-time">{{getReplyMessage(reply_id)._timestamp}}</span>-->
+        <!--                    </div>-->
+
+        <!--                    <div class="inline-message">-->
+        <!--                        <span *ngIf="getReplyMessage(reply_id).msg.type === 'text'"-->
+        <!--                              [innerHTML]="getReplyMessage(reply_id).msg.text | linkify"></span>-->
+
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
 
         <div class="msg-group-day">
 
             <div class="message-layout message-layout-vertical">
-                <img class="profile-img" [src]="users[getReplyMessage(reply_id).senderId].photoURL"/>
+                <img class="profile-img" [src]="repliedMessage?.user?.getPhoto()"/>
                 <div>
                     <div class="message-info">
-                                <span class="sender-name">{{
-                                    users[getReplyMessage(reply_id).senderId].name
-                                    }}
-                                    </span>
-                        <span class="sender-time">{{getReplyMessage(reply_id)._timestamp}}</span>
+                        <span class="sender-name">{{repliedMessage?.user?.getFullName()}}</span>
+                        <span class="sender-time">{{repliedMessage?.message?.timestamp | date:'MMMM d, y  H:mm'}}</span>
                     </div>
 
                     <div class="inline-message">
-                        <span *ngIf="getReplyMessage(reply_id).msg.type === 'text'"
-                              [innerHTML]="getReplyMessage(reply_id).msg.text | linkify"></span>
+                        <span *ngIf="repliedMessage?.message?.type === 'TEXT'"
+                              [innerHTML]="repliedMessage?.message?.value | linkify"></span>
 
                     </div>
                 </div>
             </div>
         </div>
 
+
         <div class="chat-reply-divider">
-            3 replies
+            {{repliedMessage?.message?.replies.length}} replies
         </div>
+
+        <!--        <div class="msg-group-day">-->
+        <!--            <ul class="messages">-->
+        <!--                <li *ngFor="let msg of yestMessages" class="message-layout">-->
+        <!--                    <img class="profile-img" [src]="users[msg.user_id].photoURL"/>-->
+        <!--                    <div>-->
+        <!--                        <div class="message-info">-->
+        <!--                            <span class="sender-name">{{users[msg.user_id].name}}</span>-->
+        <!--                            <span class="sender-time">{{msg.timestamp}}</span>-->
+        <!--                        </div>-->
+
+        <!--                        <ul class="inline-messages">-->
+        <!--                            <li *ngFor="let ilnMsg of msg.msgs" class="inline-message">-->
+
+        <!--                                <img class="inline-msg-image" *ngIf="ilnMsg.type === 'image'" [src]="ilnMsg.assetPath"/>-->
+        <!--                                <span *ngIf="ilnMsg.type === 'text'" [innerHTML]="ilnMsg.text | linkify"></span>-->
+
+        <!--                            </li>-->
+        <!--                        </ul>-->
+        <!--                    </div>-->
+        <!--                </li>-->
+
+        <!--            </ul>-->
+
+
+        <!--        </div>-->
 
         <div class="msg-group-day">
             <ul class="messages">
-                <li *ngFor="let msg of yestMessages" class="message-layout">
-                    <img class="profile-img" [src]="users[msg.user_id].photoURL"/>
+                <li *ngFor="let msg of repliedMessage?.message?.replies; trackBy: trackByMethod" class="message-layout">
+                    <img class="profile-img" [src]="msg?.sender?.getPhoto()"/>
                     <div>
                         <div class="message-info">
-                            <span class="sender-name">{{
-                                users[msg.user_id].name
-                                }}
-                                </span>
-                            <span class="sender-time">{{msg.timestamp}}</span>
+                            <span class="sender-name">{{msg?.sender?.getFullName()}}</span>
+                            <span class="sender-time">{{msg.timestamp | date: 'M/d/yy, h:mm a'}}</span>
                         </div>
 
                         <ul class="inline-messages">
-                            <li *ngFor="let ilnMsg of msg.msgs" class="inline-message">
 
-                                <img class="inline-msg-image" *ngIf="ilnMsg.type === 'image'" [src]="ilnMsg.assetPath"/>
-                                <span *ngIf="ilnMsg.type === 'text'" [innerHTML]="ilnMsg.text | linkify"></span>
+                            <li class="inline-message">
+
+                                <img class="inline-msg-image" *ngIf="msg.type === 'IMAGE_STATIC'" [src]="msg.value"/>
+                                <span *ngIf="msg.type === 'TEXT'" [innerHTML]="msg.value | linkify"></span>
 
                             </li>
+<!--                            <li *ngFor="let ilnMsg of msg.msgs" class="inline-message">-->
+
+<!--                                <img class="inline-msg-image" *ngIf="ilnMsg.type === 'image'" [src]="ilnMsg.assetPath"/>-->
+<!--                                <span *ngIf="ilnMsg.type === 'text'" [innerHTML]="ilnMsg.text | linkify"></span>-->
+
+<!--                            </li>-->
                         </ul>
                     </div>
                 </li>
@@ -68,6 +118,12 @@
 
 
     </main>
+
+    <chat-text-area
+        [messageModel]="repliedMessage.message"
+        [meModel]="me"
+        [chatModel]="chat"
+    ></chat-text-area>
 
 
 </div>

@@ -22,7 +22,7 @@ export class SmartSpeakerService {
 
   /**********************/
 
-  private initializeArtyom() {
+  public initializeArtyom() {
     this.artyom.fatality();
 
     setTimeout(() => {

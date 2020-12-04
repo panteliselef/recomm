@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import {Location} from "@angular/common";
 
 @Component({
     selector: 'app-bar',
@@ -15,13 +16,17 @@ export class AppBarComponent implements OnInit {
     @Input('leadingIcon') leadingIconName: String;
     @Input('trailingIcon') trailingIconName: String;
 
-    constructor() { }
+    constructor(private location: Location) { }
 
     ngOnInit() {
 
 
 
 
+    }
+
+    goBack(): void {
+        this.location.back()
     }
 
 }

@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import { Location } from '@angular/common'
 import {ActivatedRoute} from "@angular/router";
 
 @Component({
@@ -15,7 +16,7 @@ export class AppChatBarComponent implements OnInit {
     chat_id: number;
     reply_id: number;
 
-    constructor(private activatedRoute: ActivatedRoute) {
+    constructor(private activatedRoute: ActivatedRoute, private location: Location) {
         this.chat_id = this.activatedRoute.snapshot.params['id'];
         this.reply_id = this.activatedRoute.snapshot.params['rid'];
     }
@@ -24,4 +25,7 @@ export class AppChatBarComponent implements OnInit {
         console.log(this.icons)
     }
 
+    goBack(): void {
+        this.location.back()
+    }
 }

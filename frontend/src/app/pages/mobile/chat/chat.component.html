@@ -40,23 +40,23 @@
 <!--        </div>-->
 
 
-        <div class="msg-group-day">
+        <div class="msg-group-day" *ngFor="let day of messages" >
 
-            <h4 class="day">Yesterday</h4>
+            <h4 class="day">{{day._id | date: 'mediumDate'}}</h4>
 
             <ul class="messages">
-                <li *ngFor="let msg of messages" class="message-layout">
+                <li *ngFor="let msg of day.messages; trackBy: trackByMethod" class="message-layout">
                     <img class="profile-img" [src]="participantsObj[msg.senderId].getPhoto()"/>
                     <div>
                         <div class="message-info">
                             <span class="sender-name">{{participantsObj[msg.senderId].getFullName()}}
                                 </span>
-                            <span class="sender-time">{{msg.timestamp}}</span>
+                            <span class="sender-time">{{msg.timestamp | date: 'H:mm'}}</span>
                         </div>
 
                         <ul class="inline-messages">
 
-                            <li class="inline-message">
+                            <li class="inline-message" [routerLink]="'reply/'+msg._id">
                                 <img class="inline-msg-image" *ngIf="msg.type === 'IMAGE_STATIC'" [src]="'data:image/jpeg;base64,'+ msg.value"/>
                                 <span *ngIf="msg.type === 'TEXT'" [innerHTML]="msg.value | linkify"></span>
                             </li>
@@ -67,7 +67,9 @@
 
 <!--                            </li>-->
                         </ul>
+                        <a class="reply-link" *ngIf="msg.replies && msg.replies.length>0" [routerLink]="'reply/'+msg._id">{{msg.replies.length}} replies</a>
                     </div>
+
                 </li>
 
             </ul>
@@ -76,42 +78,55 @@
 
     </main>
 
-    <div class="new-message-section">
+    <chat-text-area
+        [meModel]="me"
+        [chatModel]="chat"
+    ></chat-text-area>
 
-        <i class="material-icons-round">insert_photo</i>
-        <i (click)="isAudioRecordOpen = !isAudioRecordOpen" class="material-icons-round">mic</i>
-
-        <div class="message-bar">
-            <textarea #message
-                      (keydown)="resize()"
-                      (input)="resize()"
-                      (cut)="resize()"
-                      (copy)="resize()"
-                      (paste)="resize()"
-                      placeholder="Message"
-            ></textarea>
-            <i style="padding: 0" class="material-icons-round">sentiment_satisfied_alt</i>
-        </div>
-        <i class="material-icons-round">send</i>
+<!--    <div class="new-message-section">-->
 
 
-    </div>
-    <div *ngIf="isAudioRecordOpen" class="audio-caption-container">
 
-        <div class="audio-caption">
 
-            <div class="elipse" id="elipse1">
-                <div class="elipse" id="elipse2"></div>
-            </div>
-            <i class="material-icons-round">
-                keyboard_voice
-            </i>
-        </div>
+<!--        <label>-->
+<!--            <input type="file" (change)="onFileSelect($event)">-->
+<!--            <span>-->
+<!--            <i class="material-icons-round">insert_photo</i>-->
 
-        <div class="audio-time-counter">
-            00:26
-        </div>
+<!--            </span>-->
+<!--        </label>-->
+<!--&lt;!&ndash;        <i class="material-icons-round">insert_photo</i>&ndash;&gt;-->
 
-    </div>
+<!--        <i (click)="isAudioRecordOpen = !isAudioRecordOpen" class="material-icons-round">mic</i>-->
+
+<!--        <div class="message-bar">-->
+<!--            <textarea #message-->
+<!--                      [(ngModel)]="textareaValue"-->
+<!--                      (ngModelChange)="resize()"-->
+<!--                      placeholder="Message"-->
+<!--            ></textarea>-->
+<!--            <i style="padding: 0" class="material-icons-round">sentiment_satisfied_alt</i>-->
+<!--        </div>-->
+<!--        <i class="material-icons-round" (click)="sendMessage()">send</i>-->
+
+
+<!--    </div>-->
+<!--    <div *ngIf="isAudioRecordOpen" class="audio-caption-container">-->
+
+<!--        <div class="audio-caption">-->
+
+<!--            <div class="elipse" id="elipse1">-->
+<!--                <div class="elipse" id="elipse2"></div>-->
+<!--            </div>-->
+<!--            <i class="material-icons-round">-->
+<!--                keyboard_voice-->
+<!--            </i>-->
+<!--        </div>-->
+
+<!--        <div class="audio-time-counter">-->
+<!--            00:26-->
+<!--        </div>-->
+
+<!--    </div>-->
 
 </div>
