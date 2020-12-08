@@ -13,6 +13,7 @@ import {PreviewImageComponent} from "./pages/mobile/preview-image/preview-image.
 import {BrowseImagesComponent} from "./pages/mobile/browse-images/browse-images.component";
 import {CalendarComponent} from "./pages/mobile/calendar/calendar.component";
 import {SearchComponent} from "./pages/mobile/search/search.component";
+import {VoiceComponent} from "./pages/mobile/voice/voice.component";
 
 const routes: Routes = [
     // { path: '', redirectTo:'chats' },
@@ -29,6 +30,7 @@ const routes: Routes = [
     {path: 'calendar', component: CalendarComponent},
     {path: 'search', component: SearchComponent},
     {path: 'edit-chat', component: EditChatComponent},
+    {path: 'voice', component: VoiceComponent},
     {path: '**', redirectTo: 'chats', pathMatch: 'full'}
 ];
 

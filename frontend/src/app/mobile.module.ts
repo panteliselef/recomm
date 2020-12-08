@@ -19,6 +19,7 @@ import {BrowseImagesComponent} from "./pages/mobile/browse-images/browse-images.
 import {CalendarComponent} from "./pages/mobile/calendar/calendar.component";
 import {SearchComponent} from "./pages/mobile/search/search.component";
 import {FormsModule} from "@angular/forms";
+import {VoiceComponent} from "./pages/mobile/voice/voice.component";
 
 
 @NgModule({
@@ -41,6 +42,7 @@ import {FormsModule} from "@angular/forms";
         ChatCallComponent,
 
         SearchComponent,
+        VoiceComponent,
 
         PreviewImageComponent,
         BrowseImagesComponent,
