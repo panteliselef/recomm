@@ -4,7 +4,6 @@ import {ChatModel, MessageModel, MessageWithRepliesModel, UserModel} from '../..
 import {HttpClient} from '@angular/common/http';
 import {map} from 'rxjs/operators';
 import {environment} from 'src/environments/environment';
-import {environment} from 'src/environments/environment';
 import * as _ from 'lodash';
 import {UsersService} from "../users/users.service";
 
@@ -38,7 +37,7 @@ export class AuthService {
     }
 
     public isAuthenticated () {
-        return new Promise(((resolve, reject) => {
+        return new Promise<boolean>(((resolve, reject) => {
             setTimeout(()=> {
                 resolve(this.isLoggedIn)
             },800)

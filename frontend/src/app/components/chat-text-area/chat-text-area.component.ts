@@ -1,7 +1,7 @@
 import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {ChatModel, MessageModel, MessageType, MessageWithRepliesModel, UserModel} from "../../global/models";
 import {ChatsService} from "../../global/services/chats/chats.service";
-import {FileUploader} from "ng2-file-upload";
+// import {FileUploader} from "ng2-file-upload";
 import {HttpClient} from "@angular/common/http";
 import {environment} from 'src/environments/environment';
 
@@ -26,11 +26,11 @@ export class ChatTextAreaComponent implements OnInit {
 
     private  URL = 'http://localhost:8080/api/files/upload';
     private hostURl: string;
-    public uploader: FileUploader = new FileUploader({
-        url: this.URL,
-        itemAlias: 'image',
-        disableMultipart: false
-    });
+    // public uploader: FileUploader = new FileUploader({
+    //     url: this.URL,
+    //     itemAlias: 'image',
+    //     disableMultipart: false
+    // });
     emojis: Array<any>;
     gifType: string;
     searchStr: string;
@@ -59,12 +59,12 @@ export class ChatTextAreaComponent implements OnInit {
         });
 
         this.toggleableArr = [false,false];
-        this.uploader.onAfterAddingFile = (file) => {
-            file.withCredentials = false;
-        };
-        this.uploader.onCompleteItem = (item: any, status: any) => {
-            console.log('Uploaded File Details:', item);
-        };
+        // this.uploader.onAfterAddingFile = (file) => {
+        //     file.withCredentials = false;
+        // };
+        // this.uploader.onCompleteItem = (item: any, status: any) => {
+        //     console.log('Uploaded File Details:', item);
+        // };
 
         setTimeout(async ()=>{
             //

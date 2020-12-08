@@ -17,14 +17,9 @@ export class SearchComponent implements OnInit {
     public usersToShow: UserModel[];
     public searchStr: string;
 
-    constructor(private users: UsersService, private speaker: SmartSpeakerService) {
+    constructor(private users: UsersService) {
         this.searchStr = '';
         this.allUsers = [];
-        speaker.initializeArtyom();
-
-
-        // speaker.speak('Hello');
-
     }
 
     ngOnInit() { this.getAllUsers(); }
