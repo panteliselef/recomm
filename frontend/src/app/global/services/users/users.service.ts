@@ -1,12 +1,13 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
 import {ChatModel, UserModel} from '../../models';
-import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
-import { environment } from 'src/environments/environment';
+import {HttpClient} from '@angular/common/http';
+import {map} from 'rxjs/operators';
+import {environment} from 'src/environments/environment';
 import * as _ from 'lodash';
 import {ChatsService} from "../chats/chats.service";
 import {Router} from "@angular/router";
+import {AuthService} from "../auth/auth.service";
 
 
 @Injectable({
@@ -15,9 +16,9 @@ import {Router} from "@angular/router";
 export class UsersService {
 
     private hostURl: string;
-    private me: UserModel = new UserModel({_id: '5fbf873b0e12200f6ed0a3c1'})
+    private me: UserModel;
 
-    constructor(private http: HttpClient, private chatService: ChatsService, private router: Router) {
+    constructor(private http: HttpClient, private chatService: ChatsService, private auth: AuthService, private router: Router) {
         this.hostURl = environment.host;
     }
 
@@ -50,11 +51,10 @@ export class UsersService {
     }
 
 
-    public async getMe() {
-        return await this.getById(this.me._id).toPromise()
+    public getMe() {
+        return this.auth.getCurrentUser();
+        // return await this.getById(this.me._id).toPromise()
     }
-
-
 
 
     public async registerAsContact(contact_id: string) {
@@ -62,6 +62,8 @@ export class UsersService {
         let chatToRedirect: string;
 
         // Get me as User from DB
+
+        this.me = this.auth.getCurrentUser()
         const me = await this.getById(this.me._id).toPromise()
         this.me = new UserModel(me);
 
@@ -69,15 +71,15 @@ export class UsersService {
         const contactIndex = this.me.contacts.findIndex(item => item.contact_id === contact_id)
 
 
-        if(contactIndex >= 0) {
+        if (contactIndex >= 0) {
 
             // Get the associated chat_id with that contact
             chatToRedirect = this.me.contacts[contactIndex].chat_id;
-        }else {
+        } else {
 
             // Create a new ChatModel to create a chat between the users
             const newChat: ChatModel = new ChatModel({
-                participants: [this.me._id,contact_id],
+                participants: [this.me._id, contact_id],
                 isOnline: true,
             })
 
@@ -98,7 +100,21 @@ export class UsersService {
             // Save changes to user
             await this.update(this.me).toPromise();
 
-            // TODO: update the other user's contact list & chat list too
+            const contactUser = await this.getById(contact_id).toPromise()
+            contactUser.contacts = [
+                ...contactUser.contacts,
+                {
+                    contact_id: this.me._id,
+                    chat_id: createdChat._id
+                }
+            ]
+            contactUser.chat_ids = [
+                ...contactUser.chat_ids,
+                createdChat._id
+            ]
+
+            // Save changes to user
+            await this.update(contactUser).toPromise();
 
             chatToRedirect = createdChat._id;
         }

@@ -14,7 +14,8 @@ import {UsersService} from "../../../global/services/users/users.service";
 import {ChatModel, MessageModel, MessageType, MessageWithRepliesModel, UserModel} from "../../../global/models";
 import {SocketsService} from "../../../global/services";
 import {Subject, Subscription} from "rxjs";
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {HttpClient} from "@angular/common/http";
 
 @Component({
     selector: 'ami-fullstack-chat',
@@ -26,8 +27,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 export class ChatComponent implements OnInit, AfterViewChecked {
 
-    @ViewChild('scroll', {static: false, read: ElementRef }) public scroll: ElementRef<any>;
-
+    @ViewChild('scroll', {static: false, read: ElementRef}) public scroll: ElementRef<any>;
 
 
     chatId: Number;
@@ -135,7 +135,12 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     }>;
 
 
-    constructor(private route: ActivatedRoute, private chatService: ChatsService, private userService: UsersService,private socketService: SocketsService) {
+
+    constructor(private route: ActivatedRoute,
+                private chatService: ChatsService,
+                private userService: UsersService,
+                private socketService: SocketsService,
+                private http: HttpClient) {
         const chatId = this.route.snapshot.params.id;
         this.fetchChatData(chatId);
     }
@@ -143,7 +148,6 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
     private async fetchChatData(chatId: string) {
         this.chat = await this.chatService.getById(chatId).toPromise()
-
 
 
         this.socketService
@@ -154,37 +158,45 @@ export class ChatComponent implements OnInit, AfterViewChecked {
                 console.log(msg);
             });
 
-        this.participants = await Promise.all<UserModel>(this.chat.participants.map( async (memberId) => {
+        this.participants = await Promise.all<UserModel>(this.chat.participants.map(async (memberId) => {
             return await this.userService.getById(memberId).toPromise();
         }));
 
-        this.participantsObj = this.participants.reduce((obj, item) => (obj[item._id] = item, obj) ,{});
+        this.participantsObj = this.participants.reduce((obj, item) => (obj[item._id] = item, obj), {});
 
         this.me = await this.userService.getMe();
 
         this.participant = this.participants.filter(member => member._id !== this.me._id)[0]
 
-        this.chatName =  this.chat.displayName || this.participant.getFullName()
+        this.chatName = this.chat.displayName || this.participant.getFullName()
 
         this.messages = await this.chatService.getMessages(chatId).toPromise();
 
 
-
     }
 
-    trackByMethod(index:number, item:MessageModel): string {
+    trackByMethod(index: number, item: MessageModel): string {
         return item._id;
     }
 
-    private onReceiveMessage(message: MessageModel) {
-        this.messages[this.messages.length-1].messages = [
-            ...this.messages[this.messages.length-1].messages,
-            message
-        ]
+    private onReceiveMessage(message: MessageWithRepliesModel) {
+
+        if (this.messages.length === 0) {
+            this.messages.push({
+                _id: Date.now().toString(),
+                 messages: [
+                     message
+                 ]
+            })
+        }else {
+
+            this.messages[this.messages.length - 1].messages = [
+                ...this.messages[this.messages.length - 1].messages,
+                message
+            ]
+
+        }
     }
-
-
-
 
 
     // getUserById = (id: Number): ParticipantModel => {
@@ -215,7 +227,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
     parseUrl(textMsg: string) {
         const matches = textMsg.match(this.URLRegex);
-        if(!matches) return textMsg;
+        if (!matches) return textMsg;
         return textMsg.replace(this.URLRegex, 'Link')
     }
 }

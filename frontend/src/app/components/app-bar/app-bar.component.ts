@@ -1,5 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Location} from "@angular/common";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'app-bar',
@@ -9,18 +10,20 @@ import {Location} from "@angular/common";
 export class AppBarComponent implements OnInit {
 
     @Input('title') pageTitle: String;
-    @Input('img') imgSrc: String;
 
+    @Input('img') imgSrc: String;
     @Input('hasImage') hasImage: boolean;
+    @Input('onImageClick') onImageClick: Function;
 
     @Input('leadingIcon') leadingIconName: String;
-    @Input('trailingIcon') trailingIconName: String;
 
-    constructor(private location: Location) { }
+    @Input('trailingIcon') trailingIconName: String;
+    @Input('onTrailingIconClick') onTrailingIconClick: Function;
+
+    constructor(private location: Location, private router: Router) {
+    }
 
     ngOnInit() {
-
-
 
 
     }
@@ -29,4 +32,12 @@ export class AppBarComponent implements OnInit {
         this.location.back()
     }
 
+
+    onClickImage() {
+        this.onImageClick.call(this);
+    }
+
+    onClickTrailingIcon() {
+        this.onTrailingIconClick.call(this);
+    }
 }

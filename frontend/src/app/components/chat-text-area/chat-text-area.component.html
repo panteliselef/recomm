@@ -2,15 +2,15 @@
 
     <div class="text-area-items">
         <label>
-            <input type="file" (change)="onFileSelect($event)">
+            <input type="file" id="file" (change)="handleFileInput($event.target.files)" multiple>
             <span>
-            <i class="material-icons-round">insert_photo</i>
 
+                <i class="material-icons-round">insert_photo</i>
             </span>
-        </label>
-        <!--        <i class="material-icons-round">insert_photo</i>-->
 
-        <i (click)="isAudioRecordOpen = !isAudioRecordOpen" class="material-icons-round">mic</i>
+        </label>
+
+        <i (click)="toggleChatAction(audioRecord)" class="material-icons-round">mic</i>
 
         <div class="message-bar">
             <textarea #message
@@ -18,14 +18,14 @@
                       (ngModelChange)="resize()"
                       [placeholder]="replyMessage?'Reply to message':'Message'"
             ></textarea>
-            <i style="padding: 0" class="material-icons-round" (click)="isStickersOpen = !isStickersOpen" >sentiment_satisfied_alt</i>
+            <i style="padding: 0" class="material-icons-round" (click)="toggleChatAction(stickers)" >sentiment_satisfied_alt</i>
         </div>
         <i class="material-icons-round" (click)="sendMessage()">send</i>
 
     </div>
 
 
-    <div *ngIf="isAudioRecordOpen" class="audio-caption-container">
+    <div *ngIf="toggleableArr[audioRecord]" class="audio-caption-container">
 
         <div class="audio-caption">
 
@@ -43,9 +43,32 @@
 
     </div>
 
+<!--    [ngClass]="{'visible':toggleableArr[stickers]}"-->
+    <div class="gif-sticker-drawer"  [ngClass]="{'visible':toggleableArr[stickers]}" >
 
-    <section class="gif-sticker-drawer" [ngClass]="{'visible':isStickersOpen}" >
+        <div class="gif-switch">
+            <span [ngClass]="{'gif-switch-active':gifType === 'gif'}" (click)="gifType = 'gif'">GIFs</span>
+            <span [ngClass]="{'gif-switch-active':gifType === 'emoji'}" (click)="gifType = 'emoji'">Emoji</span>
 
-    </section>
+        </div>
+        <div class="input-container">
+            <i *ngIf="!searchStr" class="material-icons-round">search</i>
+            <i *ngIf="searchStr" class="material-icons-round" (click)="clearResults()">close</i>
+
+            <input
+                placeholder="Search Users"
+                [(ngModel)]="searchStr"
+                (ngModelChange)="filterSearchResults($event)" type="text">
+        </div>
+
+        <div *ngIf="showLoadingSpinner" class="loader"></div>
+
+        <ul *ngIf="!showLoadingSpinner" class="emoji-list">
+            <li *ngFor="let emoji of filteredEmojis" (click)="copyEmojiToMessage(emoji)">
+                {{emoji.character}}
+            </li>
+        </ul>
+
+    </div>
 
 </div>

@@ -1,27 +1,27 @@
-main {
-    .input-container {
-        border-radius: 23px;
-        background: #333333;
-        display: flex;
-        width: calc(100% - 2rem);
-        margin-right: 1rem;
-        margin-left: 1rem;
+.input-container {
+    border-radius: 23px;
+    background: #333333;
+    display: flex;
+    width: calc(100% - 2rem);
+    margin-right: 1rem;
+    margin-left: 1rem;
 
-        i {
-            font-size: 24px;
-            padding: .5rem;
-            color: #8A8A8B;
-        }
-
-        input {
-            font-size: 14px;
-            color: #fff;
-            outline: none;
-            border: none;
-            width: 100%;
-            background: transparent;
-        }
+    i {
+        font-size: 24px;
+        padding: .5rem;
+        color: #8A8A8B;
     }
+
+    input {
+        font-size: 14px;
+        color: #fff;
+        outline: none;
+        border: none;
+        width: 100%;
+        background: transparent;
+    }
+}
+main {
 
 
     span.list-title {

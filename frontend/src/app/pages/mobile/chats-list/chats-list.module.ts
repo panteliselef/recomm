@@ -11,7 +11,7 @@ import {SharedComponentsModule} from "../../../components/shared-components.modu
         SharedComponentsModule
     ],
     declarations: [
-        ChatsListComponent,
+        // ChatsListComponent,
         // AppBarComponent,
         // BottomNavMenuComponent
     ]

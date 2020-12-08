@@ -30,7 +30,7 @@ export class LeapService {
 
   /*****************************/
 
-  private timeoutAfterRecognition = 1500; //ms 
+  private timeoutAfterRecognition = 1500; //ms
   private framesForGesture = 3;
 
   /*****************************/
@@ -94,8 +94,8 @@ export class LeapService {
   private currGesture: string;
 
   /**
-   * This function can be edited in order to implement more advanced gesture handling features 
-   * 
+   * This function can be edited in order to implement more advanced gesture handling features
+   *
    */
   private findGesture(frame) {
     var gesture = this.getGesture(frame);

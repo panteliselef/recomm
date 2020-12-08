@@ -1,0 +1,34 @@
+<div class="sign-in">
+
+    <h3>Welcome</h3>
+
+    <div class="preferred-user">
+        <div class="user-info">
+            <img class="profile-img" [src]="me?.getPhoto()"/>
+            <div style="margin-left: 1rem">
+                <div class="name">{{me?.getFullName()}}</div>
+                <div>{{me?.chat_ids?.length}} Chats</div>
+            </div>
+        </div>
+        <div>
+            <div class="cta" (click)="selectUser(me)">Sign in</div>
+        </div>
+    </div>
+
+    <h4>Select other user</h4>
+
+    <ul>
+        <li *ngFor="let user of allUsers" (click)="selectUser(user)">
+            <div class="user-info">
+                <img class="profile-img" [src]="user?.getPhoto()"/>
+                <div style="margin-left: 1rem">
+                    <div class="name">{{user?.getFullName()}}</div>
+                    <div>{{user?.chat_ids?.length}} Chats</div>
+                </div>
+            </div>
+        </li>
+    </ul>
+
+
+
+</div>

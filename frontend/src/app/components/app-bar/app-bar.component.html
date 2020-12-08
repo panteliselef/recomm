@@ -1,7 +1,7 @@
 <div class="app-bar">
 
     <div class="left-actions actions">
-        <img *ngIf="hasImage" class="profile-img" [src]="imgSrc"/>
+        <img *ngIf="hasImage && imgSrc" (click)="onClickImage()" class="profile-img" [src]="imgSrc"/>
         <i *ngIf="!hasImage" (click)="goBack()" class="material-icons-round">{{leadingIconName}}</i>
     </div>
 
@@ -10,7 +10,7 @@
     <span class="page-title">{{pageTitle}}</span>
 
     <div class="right-actions actions">
-        <i class="material-icons-round">{{trailingIconName}}</i>
+        <i (click)="onClickTrailingIcon()" class="material-icons-round">{{trailingIconName}}</i>
     </div>
 
 </div>

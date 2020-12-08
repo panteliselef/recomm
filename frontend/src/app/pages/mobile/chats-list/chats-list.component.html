@@ -1,26 +1,46 @@
 <div class="page">
 
     <app-bar
-    img="https://images.unsplash.com/photo-1496345875659-11f7dd282d1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80"
+    [img]="me?.getPhoto()"
+    [onImageClick]="goToProfile"
     title="Chats"
     [hasImage]="true"
-    trailingIcon="post_add"></app-bar>
+    trailingIcon="post_add"
+    [onTrailingIconClick]="goToNewChat"
+    ></app-bar>
 
 
     <main class="">
-        <ul class="chat-list">
 
-            <li *ngFor="let msg of messages; let i = index;" class="chat-message" [routerLink]="'./'+i">
-                <img class="profile-img" [src]="msg.photoURL" />
+        <div *ngIf="showLoader" class="loader"></div>
+        <ul *ngIf="!showLoader" class="chat-list">
+
+<!--            <li *ngFor="let msg of messages; let i = index;" class="chat-message" [routerLink]="'./'+i">-->
+<!--                <img class="profile-img" [src]="msg.photoURL" />-->
+
+<!--                <div style="display:flex;flex-direction:column;">-->
+<!--                    <span class="sender-name">{{msg.senderName}}</span>-->
+<!--                    <span class="message-line">{{msg.message}}</span>-->
+<!--                </div>-->
+
+
+<!--                <div class="info">-->
+<!--                    <span>{{msg.day}}</span>-->
+<!--                </div>-->
+
+<!--            </li>-->
+
+            <li *ngFor="let chat of chats; let i = index;" class="chat-message" [routerLink]="chat._id">
+                <img class="profile-img" [src]="chat.photoUrl" />
 
                 <div style="display:flex;flex-direction:column;">
-                    <span class="sender-name">{{msg.senderName}}</span>
-                    <span class="message-line">{{msg.message}}</span>
+                    <span class="sender-name">{{chat.displayName}}</span>
+                    <span class="message-line" [innerHTML]="chat?.more?.lastMsg?.value | linkify"></span>
                 </div>
 
 
                 <div class="info">
-                    <span>{{msg.day}}</span>
+                    <span>{{chat?.more?.lastMsg?.timestamp | date: 'E'}} </span>
                 </div>
 
             </li>
@@ -28,7 +48,7 @@
 
         </ul>
 
-        <div style="padding:2rem 0;width: 100%; font-size: 1rem; color:#8A8A8B; text-align: center">No more chats</div>
+        <div *ngIf="!showLoader" style="padding:2rem 0;width: 100%; font-size: 1rem; color:#8A8A8B; text-align: center">No more chats</div>
 
     </main>
 

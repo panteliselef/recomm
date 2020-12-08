@@ -1,0 +1,68 @@
+@import "../../../declarations";
+
+.sign-in {
+    margin: auto;
+    max-width: calc(500px - 2rem);
+    width: 100%;
+    padding: 1rem;
+
+
+    h3,h4 {
+        margin: 2rem 0;
+    }
+
+
+    .preferred-user {
+        background-color: $mid-black;
+        padding: 1rem;
+        border-radius: .4rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+
+
+
+    }
+
+    .cta {
+        border-radius: 100px;
+        display: inline-flex;
+        padding: .5rem 1rem;
+        background-color: $orange-color;
+    }
+
+    .user-info {
+        display: flex;
+        align-items: center;
+    }
+
+    .name {
+        //margin-left: 1rem;
+        font-weight: 500;
+        font-size: 1.3rem;
+    }
+
+    ul {
+        background-color: $mid-black;
+        padding: .5rem 1rem;
+        border-radius: .4rem;
+        li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: .5rem 0;
+            border-bottom: 1px solid $dark-black;
+            cursor: pointer;
+
+            &:last-child {
+                border-bottom: none;
+            }
+
+            .name {
+                font-size: 1.2rem;
+            }
+        }
+    }
+
+}

@@ -1,27 +1,6 @@
 @import '../../../../declarations.scss';
 
 
-label {
-    align-items: stretch;
-    display: flex;
-    cursor: pointer;
-    justify-content: flex-start;
-    overflow: hidden;
-    position: relative;
-    margin: 0;
-    input{
-        height: 100%;
-        left: 0;
-        opacity: 0;
-        outline: 0;
-        position: absolute;
-        top: 0;
-        width: 100%;
-    }
-    span {
-
-    }
-}
 main {
 
     display: flex;

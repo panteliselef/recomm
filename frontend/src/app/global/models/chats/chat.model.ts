@@ -7,6 +7,7 @@ export class ChatModel {
     public displayName: string;
     public photoUrl: string;
     public messages: MessageWithRepliesModel[];
+    public more: any;
 
     constructor(model?: any) {
         Object.assign(this, model);
