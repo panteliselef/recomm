@@ -37,13 +37,24 @@
 
             <div class="message-layout message-layout-vertical">
                 <img class="profile-img" [src]="repliedMessage?.user?.getPhoto()"/>
-                <div>
+                <div style="width: 100%">
                     <div class="message-info">
                         <span class="sender-name">{{repliedMessage?.user?.getFullName()}}</span>
                         <span class="sender-time">{{repliedMessage?.message?.timestamp | date:'MMMM d, y  H:mm'}}</span>
                     </div>
 
                     <div class="inline-message">
+
+                        <div class="inline-msg-file" *ngIf="repliedMessage?.message?.type === 'FILE'" >
+                            <span class="material-icons-round icon">attach_file</span>
+                            <div>
+                                <span>{{repliedMessage?.message?.value.originalname}}</span>
+                                <span class="file-size">{{formatBytes(repliedMessage?.message?.value.size)}}</span>
+                            </div>
+                        </div>
+                        <img class="inline-msg-image" *ngIf="repliedMessage?.message?.type === 'IMAGE_STATIC'" [src]="url + repliedMessage?.message?.value.filename"/>
+                        <img class="inline-msg-image" *ngIf="repliedMessage?.message?.type === 'IMAGE_GIF'" [src]="repliedMessage?.message?.value"/>
+                        <span *ngIf="repliedMessage?.message?.type === 'TEXT'" [innerHTML]="repliedMessage?.message.value | linkify"></span>
                         <span *ngIf="repliedMessage?.message?.type === 'TEXT'"
                               [innerHTML]="repliedMessage?.message?.value | linkify"></span>
 
@@ -96,8 +107,16 @@
                         <ul class="inline-messages">
 
                             <li class="inline-message">
-
-                                <img class="inline-msg-image" *ngIf="msg.type === 'IMAGE_STATIC'" [src]="msg.value"/>
+                                <div class="inline-msg-file" *ngIf="msg.type === 'FILE'" >
+                                    <span class="material-icons-round icon">attach_file</span>
+                                    <div>
+                                        <span>{{msg.value.originalname}}</span>
+                                        <span class="file-size">{{formatBytes(msg.value.size)}}</span>
+                                    </div>
+                                </div>
+                                <progressive-image *ngIf="msg.type === 'IMAGE_GIF'" [src]="msg.value"></progressive-image>
+                                <img class="inline-msg-image" *ngIf="msg.type === 'IMAGE_STATIC'" [src]="url + msg.value.filename"/>
+<!--                                <img class="inline-msg-image" *ngIf="msg.type === 'IMAGE_GIF'" [src]="msg.value"/>-->
                                 <span *ngIf="msg.type === 'TEXT'" [innerHTML]="msg.value | linkify"></span>
 
                             </li>

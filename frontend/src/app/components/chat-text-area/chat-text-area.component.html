@@ -2,7 +2,7 @@
 
     <div class="text-area-items">
         <label>
-            <input type="file" id="file" (change)="handleFileInput($event.target.files)" multiple>
+            <input type="file" id="file" (change)="handleFileInput($event.target.files)">
             <span>
 
                 <i class="material-icons-round">insert_photo</i>
@@ -13,12 +13,23 @@
         <i (click)="toggleChatAction(audioRecord)" class="material-icons-round">mic</i>
 
         <div class="message-bar">
-            <textarea #message
+            <div *ngIf="showUploadPreviewFile" class="upload-preview">
+                <div *ngIf="previewPhotoSrc && !previewFileSrc" class="image-container">
+                    <img [src]="previewPhotoSrc"/>
+                    <span class="material-icons-round" (click)="removeSelectedFile()">close</span>
+                </div>
+                <div *ngIf="!previewPhotoSrc && previewFileSrc" class="file-container">
+                    <span style="margin-right: 1rem">{{previewFileSrc}}</span>
+                    <span class="material-icons-round" (click)="removeSelectedFile()">close</span>
+                </div>
+            </div>
+            <textarea *ngIf="!showUploadPreviewFile" #message
                       [(ngModel)]="textareaValue"
                       (ngModelChange)="resize()"
                       [placeholder]="replyMessage?'Reply to message':'Message'"
             ></textarea>
-            <i style="padding: 0" class="material-icons-round" (click)="toggleChatAction(stickers)" >sentiment_satisfied_alt</i>
+            <i *ngIf="!showUploadPreviewFile" style="padding: 0" class="material-icons-round"
+               (click)="toggleChatAction(stickers)">sentiment_satisfied_alt</i>
         </div>
         <i class="material-icons-round" (click)="sendMessage()">send</i>
 
@@ -43,31 +54,46 @@
 
     </div>
 
-<!--    [ngClass]="{'visible':toggleableArr[stickers]}"-->
-    <div class="gif-sticker-drawer"  [ngClass]="{'visible':toggleableArr[stickers]}" >
+    <!--    [ngClass]="{'visible':toggleableArr[stickers]}"-->
+    <div class="gif-sticker-drawer" [ngClass]="{'visible':toggleableArr[stickers]}">
 
         <div class="gif-switch">
             <span [ngClass]="{'gif-switch-active':gifType === 'gif'}" (click)="gifType = 'gif'">GIFs</span>
             <span [ngClass]="{'gif-switch-active':gifType === 'emoji'}" (click)="gifType = 'emoji'">Emoji</span>
-
         </div>
         <div class="input-container">
             <i *ngIf="!searchStr" class="material-icons-round">search</i>
             <i *ngIf="searchStr" class="material-icons-round" (click)="clearResults()">close</i>
 
             <input
-                placeholder="Search Users"
+                [placeholder]=" gifType === 'gif'? 'Search Giphy': 'Search Emojis'"
                 [(ngModel)]="searchStr"
                 (ngModelChange)="filterSearchResults($event)" type="text">
+
+            <span *ngIf="gifType === 'gif'" (click)="queryGifs()" style="padding-right: 1rem">Find</span>
         </div>
 
         <div *ngIf="showLoadingSpinner" class="loader"></div>
 
-        <ul *ngIf="!showLoadingSpinner" class="emoji-list">
+        <ul *ngIf="!showLoadingSpinner && gifType==='emoji'" class="emoji-list">
             <li *ngFor="let emoji of filteredEmojis" (click)="copyEmojiToMessage(emoji)">
                 {{emoji.character}}
             </li>
         </ul>
+
+        <div *ngIf="!showLoadingSpinner && gifType==='gif'" class="gif-list">
+            <ul *ngIf="trendingGifs.length !== 0" class="gif-list-cols">
+                <li *ngFor="let gif of trendingGifs[0]">
+                    <progressive-image (click)="sendGif(gif.url)" [src]="gif.url"></progressive-image>
+                </li>
+            </ul>
+            <ul class="gif-list-cols">
+                <li *ngFor="let gif of trendingGifs[1]">
+                    <progressive-image (click)="sendGif(gif.url)"  [src]="gif.url"></progressive-image>
+                </li>
+            </ul>
+
+        </div>
 
     </div>
 

@@ -8,6 +8,7 @@ label {
     overflow: hidden;
     position: relative;
     margin: 0;
+    min-width: 24px;
     input{
         height: 100%;
         left: 0;
@@ -64,6 +65,51 @@ label {
             align-items: flex-end;
             padding: .6rem;
             overflow: hidden;
+
+            .upload-preview {
+                .image-container {
+                    position: relative;
+
+                    img {
+                        max-height: 200px;
+                        border-radius: .8rem;
+                        max-width: 100%;
+                        min-height: 200px;
+                        min-width: 100px;
+                        margin: .25rem 0;
+                    }
+
+                    span {
+                        position: absolute;
+                        right: 4px;
+                        top: 7px;
+                        width: 25px;
+                        height: 25px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+
+                        background: rgba(55,55,55,.5);
+                        border-radius: 50%;
+                        font-size: 1rem;
+
+                    }
+                }
+
+                .file-container {
+                    padding: .2rem .7rem;
+                    background-color: $orange-color;
+                    border-radius: 100px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+
+                    span {
+                        font-size: .8rem;
+                    }
+                }
+
+            }
 
             textarea {
                 height: 22px;
@@ -174,7 +220,7 @@ label {
     bottom: calc(100%);
     //bottom: 0;
     background-color: $mid-black;
-    //overflow: scroll;
+
 
     .input-container{
         margin-top: .5rem;
@@ -207,8 +253,34 @@ label {
         }
     }
 
+    .gif-list {
+        margin-top: .5rem;
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        max-height: calc(100% - 110px);
+
+        .gif-list-cols {
+            display: flex;
+            flex-direction: column;
+            flex: 1 1 50%;
+            margin: 0 0.3rem;
+            li {
+                margin: .3rem 0;
+                flex: 1 1 auto;
+                width: 100%;
+            }
+        }
+    }
+
+    ul {
+
+    }
 
     ul.emoji-list {
+        width: 100%;
         overflow-y: scroll;
         overflow-x: hidden;
         max-height: calc(100% - 110px);

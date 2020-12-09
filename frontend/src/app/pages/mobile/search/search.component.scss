@@ -2,6 +2,7 @@
     border-radius: 23px;
     background: #333333;
     display: flex;
+    align-items: center;
     width: calc(100% - 2rem);
     margin-right: 1rem;
     margin-left: 1rem;
@@ -19,6 +20,8 @@
         border: none;
         width: 100%;
         background: transparent;
+        padding: 0;
+        line-height: 2;
     }
 }
 main {

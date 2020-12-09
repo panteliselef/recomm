@@ -26,13 +26,16 @@ export class SignInComponent implements OnInit {
     private async fetchUsers() {
 
 
-        this.me = this.authService.getRecommendedUser()
-        this.me = await this.usersService.getById(this.me._id).toPromise()
+        // this.me = this.authService.getRecommendedUser()
+        // console.log(this.me)
+        // this.me = await this.usersService.getById(this.me._id).toPromise()
         this.allUsers = await this.usersService.getAll().toPromise()
 
-        this.allUsers = this.allUsers.filter<UserModel>((user): user is UserModel => {
-            return user._id !== this.me._id;
+        // console.log(this.allUsers)
+        this.me = this.allUsers.find<UserModel>((user): user is UserModel => {
+            return user.fname === 'Pantelis' && user.lname === 'Elef';
         });
+        this.allUsers = this.allUsers.slice(1,this.allUsers.length);
     }
 
     async selectUser(user: UserModel) {

@@ -8,6 +8,7 @@
 
     <main #scroll>
 
+
         <span class="in-page-status-info "> Conversation Started</span>
 
 
@@ -47,7 +48,7 @@
             <ul class="messages">
                 <li *ngFor="let msg of day.messages; trackBy: trackByMethod" class="message-layout">
                     <img class="profile-img" [src]="participantsObj[msg.senderId].getPhoto()"/>
-                    <div>
+                    <div style="width: 100%">
                         <div class="message-info">
                             <span class="sender-name">{{participantsObj[msg.senderId].getFullName()}}
                                 </span>
@@ -55,9 +56,17 @@
                         </div>
 
                         <ul class="inline-messages">
-
-                            <li class="inline-message" [routerLink]="'reply/'+msg._id">
-                                <img class="inline-msg-image" *ngIf="msg.type === 'IMAGE_STATIC'" [src]="'data:image/jpeg;base64,'+ msg.value"/>
+<!--                            <li class="inline-message" [routerLink]="'reply/'+msg._id">-->
+                            <li class="inline-message" (click)="showActionsMenu(msg)">
+                                <div class="inline-msg-file" *ngIf="msg.type === 'FILE'" >
+                                    <span class="material-icons-round icon">attach_file</span>
+                                    <div>
+                                        <span>{{msg.value.originalname}}</span>
+                                        <span class="file-size">{{formatBytes(msg.value.size)}}</span>
+                                    </div>
+                                </div>
+                                <img class="inline-msg-image" *ngIf="msg.type === 'IMAGE_STATIC'" [src]="url + msg.value.filename"/>
+                                <progressive-image *ngIf="msg.type === 'IMAGE_GIF'" [src]="msg.value" [width]="'auto'"></progressive-image>
                                 <span *ngIf="msg.type === 'TEXT'" [innerHTML]="msg.value | linkify"></span>
                             </li>
 <!--                            <li *ngFor="let ilnMsg of msg.msgs" class="inline-message">-->
@@ -77,6 +86,13 @@
         </div>
 
     </main>
+
+    <div class="menu-container" [ngClass]="{'visible':showMenu}">
+        <div class="menu-item" (click)="redirectToReply()" *ngIf="selectedMsgForAction?.type !== 'STATUS'">Reply</div>
+        <div class="menu-item" (click)="downloadFileToDevice()" *ngIf="selectedMsgForAction?.type !== 'TEXT' && selectedMsgForAction?.type !== 'IMAGE_GIF' && selectedMsgForAction?.type !== 'STATUS'">Download</div>
+<!--        <div class="menu-item" (click)="copyToClipboard()" *ngIf="selectedMsgForAction?.type === 'TEXT'">Copy</div>-->
+        <div class="menu-item menu-item-close" (click)="closeMenu()">Close</div>
+    </div>
 
     <chat-text-area
         [meModel]="me"

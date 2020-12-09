@@ -14,7 +14,7 @@ import {UsersService} from "../users/users.service";
 export class AuthService {
 
     private currentUser: UserModel;
-    private isLoggedIn: boolean = false;
+    isLoggedIn: boolean = false;
     private recommendUser: UserModel;
 
     constructor(private http: HttpClient) {
@@ -36,11 +36,13 @@ export class AuthService {
 
     }
 
+
+
     public isAuthenticated () {
         return new Promise<boolean>(((resolve, reject) => {
             setTimeout(()=> {
                 resolve(this.isLoggedIn)
-            },800)
+            },100)
         }))
     }
 
@@ -50,10 +52,20 @@ export class AuthService {
         this.isLoggedIn = true;
     }
 
-    public getCurrentUser(): UserModel {
+    public getCurrentUser(): Promise<UserModel> {
+        return new Promise<UserModel>(((resolve, reject) => {
+            if(this.isLoggedIn) return resolve(this.currentUser);
+            if(this.recommendUser) return resolve(this.recommendUser)
+            this.http
+                .get<UserModel[]>(`${environment.host}/api/users`)
+                .pipe(map(result => _.map(result, (t) => new UserModel(t)))).toPromise().then(array=> {
+                this.recommendUser = array.find<UserModel>((user : UserModel): user is UserModel=> {
+                    return user.fname === 'Pantelis' && user.lname === 'Elef';
+                })
+                return resolve(this.recommendUser)
+            })
+        }))
 
-        if(this.isLoggedIn) return this.currentUser;
-        return  this.recommendUser;
     }
 
     public getRecommendedUser() {

@@ -8,14 +8,13 @@ import {LinkifyPipe} from "../global/pipes/linkify.pipe";
 import {ChatTextAreaComponent} from "./chat-text-area/chat-text-area.component";
 import {FormsModule} from "@angular/forms";
 import {VirtualComponent} from "./virtual/virtual.component";
-import {FileUploadModule} from "ng2-file-upload";
+import {ProgressiveImageComponent} from "./progressive-image/progressive-image.component";
 
 @NgModule({
     imports: [
         CommonModule,
         RouterModule,
         FormsModule,
-        FileUploadModule,
     ],
     declarations: [
         AppBarComponent,
@@ -23,7 +22,8 @@ import {FileUploadModule} from "ng2-file-upload";
         AppChatBarComponent,
         LinkifyPipe,
         ChatTextAreaComponent,
-        VirtualComponent
+        VirtualComponent,
+        ProgressiveImageComponent
     ],
     exports: [
         AppBarComponent,
@@ -31,7 +31,8 @@ import {FileUploadModule} from "ng2-file-upload";
         AppChatBarComponent,
         LinkifyPipe,
         ChatTextAreaComponent,
-        VirtualComponent
+        VirtualComponent,
+        ProgressiveImageComponent
     ]
 })
 export class SharedComponentsModule { }

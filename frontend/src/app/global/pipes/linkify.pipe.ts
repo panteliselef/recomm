@@ -18,7 +18,7 @@ export class LinkifyPipe implements PipeTransform {
     private stylize(text: string): string {
 
         const matches = text.match(this.URLRegex);
-        if (!matches) return text;
+        if (!matches) return text.replace('\n', '<br/>');
         return text.replace(this.URLRegex, `<a class="inline-message-link" href="${matches[0]}" target="_blank" rel="noopener noreferrer">${matches[0]}</a> `);
     }
 

@@ -1,8 +1,6 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {UsersService} from "../../../global/services/users/users.service";
+import {Component, OnInit} from '@angular/core';
+import {UsersService} from "../../../global/services";
 import {UserModel} from "../../../global/models";
-import {SmartSpeakerService} from "../../../global/services/core/smart-speaker.service";
-
 
 @Component({
     selector: 'ami-fullstack-search',
@@ -10,9 +8,6 @@ import {SmartSpeakerService} from "../../../global/services/core/smart-speaker.s
     styleUrls: ['./search.component.scss']
 })
 export class SearchComponent implements OnInit {
-
-    // @ViewChild('searchBar', {static: false}) searchBar: ElementRef;
-
     public allUsers: UserModel[];
     public usersToShow: UserModel[];
     public searchStr: string;

@@ -3,8 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false,
-  host: 'http://localhost:8080',
+    production: false,
+    host: 'http://localhost:8080',
+    giphyApiKey: '8naZBhsMlLjM5sAtMRcxHuOPSHP0rtr0'
 };
 
 /*

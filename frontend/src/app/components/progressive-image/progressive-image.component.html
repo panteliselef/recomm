@@ -1,0 +1,8 @@
+<!--<img *ngIf="loading" src="/assets/loading.gif" alt="loading" />-->
+
+
+
+
+
+<div *ngIf="loading" class="GIF"><span class="material-icons-round">gif</span></div>
+<img [hidden]="loading" (load)="onLoad()" (click)="onClickImage()" [src]="source" [style.width]="myWidth" />

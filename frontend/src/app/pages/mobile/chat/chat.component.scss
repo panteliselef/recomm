@@ -27,6 +27,7 @@ main {
             display: flex;
             padding: 0.3rem 0.2rem;
 
+
             &:hover{
                 background-color: $mid-black;
                 border-radius: 5px;
@@ -57,7 +58,9 @@ main {
                 font-size: 14px;
             }
 
-
+            ul.inline-messages{
+                width: 100%;
+            }
             .inline-message {
                 font-size: 1rem;
                 word-break: break-all;
@@ -72,9 +75,33 @@ main {
                 max-height: 200px;
                 border-radius: .8rem;
                 max-width: 100%;
-                min-height: 200px;
+                //min-height: 200px; // this makes landscape orientation images not good
                 min-width: 100px;
+                width: auto;
                 margin: .25rem 0;
+            }
+
+            .inline-msg-file {
+                display: flex;
+                align-items: center;
+                //justify-content: space-between;
+                border-radius: .5rem;
+                border: 2px solid #fff;
+                width: 100%;
+                padding: .5rem .2rem;
+
+                span {
+                    display: block;
+                }
+
+                .icon {
+                    font-size: 2.5rem;
+                }
+
+                .file-size {
+                    color: $light-black;
+                    font-size: .8125rem;
+                }
             }
         }
 
@@ -86,4 +113,45 @@ main {
             }
         }
     }
+}
+
+.menu-container {
+    display: flex;
+    position: absolute;
+    flex-direction: column;
+    bottom: 0;
+    //height: 400px;
+    align-items: center;
+    width: 100%;
+    background-color: rgba(0,0,0,.95);
+    z-index: 3;
+    padding: .5rem 0;
+
+    transition: transform .3s ease;
+    transform: translateY(100%);
+
+    &.visible {
+        transform: translateY(0%);
+    }
+
+    .menu-item {
+        width: 90%;
+        //background-color: rgba(0,0,0,.8);
+        background-color: transparent;
+        padding: 1rem;
+        text-align: center;
+        transition: .2s all ease;
+        border-radius: .4rem;
+        cursor: pointer;
+
+
+        &:hover {
+            background-color: $dark-black;
+        }
+
+        &.menu-item-close {
+            color: $red-color;
+        }
+    }
+
 }

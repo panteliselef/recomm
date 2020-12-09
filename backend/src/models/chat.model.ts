@@ -17,7 +17,7 @@ export enum MessageType {
 export interface IMessage extends Document {
   senderId: Types.ObjectId;
   type: MessageType;
-  value: string;
+  value: String | Object;
   timestamp: Date;
 }
 
@@ -41,7 +41,8 @@ const messageSchema = new Schema(
       enum: Object.keys(MessageType).filter(value => isNaN(Number(value)) === true).map(item=>item),
       required: true
     },
-    value: { type: String, required: true },
+    value: { type: Schema.Types.Mixed, required: true },
+    // value: { type: String, required: true },
     timestamp : { type : Date, default: Date.now },
     senderId: {type: Types.ObjectId, required: true}
   },

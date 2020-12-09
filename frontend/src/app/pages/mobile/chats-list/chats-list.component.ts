@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ChatsService} from "../../../global/services/chats/chats.service";
 import {UsersService} from "../../../global/services/users/users.service";
-import {ChatModel, MessageWithRepliesModel, UserModel} from "../../../global/models";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ChatModel, MessageType, MessageWithRepliesModel, UserModel} from "../../../global/models";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'ami-fullstack-chats-list',
@@ -36,7 +36,7 @@ export class ChatsListComponent implements OnInit {
 
     private async fetchData() {
         this.showLoader = true;
-        this.me = this.usersService.getMe();
+        this.me = await this.usersService.getMe();
 
         this.chats = await Promise.all<ChatModel>(this.me.chat_ids.map(async (chat_id) => {
             return await this.chatsService.getById(chat_id).toPromise();
@@ -61,14 +61,23 @@ export class ChatsListComponent implements OnInit {
             else {
 
                 const s = await this.chatsService.getMessages(chat._id).toPromise();
-                // console.log('s',s)
 
                 const lastMsg:MessageWithRepliesModel = s[s.length - 1].messages[s[s.length - 1].messages.length - 1];
                 console.log(lastMsg);
 
-                if(lastMsg.senderId=== this.me._id){
+                if(lastMsg.type === MessageType.FILE) {
+                    lastMsg.value = 'Sent a File'
+                }else if(lastMsg.type === MessageType.IMAGE_GIF) {
+                    lastMsg.value = 'Sent a Gif'
+                }else if(lastMsg.type === MessageType.IMAGE_STATIC) {
+                    lastMsg.value = 'Send a Image'
+                }
+
+
+                if(lastMsg.senderId === this.me._id){
                     lastMsg.value = `You: ${lastMsg.value}`
                 }
+
 
                 return new ChatModel({
                     ...chat,

@@ -51,7 +51,7 @@ export class UsersService {
     }
 
 
-    public getMe() {
+    public getMe(): Promise<UserModel> {
         return this.auth.getCurrentUser();
         // return await this.getById(this.me._id).toPromise()
     }
@@ -63,7 +63,7 @@ export class UsersService {
 
         // Get me as User from DB
 
-        this.me = this.auth.getCurrentUser()
+        this.me = await this.auth.getCurrentUser()
         const me = await this.getById(this.me._id).toPromise()
         this.me = new UserModel(me);
 

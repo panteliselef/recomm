@@ -30,7 +30,7 @@ export class MessageModel {
     public _id: string;
     public senderId: string;
     public type: MessageType;
-    public value: string;
+    public value: any;
     public timestamp: Date;
 
 

@@ -1,0 +1,22 @@
+@import "../../../declarations";
+
+img {
+    border-radius: 0.2rem;
+    width: 100%;
+}
+
+.GIF {
+    border-radius: 0.2rem;
+    min-height: 180px;
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    background: $dark-black;
+    span {
+        font-size: 4rem;
+    }
+}
+

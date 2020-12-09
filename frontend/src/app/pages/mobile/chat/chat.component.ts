@@ -7,15 +7,9 @@ import {
     ViewChild,
     ViewEncapsulation
 } from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
-import {ParticipantModel} from "../../../global/models/participants/participant.model";
-import {ChatsService} from "../../../global/services/chats/chats.service";
-import {UsersService} from "../../../global/services/users/users.service";
-import {ChatModel, MessageModel, MessageType, MessageWithRepliesModel, UserModel} from "../../../global/models";
-import {SocketsService} from "../../../global/services";
-import {Subject, Subscription} from "rxjs";
-import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
-import {HttpClient} from "@angular/common/http";
+import {ActivatedRoute, Router} from "@angular/router";
+import {ChatsService, UsersService, SocketsService} from "../../../global/services";
+import {ChatModel, MessageModel, MessageWithRepliesModel, UserModel} from "../../../global/models";
 
 @Component({
     selector: 'ami-fullstack-chat',
@@ -25,13 +19,15 @@ import {HttpClient} from "@angular/common/http";
 })
 
 
-export class ChatComponent implements OnInit, AfterViewChecked {
+export class ChatComponent implements OnInit, AfterViewChecked, AfterViewInit {
 
     @ViewChild('scroll', {static: false, read: ElementRef}) public scroll: ElementRef<any>;
 
 
     chatId: Number;
     participant: UserModel;
+
+    readonly url: string = 'http://localhost:8080/api/files/download/';
 
 
     private URLRegex = new RegExp("([a-zA-Z0-9]+://)?([a-zA-Z0-9_]+:[a-zA-Z0-9_]+@)?([a-zA-Z0-9.-]+\\.[A-Za-z]{2,4})(:[0-9]+)?(/.*)?");
@@ -134,13 +130,15 @@ export class ChatComponent implements OnInit, AfterViewChecked {
         messages: MessageWithRepliesModel[]
     }>;
 
+    selectedMsgForAction: MessageWithRepliesModel;
+    private showMenu: boolean;
 
 
     constructor(private route: ActivatedRoute,
                 private chatService: ChatsService,
                 private userService: UsersService,
                 private socketService: SocketsService,
-                private http: HttpClient) {
+                private router: Router) {
         const chatId = this.route.snapshot.params.id;
         this.fetchChatData(chatId);
     }
@@ -184,11 +182,11 @@ export class ChatComponent implements OnInit, AfterViewChecked {
         if (this.messages.length === 0) {
             this.messages.push({
                 _id: Date.now().toString(),
-                 messages: [
-                     message
-                 ]
+                messages: [
+                    message
+                ]
             })
-        }else {
+        } else {
 
             this.messages[this.messages.length - 1].messages = [
                 ...this.messages[this.messages.length - 1].messages,
@@ -217,7 +215,12 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
 
     ngAfterViewChecked(): void {
+        if (this.showMenu) return
         this.scrollBottom();
+    }
+
+    ngAfterViewInit(): void {
+        // this.scrollBottom();
     }
 
     scrollBottom() {
@@ -229,5 +232,43 @@ export class ChatComponent implements OnInit, AfterViewChecked {
         const matches = textMsg.match(this.URLRegex);
         if (!matches) return textMsg;
         return textMsg.replace(this.URLRegex, 'Link')
+    }
+
+    formatBytes(bytes, decimals = 2) {
+        if (bytes === 0) return '0 Bytes';
+
+        const k = 1024;
+        const dm = decimals < 0 ? 0 : decimals;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+    }
+
+    showActionsMenu(msg: MessageWithRepliesModel) {
+        if (this.showMenu) {
+            this.closeMenu()
+        }
+        this.selectedMsgForAction = msg;
+        this.showMenu = true;
+    }
+
+    closeMenu() {
+        this.selectedMsgForAction = undefined;
+        this.showMenu = false;
+    }
+
+    async redirectToReply() {
+        await this.router.navigate(['reply/'+this.selectedMsgForAction._id],{relativeTo: this.route});
+    }
+
+    downloadFileToDevice() {
+        const file: {filename: string} = this.selectedMsgForAction.value;
+        window.location.href = `${this.url}${file.filename}`;
+    }
+
+    copyToClipboard() {
+
     }
 }
