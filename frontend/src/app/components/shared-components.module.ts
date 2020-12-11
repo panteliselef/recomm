@@ -9,6 +9,7 @@ import {ChatTextAreaComponent} from "./chat-text-area/chat-text-area.component";
 import {FormsModule} from "@angular/forms";
 import {VirtualComponent} from "./virtual/virtual.component";
 import {ProgressiveImageComponent} from "./progressive-image/progressive-image.component";
+import {ByteConvertionPipe} from "../global/pipes/byte-convertion.pipe";
 
 @NgModule({
     imports: [
@@ -21,6 +22,7 @@ import {ProgressiveImageComponent} from "./progressive-image/progressive-image.c
         BottomNavMenuComponent,
         AppChatBarComponent,
         LinkifyPipe,
+        ByteConvertionPipe,
         ChatTextAreaComponent,
         VirtualComponent,
         ProgressiveImageComponent
@@ -30,6 +32,7 @@ import {ProgressiveImageComponent} from "./progressive-image/progressive-image.c
         BottomNavMenuComponent,
         AppChatBarComponent,
         LinkifyPipe,
+        ByteConvertionPipe,
         ChatTextAreaComponent,
         VirtualComponent,
         ProgressiveImageComponent

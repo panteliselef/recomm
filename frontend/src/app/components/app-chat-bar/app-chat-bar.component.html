@@ -9,7 +9,7 @@
     </div>
 
     <div class="trailing-icons">
-        <i *ngFor="let icon of icons" class="material-icons-round">{{icon.name}}</i>
+        <i *ngFor="let icon of icons" (click)="icon.onClick()" class="material-icons-round">{{icon.name}}</i>
     </div>
 
 </div>

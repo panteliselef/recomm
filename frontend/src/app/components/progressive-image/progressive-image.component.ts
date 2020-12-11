@@ -23,7 +23,7 @@ export class ProgressiveImageComponent implements OnInit {
     onLoad() {this.loading = false;}
 
     onClickImage() {
-        this.onImgClick.call(this);
+        if(this.onImgClick) this.onImgClick.call(this);
     }
 
 }

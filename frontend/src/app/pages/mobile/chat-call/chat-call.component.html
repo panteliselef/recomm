@@ -57,10 +57,10 @@
 
     </div>
     <div class="app-call-bar">
-        <img class="profile-img" src="https://images.unsplash.com/photo-1604772659841-a1612db7000f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80"/>
+        <img *ngIf="chatPhoto" (click)="hangUpCall()" class="profile-img" [src]="chatPhoto"/>
 
         <div style="display: flex;flex-direction: column; margin-left: .8rem">
-            <span class="chat-name">Team Power</span>
+            <span class="chat-name" (click)="hangUpCall()">{{chatName}}</span>
             <span class="chat-status sub-text">8 members</span>
         </div>
 
@@ -72,7 +72,43 @@
 
     </div>
 
-    <div class="video-collection-container">
+<!--    <div class="video-collection-container">-->
+
+
+<!--        <div class="big-tile">-->
+<!--            <video src="../../../../assets/test.mp4" loop autoplay></video>-->
+
+<!--            <div class="video-info">-->
+<!--                Emma Bailey-->
+
+<!--                <i class="material-icons-round" style="margin-left: .5rem;margin-right: .5rem">graphic_eq</i>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="small-tile">-->
+<!--            <video src="../../../../assets/test.mp4" autoplay></video>-->
+<!--        </div>-->
+
+<!--        <div class="small-tile">-->
+<!--            <video src="../../../../assets/test.mp4" autoplay></video>-->
+<!--        </div>-->
+
+
+<!--        <div class="small-tile">-->
+<!--            <div class="see-others">-->
+<!--                <div class="images">-->
+<!--                    <img class="profile-img" src="https://images.unsplash.com/photo-1604936725386-22a475291f50?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80">-->
+<!--                    <img class="profile-img" src="https://images.unsplash.com/photo-1604936725386-22a475291f50?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80">-->
+<!--                </div>-->
+
+<!--                <span>6 others</span>-->
+<!--            </div>-->
+<!--        </div>-->
+
+
+
+<!--    </div>-->
+
+    <div class="video-collection-container two-p-layout">
 
 
         <div class="big-tile">
@@ -84,27 +120,15 @@
                 <i class="material-icons-round" style="margin-left: .5rem;margin-right: .5rem">graphic_eq</i>
             </div>
         </div>
-        <div class="small-tile">
-            <video src="../../../../assets/test.mp4" autoplay></video>
-        </div>
+        <div class="big-tile">
+            <video src="../../../../assets/test.mp4" loop autoplay></video>
 
-        <div class="small-tile">
-            <video src="../../../../assets/test.mp4" autoplay></video>
-        </div>
+            <div class="video-info">
+                Emma Bailey
 
-
-        <div class="small-tile">
-            <div class="see-others">
-                <div class="images">
-                    <img class="profile-img" src="https://images.unsplash.com/photo-1604936725386-22a475291f50?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80">
-                    <img class="profile-img" src="https://images.unsplash.com/photo-1604936725386-22a475291f50?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80">
-                </div>
-
-                <span>6 others</span>
+                <i class="material-icons-round" style="margin-left: .5rem;margin-right: .5rem">graphic_eq</i>
             </div>
         </div>
-
-
 
     </div>
 
@@ -113,7 +137,7 @@
         <div class="control-button">
             <i class="material-icons-round">videocam</i>
         </div>
-        <div class="control-button primary">
+        <div class="control-button primary" (click)="hangUpCall()">
             <i class="material-icons-round">call_end</i>
         </div>
         <div class="control-button">

@@ -1,4 +1,4 @@
-<div class="page">
+<div *ngIf="!showCallPage && !showPrepCall" class="page">
     <app-chat-bar
         [chatName]="chatName"
         [icons]="icons"
@@ -10,36 +10,6 @@
 
 
         <span class="in-page-status-info "> Conversation Started</span>
-
-
-<!--        <div class="msg-group-day">-->
-
-<!--            <h4 class="day">Sept 29th</h4>-->
-
-<!--            <ul class="messages">-->
-<!--                <li *ngFor="let msg of dayOneMessages" class="message-layout">-->
-<!--                    <img class="profile-img" [src]="users[msg.user_id].photoURL"/>-->
-<!--                    <div>-->
-<!--                        <div class="message-info">-->
-<!--                            <span class="sender-name">{{-->
-<!--                                users[msg.user_id].name-->
-<!--                                }}-->
-<!--                                </span>-->
-<!--                            <span class="sender-time">{{msg.timestamp}}</span>-->
-<!--                        </div>-->
-
-<!--                        <ul class="inline-messages">-->
-<!--                            <li *ngFor="let ilnMsg of msg.msgs" class="inline-message">-->
-<!--                                {{ilnMsg}}-->
-<!--                            </li>-->
-<!--                        </ul>-->
-<!--                    </div>-->
-<!--                </li>-->
-
-<!--            </ul>-->
-
-<!--        </div>-->
-
 
         <div class="msg-group-day" *ngFor="let day of messages" >
 
@@ -62,7 +32,7 @@
                                     <span class="material-icons-round icon">attach_file</span>
                                     <div>
                                         <span>{{msg.value.originalname}}</span>
-                                        <span class="file-size">{{formatBytes(msg.value.size)}}</span>
+                                        <span class="file-size">{{ msg.value.size | byteConvert}}</span>
                                     </div>
                                 </div>
                                 <img class="inline-msg-image" *ngIf="msg.type === 'IMAGE_STATIC'" [src]="url + msg.value.filename"/>
@@ -90,7 +60,6 @@
     <div class="menu-container" [ngClass]="{'visible':showMenu}">
         <div class="menu-item" (click)="redirectToReply()" *ngIf="selectedMsgForAction?.type !== 'STATUS'">Reply</div>
         <div class="menu-item" (click)="downloadFileToDevice()" *ngIf="selectedMsgForAction?.type !== 'TEXT' && selectedMsgForAction?.type !== 'IMAGE_GIF' && selectedMsgForAction?.type !== 'STATUS'">Download</div>
-<!--        <div class="menu-item" (click)="copyToClipboard()" *ngIf="selectedMsgForAction?.type === 'TEXT'">Copy</div>-->
         <div class="menu-item menu-item-close" (click)="closeMenu()">Close</div>
     </div>
 
@@ -99,50 +68,19 @@
         [chatModel]="chat"
     ></chat-text-area>
 
-<!--    <div class="new-message-section">-->
-
-
-
-
-<!--        <label>-->
-<!--            <input type="file" (change)="onFileSelect($event)">-->
-<!--            <span>-->
-<!--            <i class="material-icons-round">insert_photo</i>-->
-
-<!--            </span>-->
-<!--        </label>-->
-<!--&lt;!&ndash;        <i class="material-icons-round">insert_photo</i>&ndash;&gt;-->
-
-<!--        <i (click)="isAudioRecordOpen = !isAudioRecordOpen" class="material-icons-round">mic</i>-->
-
-<!--        <div class="message-bar">-->
-<!--            <textarea #message-->
-<!--                      [(ngModel)]="textareaValue"-->
-<!--                      (ngModelChange)="resize()"-->
-<!--                      placeholder="Message"-->
-<!--            ></textarea>-->
-<!--            <i style="padding: 0" class="material-icons-round">sentiment_satisfied_alt</i>-->
-<!--        </div>-->
-<!--        <i class="material-icons-round" (click)="sendMessage()">send</i>-->
-
-
-<!--    </div>-->
-<!--    <div *ngIf="isAudioRecordOpen" class="audio-caption-container">-->
-
-<!--        <div class="audio-caption">-->
-
-<!--            <div class="elipse" id="elipse1">-->
-<!--                <div class="elipse" id="elipse2"></div>-->
-<!--            </div>-->
-<!--            <i class="material-icons-round">-->
-<!--                keyboard_voice-->
-<!--            </i>-->
-<!--        </div>-->
-
-<!--        <div class="audio-time-counter">-->
-<!--            00:26-->
-<!--        </div>-->
-
-<!--    </div>-->
-
 </div>
+
+
+
+<ami-fullstack-prep-call
+    *ngIf="showPrepCall"
+    [onReady]="goToChatCallPage.bind(this)"
+    [chat]="chat"
+></ami-fullstack-prep-call>
+
+<ami-fullstack-chat-call
+    (callHangUp)="showChat()"
+    *ngIf="showCallPage"
+    [chat]="chat"
+></ami-fullstack-chat-call>
+

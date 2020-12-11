@@ -111,12 +111,11 @@
                                     <span class="material-icons-round icon">attach_file</span>
                                     <div>
                                         <span>{{msg.value.originalname}}</span>
-                                        <span class="file-size">{{formatBytes(msg.value.size)}}</span>
+                                        <span class="file-size">{{ msg.value.size | byteConvert}}</span>
                                     </div>
                                 </div>
                                 <progressive-image *ngIf="msg.type === 'IMAGE_GIF'" [src]="msg.value"></progressive-image>
                                 <img class="inline-msg-image" *ngIf="msg.type === 'IMAGE_STATIC'" [src]="url + msg.value.filename"/>
-<!--                                <img class="inline-msg-image" *ngIf="msg.type === 'IMAGE_GIF'" [src]="msg.value"/>-->
                                 <span *ngIf="msg.type === 'TEXT'" [innerHTML]="msg.value | linkify"></span>
 
                             </li>

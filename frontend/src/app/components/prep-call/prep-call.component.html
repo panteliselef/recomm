@@ -11,11 +11,8 @@
     <main>
 
         <div class="video-container">
-            <img *ngIf="isCameraEnabled" class="video" src="https://images.unsplash.com/photo-1604936725386-22a475291f50?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80"/>
-
-            <img *ngIf="!isCameraEnabled" class="profile-img" src="https://images.unsplash.com/photo-1604936725386-22a475291f50?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80"/>
-
-
+            <img *ngIf="isCameraEnabled" class="video" [src]="me?.getPhoto()"/>
+            <img *ngIf="!isCameraEnabled" class="profile-img" [src]="me?.getPhoto()"/>
         </div>
 
 
@@ -40,7 +37,7 @@
             </div>
         </div>
         <div class="action-section">
-            <button>
+            <button (click)="onReady()">
                 Ready
             </button>
         </div>

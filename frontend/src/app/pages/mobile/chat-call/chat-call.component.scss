@@ -16,6 +16,7 @@
     }
 }
 
+
 .video-collection-container {
     display: grid;
     max-height: 90vh;
@@ -24,6 +25,11 @@
     flex: 1 1 auto;
     padding: .75rem;
     grid-gap: .75rem;
+
+
+    &.two-p-layout {
+        grid-template-rows: 50% 50%;
+    }
 
     .big-tile {
         position: relative;
