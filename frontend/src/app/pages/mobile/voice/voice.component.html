@@ -1,1 +1,23 @@
-<input type="button" (click)="startAction()" value="button">
+<div class="page">
+
+    <app-bar
+        [img]="me?.getPhoto()"
+        [onImageClick]="goToProfile"
+        title="Audio Command"
+        [hasImage]="true"
+    ></app-bar>
+
+
+    <main>
+
+        <div class="input-container">
+            <i (click)="startAction()"
+               class="material-icons-round">mic</i>
+
+        </div>
+
+        <span>Listening ...</span>
+
+    </main>
+
+</div>

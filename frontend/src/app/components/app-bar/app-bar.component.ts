@@ -9,27 +9,22 @@ import {Router} from "@angular/router";
 })
 export class AppBarComponent implements OnInit {
 
-    @Input('title') pageTitle: String;
-
-    @Input('img') imgSrc: String;
+    @Input('title') pageTitle: string;
+    @Input('img') imgSrc: string;
     @Input('hasImage') hasImage: boolean;
     @Input('onImageClick') onImageClick: Function;
-
-    @Input('leadingIcon') leadingIconName: String;
-
-    @Input('trailingIcon') trailingIconName: String;
+    @Input('leadingIcon') leadingIconName: string;
+    @Input('trailingIcon') trailingIconName: string;
     @Input('onTrailingIconClick') onTrailingIconClick: Function;
 
     constructor(private location: Location, private router: Router) {
     }
 
     ngOnInit() {
-
-
     }
 
     goBack(): void {
-        this.location.back()
+        this.location.back();
     }
 
 

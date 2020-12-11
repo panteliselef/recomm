@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {UsersService} from "../../../global/services";
-import {UserModel} from "../../../global/models";
+import {UsersService} from '../../../global/services';
+import {UserModel} from '../../../global/models';
 
 @Component({
     selector: 'ami-fullstack-search',
@@ -22,7 +22,7 @@ export class SearchComponent implements OnInit {
     filterSearchResults(value) {
         this.usersToShow = this.allUsers.filter( (user: UserModel) => {
             return user.getFullName().toLowerCase().includes(value.toLowerCase());
-        })
+        });
     }
 
     private async getAllUsers() {
@@ -37,7 +37,7 @@ export class SearchComponent implements OnInit {
     }
 
     async goToChat(contact_id: string) {
-        await this.users.registerAsContact(contact_id)
+        await this.users.registerAsContact(contact_id);
     }
 
     clearResults() {

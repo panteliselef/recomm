@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import { Location } from '@angular/common'
+import {Location} from '@angular/common'
 import {ActivatedRoute} from "@angular/router";
 
 @Component({
@@ -9,7 +9,7 @@ import {ActivatedRoute} from "@angular/router";
 })
 export class AppChatBarComponent implements OnInit {
     @Input('chatName') chatName: string;
-    @Input('icons') icons: { name:string, onClick: Function }[];
+    @Input('icons') icons: { name: string, onClick: Function }[];
 
     chatStatus: string = 'online';
 
@@ -22,10 +22,10 @@ export class AppChatBarComponent implements OnInit {
     }
 
     ngOnInit() {
-        console.log(this.icons)
+        console.log(this.icons);
     }
 
     goBack(): void {
-        this.location.back()
+        this.location.back();
     }
 }

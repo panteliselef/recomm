@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
     selector: 'ami-fullstack-home-table',
@@ -11,14 +11,15 @@ import {ActivatedRoute} from "@angular/router";
     ],
 })
 export class HomeTableComponent implements OnInit {
-    testArr = Array(23).fill(5)
+    testArr = Array(23).fill(5);
 
-    showOnlyParticipants: boolean = false;
+    showOnlyParticipants = false;
 
     constructor(private activeRoute: ActivatedRoute) {
 
-        if(this.activeRoute.snapshot['_routerState'].url.includes('edit-tv-layout'))
-            this.showOnlyParticipants = true
+        if(this.activeRoute.snapshot['_routerState'].url.includes('edit-tv-layout')) {
+            this.showOnlyParticipants = true;
+        }
     }
 
     ngOnInit() {

@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {UsersService} from "../../global/services";
-import {ChatModel, UserModel} from "../../global/models";
+import {UsersService} from '../../global/services';
+import {ChatModel, UserModel} from '../../global/models';
 
 @Component({
   selector: 'ami-fullstack-prep-call',
@@ -11,8 +11,8 @@ export class PrepCallComponent implements OnInit {
 
     @Input('onReady') onReady: Function;
     @Input('chat') chat: ChatModel;
-    isMicEnabled: boolean = true;
-    isCameraEnabled: boolean = true;
+    isMicEnabled = true;
+    isCameraEnabled = true;
 
     me: UserModel;
 
@@ -23,6 +23,5 @@ export class PrepCallComponent implements OnInit {
 
      this.me =  await this.usersService.getMe();
   }
-
 
 }

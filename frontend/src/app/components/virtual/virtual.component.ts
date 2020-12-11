@@ -68,7 +68,7 @@ export class VirtualComponent implements OnInit {
     this.cursorSize = {
       width: this.size + 'px',
       height: this.size + 'px',
-      "background-color": this.color
+      'background-color': this.color
     };
 
     this.cursorStyle = {
@@ -85,15 +85,17 @@ export class VirtualComponent implements OnInit {
 
   private checkCursorHovering() {
 
-    if (this.elements2Check.length == 0)
+    if (this.elements2Check.length == 0) {
       return;
+    }
 
     var isHovering = false;
     this.elements2Check.forEach(element => {
       var $touchedElem = $('#cursor').touching($(element));
 
-      if ($touchedElem.length == 0)
+      if ($touchedElem.length == 0) {
         return;
+      }
 
       this.onItemCounter = this.itemSelected == $touchedElem[0] ? this.onItemCounter + 1 : 0;
       this.itemSelected = $touchedElem[0];
@@ -103,8 +105,9 @@ export class VirtualComponent implements OnInit {
 
     });
 
-    if (!isHovering)
+    if (!isHovering) {
       this.resetCursor();
+    }
 
   }
 
@@ -114,7 +117,7 @@ export class VirtualComponent implements OnInit {
     this.loading.width = (this.onItemCounter / this.waitingTime * 100) + '%';
 
     if (this.onItemCounter == this.waitingTime) {
-      let event = new MouseEvent('click');
+      const event = new MouseEvent('click');
       this.itemSelected.dispatchEvent(event);
       this.resetCursor();
     }

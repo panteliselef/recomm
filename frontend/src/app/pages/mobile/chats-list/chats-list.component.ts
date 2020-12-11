@@ -25,7 +25,8 @@ export class ChatsListComponent implements OnInit, OnDestroy {
     showLoader: boolean = true;
     private subscriptions: Subscription[];
 
-    constructor(private chatsService: ChatsService, private usersService: UsersService, private router: Router, private socketService: SocketsService) {}
+    constructor(private chatsService: ChatsService, private usersService: UsersService, private router: Router, private socketService: SocketsService) {
+    }
 
     async ngOnInit() {
 
@@ -45,7 +46,7 @@ export class ChatsListComponent implements OnInit, OnDestroy {
             return await this.chatsService.getById(chat_id).toPromise();
         }));
 
-        this.subscriptions = this.chats.map(chat=> {
+        this.subscriptions = this.chats.map(chat => {
             return this.socketService
                 .syncMessages(`/${chat._id}/newMessage`)
                 .subscribe((msg) => {

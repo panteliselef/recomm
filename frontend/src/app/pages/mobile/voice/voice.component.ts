@@ -1,5 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {SmartSpeakerService} from '../../../global/services';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {SmartSpeakerService, UsersService} from '../../../global/services';
+import {ChatModel, UserModel} from "../../../global/models";
+import {Router} from "@angular/router";
 
 
 @Component({
@@ -9,11 +11,20 @@ import {SmartSpeakerService} from '../../../global/services';
 })
 export class VoiceComponent implements OnInit {
 
-    constructor(private speaker: SmartSpeakerService) {
+    me: UserModel;
+
+    constructor(private speaker: SmartSpeakerService, private router: Router, private usersService: UsersService) {
+
+
+    }
+
+    async goToProfile() {
+        await this.router.navigate(['/mobile', 'profile']);
     }
 
 
-    ngOnInit() {
+    async ngOnInit() {
+        this.me = await this.usersService.getMe();
     }
 
     startAction() {
