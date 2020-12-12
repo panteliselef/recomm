@@ -1,19 +1,10 @@
 import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
-import {ChatModel, MessageType, MessageWithRepliesModel, UserModel} from '../../global/models';
-// import {FileUploader} from "ng2-file-upload";
-import {HttpClient} from '@angular/common/http';
+import {ChatModel, MessageType, MessageWithRepliesModel, UserModel} from "../../global/models";
+import {HttpClient} from "@angular/common/http";
 import {environment} from 'src/environments/environment';
-import {GifsService, ChatsService} from '../../global/services';
+import {GifsService, ChatsService} from "../../global/services";
+import {FileReaderEvent} from "../../global/interfaces/file-reader-event.interface";
 
-interface FileReaderEventTarget extends EventTarget {
-    result: string;
-}
-
-interface FileReaderEvent<T> extends ProgressEvent {
-    target: FileReaderEventTarget;
-
-    getMessage(): string;
-}
 
 @Component({
     selector: 'chat-text-area',

@@ -9,6 +9,8 @@ export class SocketServer {
 
   public io: io.Server;
 
+  private videoCallsPerChat: any = {}
+
   constructor() { }
 
   /**
@@ -72,6 +74,7 @@ export class SocketServer {
   private onSubscribe(socket: io.Socket): void {
     socket.on('subscribe', (data: any) => {
       logger.debug('subscribe');
+      logger.log(data)
     });
   }
 
@@ -93,7 +96,7 @@ export class SocketServer {
    */
   private onDisconnecting(socket: io.Socket): void {
     socket.on('disconnecting', (reason: any) => {
-      logger.debug('disconnecting');
+      logger.debug('disconnecting ' + socket.id);
     });
   }
 
@@ -103,8 +106,39 @@ export class SocketServer {
    * @param {io.Socket} socket
    */
   private onClientEvent(socket: io.Socket): void {
-    socket.on('client:event', (data: any) => {
-      logger.debug('client event');
+    socket.on('client:event', (eventName: string, msg: any) => {
+      const chatlId = msg.chat;
+      const userId = msg.member;
+
+      if (eventName === 'videocall/join') {
+        
+        if (this.videoCallsPerChat[chatlId]) this.videoCallsPerChat[chatlId].live_members.push(userId)
+        else {
+          this.videoCallsPerChat[chatlId] = {
+            live_members: [userId]
+          }
+        }
+
+        // Broadvcast to others, not the same socket
+        socket.broadcast.emit('server:event', `${chatlId}/videocall/user-joined`, userId);
+
+        // Send back to same socket
+        socket.emit('server:event', `${chatlId}/videocall/get-users`, this.videoCallsPerChat);
+      }else if(eventName === 'videocall/leave') {
+        this.videoCallsPerChat[chatlId].live_members.filter((memberId: string) => memberId !== userId);
+
+
+        // Broadvcast to others, not the same socket
+        socket.broadcast.emit('server:event', `${chatlId}/videocall/user-left`, userId);
+
+        // Send back to same socket
+        socket.emit('server:event', `${chatlId}/videocall/get-users`, this.videoCallsPerChat);
+
+      }
+
+
+
+      logger.debug('client event ' + eventName);
     });
   }
 

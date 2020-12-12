@@ -79,11 +79,14 @@
     *ngIf="showPrepCall"
     [onReady]="goToChatCallPage.bind(this)"
     [chat]="chat"
+    [options]="videoCallOptions"
+    (onToggle)="handleVideoCallSetting($event)"
 ></ami-fullstack-prep-call>
 
 <ami-fullstack-chat-call
     (callHangUp)="showChat()"
     *ngIf="showCallPage"
     [chat]="chat"
+    [options]="videoCallOptions"
 ></ami-fullstack-chat-call>
 

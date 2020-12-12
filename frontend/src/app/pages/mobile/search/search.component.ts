@@ -11,6 +11,7 @@ export class SearchComponent implements OnInit {
     public allUsers: UserModel[];
     public usersToShow: UserModel[];
     public searchStr: string;
+    private me: UserModel;
 
     constructor(private users: UsersService) {
         this.searchStr = '';
@@ -27,9 +28,14 @@ export class SearchComponent implements OnInit {
 
     private async getAllUsers() {
         try {
+            this.me = await this.users.getMe();
             this.allUsers = await this.users
                 .getAll()
                 .toPromise();
+            this.allUsers = this.allUsers.filter<UserModel>( (user : UserModel): user is UserModel => {
+                return user._id !== this.me._id
+            })
+            //Exclude myself
             this.usersToShow = Array.from(this.allUsers);
         } catch (e) {
             console.error(e);

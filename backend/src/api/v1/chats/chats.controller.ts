@@ -10,6 +10,8 @@ import { DIContainer, SocketsService } from '@app/services';
 export class ChatsController {
 
   private Controller = new ResourceController<IChat>(ChatModel);
+  
+  private videoCallsPerChat: any = {}
 
   /**
    * Apply all routes for example
@@ -20,7 +22,6 @@ export class ChatsController {
     // const Controller = new ResourceController<IChat>(ChatModel)
     const router = this.Controller.applyRoutes();
 
-
     router.post('/:id/pushMessage', this.pushMessageToChat());
 
     router.get('/:id/messages', this.getAllChatMessages());
@@ -29,8 +30,60 @@ export class ChatsController {
 
     router.post('/:id/messages/:mid', this.pushMessageAsReply());
 
+    // // Get All Members of a videocall
+    // router.get('/:id/videocall', this.getAllVideoCallMembers())
+
+    // // User join videocall
+    // router.post('/:id/videocall', this.updateVideoCallMembers())
+
+    // // User leaves videocall
+    // router.delete('/:id/videocall')
+
     return router;
   }
+
+  // public updateVideoCallMembers(id?: string) {
+  //   return async (req: Request, res: Response, next?: NextFunction): Promise<Response> => {
+  //     try {
+  //       const chatlId: any = id || req.params.id;
+  //       const userId: string = req.body.user_id;
+
+  //       // Sending a broadcast message to all clients
+  //       const socketService = DIContainer.get(SocketsService);
+
+  //       if(this.videoCallsPerChat[chatlId]) this.videoCallsPerChat[chatlId].live_members.push(userId)
+  //       else {
+  //         this.videoCallsPerChat[chatlId] = {
+  //           live_members : [userId]
+  //         }
+  //       }
+
+  //       socketService.broadcast(`/${chatlId}/videocall/user-join`, userId);
+
+
+
+  //       return res
+  //         .status(OK)
+  //         .json(this.videoCallsPerChat);
+  //     } catch (e) {
+  //       next(e);
+  //     }
+  //   };
+  // }
+
+  // public getAllVideoCallMembers(id?: string) {
+  //   return async (req: Request, res: Response, next?: NextFunction): Promise<Response> => {
+  //     try {
+  //       const modelId: any = id || req.params.id;
+
+  //       // return res
+  //       //   .status(OK)
+  //       //   .json(resource.messages[0]);
+  //     } catch (e) {
+  //       next(e);
+  //     }
+  //   };
+  // }
 
   public getChatMessage(id?: string, mid?: string) {
     return async (req: Request, res: Response, next?: NextFunction): Promise<Response> => {
@@ -42,7 +95,6 @@ export class ChatsController {
           .findOne({ _id: modelId }, { messages: { $elemMatch: { _id: Types.ObjectId(submodelId) } } })
           .orFail( new NotFound())
           .exec();
-
         // resource.messages[0]
 
 

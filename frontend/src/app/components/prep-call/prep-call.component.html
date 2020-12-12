@@ -11,8 +11,8 @@
     <main>
 
         <div class="video-container">
-            <img *ngIf="isCameraEnabled" class="video" [src]="me?.getPhoto()"/>
-            <img *ngIf="!isCameraEnabled" class="profile-img" [src]="me?.getPhoto()"/>
+            <img *ngIf="options.hasCamera" class="video" [src]="me?.getPhoto()"/>
+            <img *ngIf="!options.hasCamera" class="profile-img" [src]="me?.getPhoto()"/>
         </div>
 
 
@@ -20,20 +20,20 @@
 
     <div class="page-actions">
         <div class="action-section">
-            <div class="toggle-button" (click)="isMicEnabled = !isMicEnabled">
-                <i *ngIf="isMicEnabled" class="material-icons-round">mic</i>
-                <span *ngIf="isMicEnabled">Mic On</span>
+            <div class="toggle-button" (click)="toggleMic()">
+                <i *ngIf="options.isMuted" class="material-icons-round">mic</i>
+                <span *ngIf="options.isMuted">Mic On</span>
 
-                <i *ngIf="!isMicEnabled" class="material-icons-round">mic_off</i>
-                <span *ngIf="!isMicEnabled">Mic Off</span>
+                <i *ngIf="!options.isMuted" class="material-icons-round">mic_off</i>
+                <span *ngIf="!options.isMuted">Mic Off</span>
             </div>
 
-            <div class="toggle-button" (click)="isCameraEnabled = !isCameraEnabled">
-                <i *ngIf="isCameraEnabled" class="material-icons-round">videocam</i>
-                <span *ngIf="isCameraEnabled">Camera On</span>
+            <div class="toggle-button" (click)="toggleCamera()">
+                <i *ngIf="options.hasCamera" class="material-icons-round">videocam</i>
+                <span *ngIf="options.hasCamera">Camera On</span>
 
-                <i *ngIf="!isCameraEnabled" class="material-icons-round">videocam_off</i>
-                <span *ngIf="!isCameraEnabled">Camera Off</span>
+                <i *ngIf="!options.hasCamera" class="material-icons-round">videocam_off</i>
+                <span *ngIf="!options.hasCamera">Camera Off</span>
             </div>
         </div>
         <div class="action-section">

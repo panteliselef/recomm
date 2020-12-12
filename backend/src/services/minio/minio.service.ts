@@ -90,4 +90,8 @@ export class MinioService {
       .getObject(config.minio.bucketName, filename);
   }
 
+  public getUrlBacket(){
+    
+  }
+
 }

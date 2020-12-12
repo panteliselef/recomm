@@ -66,10 +66,11 @@ export class ChatsListComponent implements OnInit, OnDestroy {
                 return new ChatModel({
                     ...chat,
                     more: {lastMsg: {value: 'Start talking', timestamp: Date.now()}},
-                    displayName: member.getFullName(),
-                    photoUrl: member.getPhoto()
-                });
-            } else {
+                    displayName: member? member.getFullName(): chat.displayName,
+                    photoUrl: member? member.getPhoto(): chat.photoUrl
+                })
+            }
+            else {
 
                 const s = await this.chatsService.getMessages(chat._id).toPromise();
 
