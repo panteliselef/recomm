@@ -13,7 +13,7 @@ import {EditChatComponent} from './pages/mobile/edit-chat/edit-chat.component';
 
 import {ChatReplyComponent} from './pages/mobile/chat-reply/chat-reply.component';
 import {ChatCallComponent} from './pages/mobile/chat-call/chat-call.component';
-
+import {BrowseDocumentsComponent} from './pages/mobile/browse-documents/browse-documents.component';
 import {PreviewImageComponent} from './pages/mobile/preview-image/preview-image.component';
 import {BrowseImagesComponent} from './pages/mobile/browse-images/browse-images.component';
 import {CalendarComponent} from './pages/mobile/calendar/calendar.component';
@@ -43,6 +43,8 @@ import {VoiceComponent} from './pages/mobile/voice/voice.component';
 
         SearchComponent,
         VoiceComponent,
+
+        BrowseDocumentsComponent,
 
         PreviewImageComponent,
         BrowseImagesComponent,

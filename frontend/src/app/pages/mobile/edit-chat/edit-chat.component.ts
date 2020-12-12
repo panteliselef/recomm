@@ -11,8 +11,12 @@ export class EditChatComponent implements OnInit {
     constructor(private router: Router, private route: ActivatedRoute) {
     }
 
-    async goToNewChat() {
+    async goToBrowseImages() {
         await this.router.navigate(['browse-images'], {relativeTo: this.route});
+    }
+
+    async goToBrowseDocuments() {
+        await this.router.navigate(['browse-documents'], {relativeTo: this.route});
     }
 
     ngOnInit() {

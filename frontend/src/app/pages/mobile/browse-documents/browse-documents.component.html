@@ -1,0 +1,22 @@
+<div class="page">
+    <app-bar
+        title="Documents"
+        leadingIcon="arrow_back"
+        [hasImage]="false">
+    </app-bar>
+
+
+    <main class="">
+        <div class="documents">
+
+            <div class="thumbnail" *ngFor="let documentsUrl of imgMessages">
+                <input type="button"
+                    (click)="downloadDocument(documentsUrl.value)"
+                value="{{documentsUrl.value.originalname}}">
+            </div>
+
+        </div>
+
+        <div class="in-page-status-info">{{this.imgNum}}</div>
+    </main>
+</div>

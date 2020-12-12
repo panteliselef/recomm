@@ -14,9 +14,9 @@ import {BrowseImagesComponent} from './pages/mobile/browse-images/browse-images.
 import {CalendarComponent} from './pages/mobile/calendar/calendar.component';
 import {SearchComponent} from './pages/mobile/search/search.component';
 import {VoiceComponent} from './pages/mobile/voice/voice.component';
+import {BrowseDocumentsComponent} from './pages/mobile/browse-documents/browse-documents.component';
 
 const routes: Routes = [
-    // { path: '', redirectTo:'chats' },
     {path: 'chats', component: ChatsListComponent, },
     {path: 'chats/:id', component: ChatComponent, },
     {path: 'chats/:id/reply/:rid', component: ChatReplyComponent},
@@ -26,6 +26,7 @@ const routes: Routes = [
     {path: 'prep-call', component: PrepCallComponent, },
     {path: 'call', component: ChatCallComponent},
     {path: 'chats/:id/edit/browse-images/:imgFileName', component: PreviewImageComponent},
+    {path: 'chats/:id/edit/browse-documents', component: BrowseDocumentsComponent},
     {path: 'chats/:id/edit/browse-images', component: BrowseImagesComponent},
     {path: 'calendar', component: CalendarComponent},
     {path: 'search', component: SearchComponent},
