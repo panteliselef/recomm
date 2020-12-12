@@ -43,6 +43,7 @@ export class VoiceComponent implements OnInit {
             // word is the name of contact
             // check if contact exist
             // if (!word) then
+            alert(word);
             this.speaker.speak('the contact with name ' + word + 'doesnt exist');
             // if (word)
         };

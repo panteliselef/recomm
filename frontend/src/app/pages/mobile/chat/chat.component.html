@@ -7,11 +7,9 @@
     </app-chat-bar>
 
     <main #scroll>
-
-
         <span class="in-page-status-info "> Conversation Started</span>
 
-        <div class="msg-group-day" *ngFor="let day of messages" >
+        <div class="msg-group-day" *ngFor="let day of messages">
 
             <h4 class="day">{{day._id | date: 'mediumDate'}}</h4>
 
@@ -26,27 +24,30 @@
                         </div>
 
                         <ul class="inline-messages">
-<!--                            <li class="inline-message" [routerLink]="'reply/'+msg._id">-->
+                            <!--                            <li class="inline-message" [routerLink]="'reply/'+msg._id">-->
                             <li class="inline-message" (click)="showActionsMenu(msg)">
-                                <div class="inline-msg-file" *ngIf="msg.type === 'FILE'" >
+                                <div class="inline-msg-file" *ngIf="msg.type === 'FILE'">
                                     <span class="material-icons-round icon">attach_file</span>
                                     <div>
                                         <span>{{msg.value.originalname}}</span>
                                         <span class="file-size">{{ msg.value.size | byteConvert}}</span>
                                     </div>
                                 </div>
-                                <img class="inline-msg-image" *ngIf="msg.type === 'IMAGE_STATIC'" [src]="url + msg.value.filename"/>
-                                <progressive-image *ngIf="msg.type === 'IMAGE_GIF'" [src]="msg.value" [width]="'auto'"></progressive-image>
+                                <img class="inline-msg-image" *ngIf="msg.type === 'IMAGE_STATIC'"
+                                     [src]="url + msg.value.filename"/>
+                                <progressive-image *ngIf="msg.type === 'IMAGE_GIF'" [src]="msg.value"
+                                                   [width]="'auto'"></progressive-image>
                                 <span *ngIf="msg.type === 'TEXT'" [innerHTML]="msg.value | linkify"></span>
                             </li>
-<!--                            <li *ngFor="let ilnMsg of msg.msgs" class="inline-message">-->
+                            <!--                            <li *ngFor="let ilnMsg of msg.msgs" class="inline-message">-->
 
-<!--                                <img class="inline-msg-image" *ngIf="ilnMsg.type === 'image'" [src]="ilnMsg.assetPath"/>-->
-<!--                                <span *ngIf="ilnMsg.type === 'text'" [innerHTML]="ilnMsg.text | linkify"></span>-->
+                            <!--                                <img class="inline-msg-image" *ngIf="ilnMsg.type === 'image'" [src]="ilnMsg.assetPath"/>-->
+                            <!--                                <span *ngIf="ilnMsg.type === 'text'" [innerHTML]="ilnMsg.text | linkify"></span>-->
 
-<!--                            </li>-->
+                            <!--                            </li>-->
                         </ul>
-                        <a class="reply-link" *ngIf="msg.replies && msg.replies.length>0" [routerLink]="'reply/'+msg._id">{{msg.replies.length}} replies</a>
+                        <a class="reply-link" *ngIf="msg.replies && msg.replies.length>0"
+                           [routerLink]="'reply/'+msg._id">{{msg.replies.length}} replies</a>
                     </div>
 
                 </li>
@@ -59,7 +60,10 @@
 
     <div class="menu-container" [ngClass]="{'visible':showMenu}">
         <div class="menu-item" (click)="redirectToReply()" *ngIf="selectedMsgForAction?.type !== 'STATUS'">Reply</div>
-        <div class="menu-item" (click)="downloadFileToDevice()" *ngIf="selectedMsgForAction?.type !== 'TEXT' && selectedMsgForAction?.type !== 'IMAGE_GIF' && selectedMsgForAction?.type !== 'STATUS'">Download</div>
+        <div class="menu-item" (click)="downloadFileToDevice()"
+             *ngIf="selectedMsgForAction?.type !== 'TEXT' && selectedMsgForAction?.type !== 'IMAGE_GIF' && selectedMsgForAction?.type !== 'STATUS'">
+            Download
+        </div>
         <div class="menu-item menu-item-close" (click)="closeMenu()">Close</div>
     </div>
 
@@ -69,7 +73,6 @@
     ></chat-text-area>
 
 </div>
-
 
 
 <ami-fullstack-prep-call

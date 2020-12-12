@@ -1,15 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {Router, ActivatedRoute} from '@angular/router';
 
 @Component({
-  selector: 'ami-fullstack-edit-chat',
-  templateUrl: './edit-chat.component.html',
-  styleUrls: ['./edit-chat.component.scss']
+    selector: 'ami-fullstack-edit-chat',
+    templateUrl: './edit-chat.component.html',
+    styleUrls: ['./edit-chat.component.scss']
 })
 export class EditChatComponent implements OnInit {
 
-  constructor() { }
+    constructor(private router: Router, private route: ActivatedRoute) {
+    }
 
-  ngOnInit() {
-  }
+    async goToNewChat() {
+        await this.router.navigate(['browse-images'], {relativeTo: this.route});
+    }
+
+    ngOnInit() {
+    }
 
 }

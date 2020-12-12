@@ -25,11 +25,11 @@ const routes: Routes = [
     {path: 'new-chat', component: NewChatComponent, },
     {path: 'prep-call', component: PrepCallComponent, },
     {path: 'call', component: ChatCallComponent},
-    {path: 'preview-image', component: PreviewImageComponent},
-    {path: 'browse-images', component: BrowseImagesComponent},
+    {path: 'chats/:id/edit/browse-images/:imgFileName', component: PreviewImageComponent},
+    {path: 'chats/:id/edit/browse-images', component: BrowseImagesComponent},
     {path: 'calendar', component: CalendarComponent},
     {path: 'search', component: SearchComponent},
-    {path: 'edit-chat', component: EditChatComponent},
+    {path: 'chats/:id/edit', component: EditChatComponent},
     {path: 'voice', component: VoiceComponent},
     {path: '**', redirectTo: 'chats', pathMatch: 'full'}
 ];

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {UserModel} from "../../../global/models";
-import {SmartSpeakerService, UsersService} from "../../../global/services";
-import {Router} from "@angular/router";
+import {UserModel} from '../../../global/models';
+import {SmartSpeakerService, UsersService} from '../../../global/services';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'ami-fullstack-edit-profile',

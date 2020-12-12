@@ -9,43 +9,14 @@
     <main class="">
         <div class="images">
 
-            <div class="thumbnail">
+            <div class="thumbnail" *ngFor="let imagesUrl of imgMessages">
                 <img
-                    src="https://images.unsplash.com/photo-1601758174493-45d0a4d3e407?ixlib=rb-1.2.1&auto=format&fit=crop&w=1534&q=80">
-
-            </div>
-            <div class="thumbnail">
-                <img
-                    src="https://images.unsplash.com/photo-1601758174493-45d0a4d3e407?ixlib=rb-1.2.1&auto=format&fit=crop&w=1534&q=80">
-
-            </div>
-            <div class="thumbnail">
-                <img
-                    src="https://images.unsplash.com/photo-1601758174493-45d0a4d3e407?ixlib=rb-1.2.1&auto=format&fit=crop&w=1534&q=80">
-
-            </div>
-            <div class="thumbnail">
-                <img
-                    src="https://images.unsplash.com/photo-1601758174493-45d0a4d3e407?ixlib=rb-1.2.1&auto=format&fit=crop&w=1534&q=80">
-
-            </div>
-            <div class="thumbnail">
-                <img
-                    src="https://images.unsplash.com/photo-1601758174493-45d0a4d3e407?ixlib=rb-1.2.1&auto=format&fit=crop&w=1534&q=80">
-
-            </div>
-            <div class="thumbnail">
-                <img
-                    src="https://images.unsplash.com/photo-1601758174493-45d0a4d3e407?ixlib=rb-1.2.1&auto=format&fit=crop&w=1534&q=80">
-
-            </div>
-            <div class="thumbnail">
-                <img
-                    src="https://images.unsplash.com/photo-1601758174493-45d0a4d3e407?ixlib=rb-1.2.1&auto=format&fit=crop&w=1534&q=80">
+                    [src]="url + imagesUrl.value.filename"
+                    (click)="goToImagePreview(imagesUrl.value.filename)"/>
             </div>
 
         </div>
 
-        <div class="in-page-status-info">12 images</div>
+        <div class="in-page-status-info">{{this.imgNum}}</div>
     </main>
 </div>
