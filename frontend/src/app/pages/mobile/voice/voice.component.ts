@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {SmartSpeakerService, UsersService} from '../../../global/services';
-import {ChatModel, UserModel} from "../../../global/models";
-import {Router} from "@angular/router";
+import {ChatModel, UserModel} from '../../../global/models';
+import {Router} from '@angular/router';
 
 
 @Component({
