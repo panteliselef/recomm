@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {ChatModel, MessageType, MessageWithRepliesModel, UserModel} from '../../../global/models';
 import {Router} from '@angular/router';
 import {ChatsService, UsersService} from '../../../global/services';
-import {Subscription} from 'rxjs';
 
 @Component({
     selector: 'ami-fullstack-view-images',
@@ -22,12 +21,9 @@ export class ViewImagesComponent implements OnInit {
     imgMessages: MessageWithRepliesModel[];
     imgNum: string;
 
-    testArr = Array(23).fill(5);
-
     constructor(private router: Router,
                 private usersService: UsersService,
-                private chatsService: ChatsService,
-                private chatService: ChatsService) {
+                private chatsService: ChatsService) {
     }
 
     async chooseChat(chatId: string) {

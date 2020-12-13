@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {SmartSpeakerService, UsersService} from '../../../global/services';
+import {ChatsService, SmartSpeakerService, UsersService} from '../../../global/services';
 import {ChatModel, UserModel} from '../../../global/models';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 
 @Component({
@@ -12,10 +12,60 @@ import {Router} from '@angular/router';
 export class VoiceComponent implements OnInit {
 
     me: UserModel;
+    public allUsers: UserModel[];
+    public user: UserModel;
+    phrase: string;
+    chats: ChatModel[];
 
-    constructor(private speaker: SmartSpeakerService, private router: Router, private usersService: UsersService) {
+    constructor(private route: ActivatedRoute,
+                private chatsService: ChatsService,
+                private users: UsersService,
+                private speaker: SmartSpeakerService,
+                private router: Router,
+                private usersService: UsersService) {
+    }
 
 
+    async chatsInfo() {
+
+        // tslint:disable-next-line:variable-name
+        this.chats = await Promise.all<ChatModel>(this.me.chat_ids.map(async (chat_id: string, index: number) => {
+            return await this.chatsService.getById(chat_id).toPromise();
+        }));
+
+        // tslint:disable-next-line:variable-name
+        this.chats = await Promise.all<ChatModel>(this.chats.map(async (chat: ChatModel) => {
+
+            let member: UserModel;
+            if (chat.participants.length === 2) {
+                console.log(chat.participants);
+                const partId = chat.participants.filter(id => id !== this.me._id)[0];
+                member = await this.usersService.getById(partId).toPromise();
+            }
+            return new ChatModel({
+                ...chat, displayName: member.getFullName(), photoUrl: member.getPhoto()
+            });
+        }));
+
+        await this.goToChatImages(this.chats[0]._id);
+    }
+
+    private async getUser(word: string) {
+        try {
+            this.me = await this.users.getMe();
+            this.allUsers = await this.users
+                .getAll()
+                .toPromise();
+            this.allUsers = this.allUsers.filter<UserModel>((user: UserModel): user is UserModel => {
+                return user._id !== this.me._id;
+            });
+
+            this.user = this.allUsers.find<UserModel>((user: UserModel): user is UserModel => {
+                return user.fname.toLowerCase() === word;
+            });
+        } catch (e) {
+            console.error(e);
+        }
     }
 
     async goToProfile() {
@@ -25,6 +75,10 @@ export class VoiceComponent implements OnInit {
 
     async ngOnInit() {
         this.me = await this.usersService.getMe();
+    }
+
+    async goToChatImages(filename: string) {
+        await this.router.navigate(['/mobile/chats/' + filename + '/edit/browse-images']);
     }
 
     startAction() {
@@ -43,7 +97,14 @@ export class VoiceComponent implements OnInit {
             // word is the name of contact
             // check if contact exist
             // if (!word) then
-            alert(word);
+
+            console.log(word);
+
+            this.getUser(word).then(r =>
+                this.phrase = 'search for ' + word
+            );
+
+
             this.speaker.speak('the contact with name ' + word + 'doesnt exist');
             // if (word)
         };
@@ -52,7 +113,12 @@ export class VoiceComponent implements OnInit {
             // word is the name of chat
             // check if chat exist
             // if (!word) then
-            this.speaker.speak('the chat with name ' + word + 'doesnt exist');
+
+            this.chatsInfo();
+
+            // console.log(this.chats);
+
+            // this.speaker.speak('the chat with name ' + word + 'doesnt exist');
             // if (word)
         };
 

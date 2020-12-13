@@ -60,9 +60,9 @@ const messageSchemaWithReplies = new Schema(
 // Schema definition
 const chatSchema = new Schema(
   {
-    displayName: { type: String, required: true },
+    displayName: { type: String },
     isOnline: { type: Boolean },
-    photoUrl: { type: String, required: true},
+    photoUrl: { type: String },
     participants: [Types.ObjectId],
     messages: [messageSchemaWithReplies]
   },

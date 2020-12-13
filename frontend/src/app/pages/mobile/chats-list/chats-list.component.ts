@@ -25,7 +25,10 @@ export class ChatsListComponent implements OnInit, OnDestroy {
     showLoader = true;
     private subscriptions: Subscription[];
 
-    constructor(private chatsService: ChatsService, private usersService: UsersService, private router: Router, private socketService: SocketsService) {
+    constructor(private chatsService: ChatsService,
+                private usersService: UsersService,
+                private router: Router,
+                private socketService: SocketsService) {
     }
 
     async ngOnInit() {
@@ -35,7 +38,6 @@ export class ChatsListComponent implements OnInit, OnDestroy {
         console.log(this.chats);
 
     }
-
 
     private async fetchData() {
         this.showLoader = true;
@@ -66,11 +68,10 @@ export class ChatsListComponent implements OnInit, OnDestroy {
                 return new ChatModel({
                     ...chat,
                     more: {lastMsg: {value: 'Start talking', timestamp: Date.now()}},
-                    displayName: member? member.getFullName(): chat.displayName,
-                    photoUrl: member? member.getPhoto(): chat.photoUrl
-                })
-            }
-            else {
+                    displayName: member ? member.getFullName() : chat.displayName,
+                    photoUrl: member ? member.getPhoto() : chat.photoUrl
+                });
+            } else {
 
                 const s = await this.chatsService.getMessages(chat._id).toPromise();
 
