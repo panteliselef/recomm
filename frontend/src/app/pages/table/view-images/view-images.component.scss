@@ -12,6 +12,7 @@ h1 {
 
 
 .side-nav-item {
+    outline: none;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -75,6 +76,23 @@ h1 {
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+
+    .cta-call {
+        display: inline-flex;
+        border-radius: 100px;
+        background-color: $orange-color;
+        padding: .5rem 1.5rem;
+        margin-left: 1rem;
+        cursor: pointer;
+
+
+        &.disabled {
+            cursor: auto;
+            background-color: $mid-black;
+            color: $light-black;
+        }
+    }
 
     img.profile-img {
         width: 50px;

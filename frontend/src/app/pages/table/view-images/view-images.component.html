@@ -14,7 +14,7 @@
 
         <ul>
             <li  *ngFor="let one of this.chats" class="side-nav-item"
-                (click)="chooseChat(one._id)">
+                (click)="chooseChat(one._id)" [routerLink]="one._id">
                 <img class="profile-img" [src]="one.photoUrl" />
                 <span class="mid">
                     {{one.displayName}}
@@ -30,10 +30,15 @@
 
         <div class="top-bar" *ngIf="this.chat">
             <div style="display: flex; align-items: center">
-                <img class="profile-img" [src]="this.chat.photoUrl"/>
+                <img *ngIf="this.chat.photoUrl" class="profile-img" [src]="this.chat.photoUrl"/>
                 <div style="display: flex;flex-direction: column; margin-left: .8rem">
                     <span class="chat-name" >{{this.chat.displayName}}</span>
                     <span class="chat-status sub-text">Online</span>
+                </div>
+
+
+                <div class="cta-call" (click)="joinAnotherCall()" [ngClass]="{'disabled': inCallChatId === chat._id}">
+                    {{inCallChatId === chat._id? 'In Call' : 'Call Now'}}
                 </div>
             </div>
             <div class="">
@@ -55,7 +60,7 @@
 
             </div>
 
-            <div style="display: flex; justify-content: center; align-items: center;width: 100%;margin-bottom: 1rem">{{this.imgNum}}</div>
+            <div style="display: flex; justify-content: center; align-items: center;width: 100%;margin-bottom: 1rem">{{this.imgMessages?.length}} {{this.imgMessages?.length === 1 ? 'image' : 'images' }}</div>
         </div>
 
 

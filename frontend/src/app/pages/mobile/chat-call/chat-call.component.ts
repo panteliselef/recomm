@@ -1,5 +1,5 @@
 import {Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
-import {ChatModel, UserModel} from "../../../global/models";
+import {ChatModel, UserModel, VideoOptions} from "../../../global/models";
 import {ActivatedRoute} from "@angular/router";
 import {ChatsService, SocketsService, UsersService} from "../../../global/services";
 import {HttpClient} from "@angular/common/http";
@@ -12,10 +12,7 @@ interface VCRTMessage {
     live_members: { memberId: string, videoOptions: { isMuted: boolean, hasCamera: boolean } }[]
 }
 
-interface VideoOptions {
-    isMuted: boolean,
-    hasCamera: boolean
-}
+
 
 interface UserWithVideoSettings {
     user: UserModel,
@@ -34,7 +31,7 @@ interface UserWithVideoSettings {
 export class ChatCallComponent implements OnInit, OnDestroy {
 
     @Output() callHangUp = new EventEmitter<any>();
-    @Input('options') options: { isMuted: boolean, hasCamera: boolean };
+    @Input('options') options: VideoOptions;
 
     private participant: UserModel;
     private participants: UserModel[];
@@ -45,6 +42,7 @@ export class ChatCallComponent implements OnInit, OnDestroy {
     private videoCallSub: Subscription;
     private getJoinedUsers: Subscription;
     private newJoinedUser: Subscription;
+    private updatedUser: Subscription;
     private leaveUser: Subscription;
 
 
@@ -53,8 +51,7 @@ export class ChatCallComponent implements OnInit, OnDestroy {
     constructor(private route: ActivatedRoute,
                 private chatService: ChatsService,
                 private userService: UsersService,
-                private socketService: SocketsService,
-                private http: HttpClient
+                private socketService: SocketsService
     ) {
 
 
@@ -93,7 +90,8 @@ export class ChatCallComponent implements OnInit, OnDestroy {
             this.socketService.sendMessage(`videocall/join`, {
                 chat: this.chat._id,
                 member: this.me._id,
-                videoOptions: this.options
+                videoOptions: this.options,
+                device: 'MOBILE'
             })
         }, 1000)
 
@@ -108,27 +106,22 @@ export class ChatCallComponent implements OnInit, OnDestroy {
                 this.hangUpCall()
             })
 
-        this.newJoinedUser = this.socketService
+        this.updatedUser = this.socketService
             .syncMessages(`${chatId}/videocall/user-options-updated`)
             .subscribe((msg: { event: string, message: { member: string, videoOptions: VideoOptions } }) => {
-                // this.onUserJoined(msg.message)
                 this.onUserUpdated(msg.message)
-                console.log(msg.message)
             });
 
         this.newJoinedUser = this.socketService
             .syncMessages(`${chatId}/videocall/user-joined`)
             .subscribe((msg: { event: string, message: { member: string, videoOptions: VideoOptions } }) => {
-
                 this.onUserJoined(msg.message)
-                console.log(msg.message)
             });
 
         this.leaveUser = this.socketService
             .syncMessages(`${chatId}/videocall/user-left`)
             .subscribe((msg) => {
                 this.onUserLeft(msg.message)
-                console.log(msg.message)
             });
 
 
@@ -160,6 +153,10 @@ export class ChatCallComponent implements OnInit, OnDestroy {
 
     }
 
+    toggleVideoSetting() {
+        this.showVideoSetting = !this.showVideoSetting;
+    }
+
     toggleCamera() {
         this.options.hasCamera = !this.options.hasCamera
         this.socketService.sendMessage(`videocall/update`, {
@@ -178,10 +175,6 @@ export class ChatCallComponent implements OnInit, OnDestroy {
         })
     }
 
-    toggleVideoSetting() {
-        this.showVideoSetting = !this.showVideoSetting;
-    }
-
     hangUpCall() {
 
         this.socketService.sendMessage(`videocall/leave`, {
@@ -195,13 +188,12 @@ export class ChatCallComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         this.videoCallSub.unsubscribe()
         this.newJoinedUser.unsubscribe()
+        this.updatedUser.unsubscribe()
         this.getJoinedUsers.unsubscribe()
         this.leaveUser.unsubscribe()
     }
 
     private onUserJoined(msg: { member: string, videoOptions: VideoOptions }) {
-        console.log('member', msg.member)
-        console.log('opts', msg.videoOptions)
         const l = this.participants.find(party => party._id === msg.member)
         const o = {
             user: l,
@@ -230,9 +222,6 @@ export class ChatCallComponent implements OnInit, OnDestroy {
     }
 
     private onGetCallUsers(msg: any) {
-        console.log('onGetCallUsers', msg.live_members)
-
-
         const members = Object.entries(msg.live_members).filter(user => user[0] !== this.me._id).map((user:[string, any]): UserWithVideoSettings => {
             const [k, v] = user
             // const opts = v.videoOptions;
@@ -246,13 +235,10 @@ export class ChatCallComponent implements OnInit, OnDestroy {
         members.forEach(member => {
             this.setVideoReady(member)
         })
-
-
         this.inCallParticipants = [
             ...this.inCallParticipants,
             ...members
         ]
-        console.log('members', members)
     }
 
 

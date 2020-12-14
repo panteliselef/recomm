@@ -1,8 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ChatModel, MessageType, MessageWithRepliesModel, UserModel} from '../../../global/models';
 import {Router} from '@angular/router';
-import {ChatsService, UsersService} from '../../../global/services';
-import {Subscription} from 'rxjs';
+import {ChatsService, SocketsService, UsersService} from '../../../global/services';
 
 @Component({
     selector: 'ami-fullstack-view-images',
@@ -20,36 +19,50 @@ export class ViewImagesComponent implements OnInit {
     chats: ChatModel[];
     chat: ChatModel;
     imgMessages: MessageWithRepliesModel[];
-    imgNum: string;
 
-    testArr = Array(23).fill(5);
+    inCallChatId: string;
 
     constructor(private router: Router,
                 private usersService: UsersService,
                 private chatsService: ChatsService,
-                private chatService: ChatsService) {
+                private socketService: SocketsService) {
     }
 
     async chooseChat(chatId: string) {
         this.chat = this.chats.find(chat => chat._id === chatId);
 
-        // @ts-ignore
-        this.imgMessages = this.chat.messages.filter<MessageWithRepliesModel>((message: MessageWithRepliesModel): boolean => {
+        this.imgMessages = this.chat.messages.filter<MessageWithRepliesModel>((message: MessageWithRepliesModel): message is MessageWithRepliesModel => {
             return message.type === MessageType.IMAGE_STATIC;
         });
-
-        console.log(this.imgMessages);
-        if (this.imgMessages.length === 1) {
-            this.imgNum = this.imgMessages.length + ' Image';
-        } else {
-            this.imgNum = this.imgMessages.length + ' Images';
-        }
     }
 
     async ngOnInit() {
         this.me = await this.usersService.getMe();
 
-        this.chatsInfo();
+        this.socketService
+            .syncMessages(`${this.me._id}/videocall/user-in-chat`)
+            .subscribe(async (msg: {event: string,message: {chatId: string,device: string}}) => {
+
+                if(!msg.message) return
+                console.log(msg.message.chatId)
+                this.inCallChatId = msg.message.chatId
+
+
+                this.socketService
+                    .syncMessages(`${msg.message.chatId}/videocall/user-left`)
+                    .subscribe((msg) => {
+
+                        if(msg.message === this.me._id) this.inCallChatId = msg.message.chatId
+                        console.log(msg.message)
+                    });
+            })
+
+
+        this.socketService.sendMessage('getUser',{
+            member: this.me._id
+        })
+
+        await this.chatsInfo();
     }
 
     async chatsInfo() {
@@ -58,20 +71,30 @@ export class ViewImagesComponent implements OnInit {
             return await this.chatsService.getById(chat_id).toPromise();
         }));
 
-        // tslint:disable-next-line:variable-name
         this.chats = await Promise.all<ChatModel>(this.chats.map(async (chat: ChatModel) => {
-
             let member: UserModel;
             if (chat.participants.length === 2) {
-                console.log(chat.participants);
                 const partId = chat.participants.filter(id => id !== this.me._id)[0];
                 member = await this.usersService.getById(partId).toPromise();
+                return new ChatModel({
+                    ...chat, displayName: member.getFullName(), photoUrl: member.getPhoto()
+                });
             }
-            return new ChatModel({
-                ...chat, displayName: member.getFullName(), photoUrl: member.getPhoto()
-            });
-        }));
+            return chat;
 
-        console.log(this.chats);
+        }));
+    }
+
+    joinAnotherCall() {
+
+        // Leave previous call
+        if(this.inCallChatId) {
+            this.socketService.sendMessage(`videocall/leave`, {
+                chat: this.inCallChatId,
+                member: this.me._id
+            })
+        }
+
+
     }
 }

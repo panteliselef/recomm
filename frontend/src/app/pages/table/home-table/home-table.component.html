@@ -11,19 +11,32 @@
             Controls
         </div>
 
-        <div class="controls">
+        <div *ngIf="!userIsCurrentlyInChat" class="controls">
+
+            <div class="" (click)="callSelected()">Call</div>
+        </div>
+
+        <div *ngIf="userIsCurrentlyInChat" class="controls">
 
             <div class="side-nav-divider">
                 Participants
             </div>
 
             <ul class="participants-list">
-                <li *ngFor="let one of testArr" class="side-nav-item">
-                    <img class="profile-img"
-                         src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80"/>
-                    <span class="mid">
-                    Emma Bailey
-                </span>
+                <li *ngFor="let member of inCallChatParties" class="side-nav-item"
+                    style="justify-content: space-between;">
+                    <div style="display: flex;align-items: center;">
+                        <img class="profile-img" [src]="member.user.getPhoto()"/>
+                        <div style="display: flex;flex-direction: column">
+                            <span class="mid">{{member.user.getFullName()}}</span>
+                            <span *ngIf="member.device" class="device">{{member.device}}</span>
+                        </div>
+                    </div>
+                    <div style="display: flex;justify-content: center; align-items: center">
+                        <span *ngIf="!member.isInCall">away</span>
+                        <span *ngIf="member.isInCall && !member.videoOptions.isMuted" class="material-icons-round">mic_off</span>
+                        <span *ngIf="member.isInCall && member.videoOptions.isMuted" class="material-icons-round">mic</span>
+                    </div>
                 </li>
             </ul>
 
@@ -49,19 +62,21 @@
 
             <div *ngIf="!showOnlyParticipants" class="call-controls">
 
-                <span>In call with Project Team</span>
-                <span>3:41</span>
+                <span style="padding: 1rem">In call with {{inCallChat?.displayName}}</span>
+                <!--                <span>3:41</span>-->
 
                 <div class="video-control">
 
-                    <div class="control-button">
-                        <i class="material-icons-round">videocam</i>
+                    <div class="control-button" (click)="toggleCamera()">
+                        <i *ngIf="!options.hasCamera" class="material-icons-round">videocam_off</i>
+                        <i *ngIf="options.hasCamera" class="material-icons-round">videocam</i>
                     </div>
-                    <div class="control-button primary">
+                    <div class="control-button primary" (click)="hangUpCall()">
                         <i class="material-icons-round">call_end</i>
                     </div>
-                    <div class="control-button">
-                        <i class="material-icons-round">mic</i>
+                    <div class="control-button" (click)="toggleMic()">
+                        <i *ngIf="options.isMuted" class="material-icons-round">mic</i>
+                        <i *ngIf="!options.isMuted" class="material-icons-round">mic_off</i>
                     </div>
                 </div>
             </div>

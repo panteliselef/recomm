@@ -4,26 +4,53 @@ import RedisAdapter from 'socket.io-redis';
 import { logger } from '@app/utils/logger';
 import { config, getHostDomain } from '@app/config/environment';
 
+enum UserDevice {
+  MOBILE = 'MOBILE',
+  TV = 'TV',
+  TABLE = 'TABLE',
+}
 
 export class SocketServer {
 
   public io: io.Server;
 
+
+
+  private videoCallsPerUser: any = {
+    "5fca49c79a6e9e032a811158": {
+      chatId: "5fd4ac43ddd9ce020d76f294",
+      device: UserDevice.MOBILE
+    },
+    "5fca49c79a6e9e032a811154": {
+      chatId: "5fd4ac43ddd9ce020d76f294",
+      device: UserDevice.MOBILE
+    }
+  }
+
   private videoCallsPerChat: any = {
     "5fd4ac43ddd9ce020d76f294": {
       live_members: {
-        // "5fca49c79a6e9e032a811159" : {
-        //   videoOptions: {
-        //     hasCamera: false,
-        //     isMuted: false
-        //   }
-        // },
-        // "5fca49c79a6e9e032a811158" : {
-        //   videoOptions: {
-        //     hasCamera: false,
-        //     isMuted: false
-        //   }
-        // }
+        "5fca49c79a6e9e032a811159" : {
+          device: UserDevice.MOBILE,
+          videoOptions: {
+            hasCamera: false,
+            isMuted: false
+          }
+        },
+        "5fca49c79a6e9e032a811158" : {
+          device: UserDevice.TV,
+          videoOptions: {
+            hasCamera: false,
+            isMuted: false
+          }
+        },
+        "5fca49c79a6e9e032a811154" : {
+          device: UserDevice.MOBILE,
+          videoOptions: {
+            hasCamera: false,
+            isMuted: false
+          }
+        }
       }
     }
   }
@@ -73,7 +100,7 @@ export class SocketServer {
    * On server connection.
    */
   private onConnect() {
-    this.io.on('connection', socket => {
+    this.io.on('connection', (socket: io.Socket) => {
       logger.debug('connection');
 
       this.onSubscribe(socket);
@@ -124,15 +151,17 @@ export class SocketServer {
    */
   private onClientEvent(socket: io.Socket): void {
     socket.on('client:event', (eventName: string, msg: any) => {
-      const chatlId = msg.chat;
+      const chatId = msg.chat;
       const userId = msg.member;
       const videoOpts = msg.videoOptions;
+      const device = msg.device;
 
       if (eventName === 'videocall/join') {
         
-        if (this.videoCallsPerChat[chatlId]){
+        if (this.videoCallsPerChat[chatId]){
 
-          this.videoCallsPerChat[chatlId].live_members[userId] = {
+          this.videoCallsPerChat[chatId].live_members[userId] = {
+            device,
             videoOptions: videoOpts
           }
         }
@@ -141,52 +170,74 @@ export class SocketServer {
           //   live_members: [userId]
           // }
 
-          this.videoCallsPerChat[chatlId] = {
+          this.videoCallsPerChat[chatId] = {
             live_members: {
               [userId]: {
+                device,
                 videoOptions: videoOpts
               }
             }
           }
         }
 
+        this.videoCallsPerUser[userId] = {
+          chatId,
+          device: UserDevice.MOBILE
+        }
+
         // Broadvcast to others, not the same socket
-        socket.broadcast.emit('server:event', `${chatlId}/videocall/user-joined`, {member: userId,videoOptions: videoOpts})
+        socket.broadcast.emit('server:event', `${chatId}/videocall/user-joined`, {member: userId,videoOptions: videoOpts})
 
         // Send back to same socket
-        socket.emit('server:event', `${chatlId}/videocall/get-users`, this.videoCallsPerChat);
+        socket.emit('server:event', `${chatId}/videocall/get-users`, this.videoCallsPerChat);
+
+        // Send back to same socket
+        socket.broadcast.emit('server:event', `${userId}/videocall/user-in-chat`, this.videoCallsPerUser[userId]);
 
         // Send back to all
-        this.io.emit('server:event', `${chatlId}/videocall/people-in-call`, this.videoCallsPerChat[chatlId]);
+        this.io.emit('server:event', `${chatId}/videocall/people-in-call`, this.videoCallsPerChat[chatId]);
       }else if(eventName === 'videocall/leave') {
-        if (this.videoCallsPerChat[chatlId])
-          if(Object.keys(this.videoCallsPerChat[chatlId].live_members).length == 1)
-            this.videoCallsPerChat[chatlId] = null;
-          else
-            this.videoCallsPerChat[chatlId].live_members[userId] = null;
+        if (this.videoCallsPerChat[chatId]) {
+          if(Object.keys(this.videoCallsPerChat[chatId].live_members).length == 1)
+            this.videoCallsPerChat[chatId] = null;
+          else {
+            this.videoCallsPerChat[chatId].live_members[userId] = null;
+            delete this.videoCallsPerChat[chatId].live_members[userId]
+          }
+        }
+
+
+        if(this.videoCallsPerUser[userId]) {
+          delete this.videoCallsPerUser[userId]
+        }
         // this.videoCallsPerChat[chatlId].live_members.filter((memberId: string) => memberId !== userId);
 
 
         // Broadvcast to others, not the same socket
-        socket.broadcast.emit('server:event', `${chatlId}/videocall/user-left`, userId);
+        socket.broadcast.emit('server:event', `${chatId}/videocall/user-left`, userId);
 
         // Send back to same socket
-        socket.emit('server:event', `${chatlId}/videocall/get-users`, this.videoCallsPerChat);
+        // socket.emit('server:event', `${chatId}/videocall/get-users`, this.videoCallsPerChat[chatId]);
 
         // Send back to all
-        this.io.emit('server:event', `${chatlId}/videocall/people-in-call`, this.videoCallsPerChat[chatlId]);
+        this.io.emit('server:event', `${chatId}/videocall/people-in-call`, this.videoCallsPerChat[chatId]);
       }else if(eventName === 'videocall/update') {
-        this.videoCallsPerChat[chatlId].live_members[userId] = {
-          videoOptions: videoOpts
+        this.videoCallsPerChat[chatId].live_members[userId] = {
+          videoOptions: videoOpts,
+          device: device || this.videoCallsPerChat[chatId].live_members[userId].device
         }
 
 
         // Broadvcast to others, not the same socket
-        socket.broadcast.emit('server:event', `${chatlId}/videocall/user-options-updated`, {member: userId,videoOptions: videoOpts});
+        socket.broadcast.emit('server:event', `${chatId}/videocall/user-options-updated`, {member: userId,videoOptions: videoOpts});
       }else if(eventName === 'videocall/send-users') {
 
         // Send back to same socket
-        socket.emit('server:event', `${chatlId}/videocall/people-in-call`, this.videoCallsPerChat[chatlId]);
+        socket.emit('server:event', `${chatId}/videocall/get-users`, this.videoCallsPerChat[chatId]);
+      }else if(eventName === 'getUser') {
+
+        // Send back to same socket
+        socket.emit('server:event', `${userId}/videocall/user-in-chat`, this.videoCallsPerUser[userId]);
       }
 
 
