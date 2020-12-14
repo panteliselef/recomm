@@ -66,6 +66,7 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
     showMenu: boolean;
 
     chatSubscription: Subscription;
+    private peopleInVideoCall: Subscription;
 
 
     constructor(private route: ActivatedRoute,
@@ -86,6 +87,31 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
             .syncMessages(`/${this.chat._id}/newMessage`)
             .subscribe((msg) => {
                 this.onReceiveMessage(msg.message);
+            });
+
+        setTimeout(() => {
+            this.socketService.sendMessage(`videocall/send-users`, {
+                chat: this.chat._id,
+                member: this.me._id,
+            })
+        }, 1000)
+
+        this.peopleInVideoCall = this.socketService
+            .syncMessages(`${chatId}/videocall/people-in-call`)
+            .subscribe((msg ) => {
+                console.log(msg.message)
+                if(!msg.message) {
+                    this.icons[0].name = 'call'
+                    return;
+                }
+                if(Object.entries(msg.message.live_members).length > 0 ) {
+                    this.icons[0].name = 'phone_in_talk'
+                }else {
+                    this.icons[0].name = 'call'
+                }
+                // this.onUserJoined(msg.message)
+                // this.onUserUpdated(msg.message)
+
             });
 
         this.participants = await Promise.all<UserModel>(this.chat.participants.map(async (memberId) => {

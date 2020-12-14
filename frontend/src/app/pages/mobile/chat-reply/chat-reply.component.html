@@ -3,6 +3,7 @@
     <app-chat-bar
         chatName="Replies"
         [icons]="icons"
+        [subName]="chat?.displayName"
     >
 
     </app-chat-bar>
@@ -36,7 +37,7 @@
         <div class="msg-group-day">
 
             <div class="message-layout message-layout-vertical">
-                <img class="profile-img" [src]="repliedMessage?.user?.getPhoto()"/>
+                <img *ngIf="repliedMessage?.user" class="profile-img" [src]="repliedMessage?.user?.getPhoto()"/>
                 <div style="width: 100%">
                     <div class="message-info">
                         <span class="sender-name">{{repliedMessage?.user?.getFullName()}}</span>
@@ -49,14 +50,12 @@
                             <span class="material-icons-round icon">attach_file</span>
                             <div>
                                 <span>{{repliedMessage?.message?.value.originalname}}</span>
-                                <span class="file-size">{{formatBytes(repliedMessage?.message?.value.size)}}</span>
+                                <span class="file-size">{{ msg.value.size | byteConvert}}</span>
                             </div>
                         </div>
                         <img class="inline-msg-image" *ngIf="repliedMessage?.message?.type === 'IMAGE_STATIC'" [src]="url + repliedMessage?.message?.value.filename"/>
                         <img class="inline-msg-image" *ngIf="repliedMessage?.message?.type === 'IMAGE_GIF'" [src]="repliedMessage?.message?.value"/>
                         <span *ngIf="repliedMessage?.message?.type === 'TEXT'" [innerHTML]="repliedMessage?.message.value | linkify"></span>
-                        <span *ngIf="repliedMessage?.message?.type === 'TEXT'"
-                              [innerHTML]="repliedMessage?.message?.value | linkify"></span>
 
                     </div>
                 </div>

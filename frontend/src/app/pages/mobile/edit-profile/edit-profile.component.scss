@@ -1,3 +1,5 @@
+@import "../../../../declarations";
+
 main {
     display: flex;
     flex-direction: column;
@@ -10,7 +12,7 @@ main {
         text-align: center;
     }
 
-    .profile-options {
+    ul.profile-options {
         padding: 1rem;
 
         i {
@@ -23,7 +25,11 @@ main {
             display: flex;
             justify-content: flex-start;
             align-items: center;
-            margin-left: 1rem;
+            padding-left: 1rem;
+
+            &.disabled {
+                color: $light-black;
+            }
         }
 
 

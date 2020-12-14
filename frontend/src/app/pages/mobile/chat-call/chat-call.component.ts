@@ -3,9 +3,25 @@ import {ChatModel, UserModel} from "../../../global/models";
 import {ActivatedRoute} from "@angular/router";
 import {ChatsService, SocketsService, UsersService} from "../../../global/services";
 import {HttpClient} from "@angular/common/http";
-import {environment} from "../../../../environments/environment";
-import {map} from "rxjs/operators";
 import {Subscription} from "rxjs";
+
+interface VCRTMessage {
+    // chat: string,
+    // member: string,
+    // videoOptions: {isMuted: boolean, hasCamera: boolean}
+    live_members: { memberId: string, videoOptions: { isMuted: boolean, hasCamera: boolean } }[]
+}
+
+interface VideoOptions {
+    isMuted: boolean,
+    hasCamera: boolean
+}
+
+interface UserWithVideoSettings {
+    user: UserModel,
+    videoOptions: VideoOptions,
+    isVideoReady: boolean
+}
 
 @Component({
     selector: 'ami-fullstack-chat-call',
@@ -18,7 +34,7 @@ import {Subscription} from "rxjs";
 export class ChatCallComponent implements OnInit, OnDestroy {
 
     @Output() callHangUp = new EventEmitter<any>();
-    @Input('options') options: {isMuted: boolean, hasCamera: boolean} ;
+    @Input('options') options: { isMuted: boolean, hasCamera: boolean };
 
     private participant: UserModel;
     private participants: UserModel[];
@@ -30,6 +46,9 @@ export class ChatCallComponent implements OnInit, OnDestroy {
     private getJoinedUsers: Subscription;
     private newJoinedUser: Subscription;
     private leaveUser: Subscription;
+
+
+    inCallParticipants: UserWithVideoSettings[] = [];
 
     constructor(private route: ActivatedRoute,
                 private chatService: ChatsService,
@@ -47,10 +66,25 @@ export class ChatCallComponent implements OnInit, OnDestroy {
     @Input('chat') chat: ChatModel;
 
 
+    setVideoReady(obj: UserWithVideoSettings) {
+        return setTimeout(() => {
+            obj.isVideoReady = true
+        }, 2000)
+    }
+
     private async fetchChatData(chatId: string) {
         this.chat = await this.chatService.getById(chatId).toPromise()
 
         this.me = await this.userService.getMe();
+
+
+        const meAsParticipant: UserWithVideoSettings = {
+            user: this.me,
+            videoOptions: this.options,
+            isVideoReady: false
+        }
+        this.inCallParticipants = [meAsParticipant]
+        this.setVideoReady(meAsParticipant)
 
 
         // this.socketService.syncAllMessages().subscribe((msg)=> console.log(msg))
@@ -75,14 +109,25 @@ export class ChatCallComponent implements OnInit, OnDestroy {
             })
 
         this.newJoinedUser = this.socketService
+            .syncMessages(`${chatId}/videocall/user-options-updated`)
+            .subscribe((msg: { event: string, message: { member: string, videoOptions: VideoOptions } }) => {
+                // this.onUserJoined(msg.message)
+                this.onUserUpdated(msg.message)
+                console.log(msg.message)
+            });
+
+        this.newJoinedUser = this.socketService
             .syncMessages(`${chatId}/videocall/user-joined`)
-            .subscribe((msg) => {
+            .subscribe((msg: { event: string, message: { member: string, videoOptions: VideoOptions } }) => {
+
+                this.onUserJoined(msg.message)
                 console.log(msg.message)
             });
 
         this.leaveUser = this.socketService
             .syncMessages(`${chatId}/videocall/user-left`)
             .subscribe((msg) => {
+                this.onUserLeft(msg.message)
                 console.log(msg.message)
             });
 
@@ -90,7 +135,7 @@ export class ChatCallComponent implements OnInit, OnDestroy {
         this.getJoinedUsers = this.socketService
             .syncMessages(`${chatId}/videocall/get-users`)
             .subscribe((msg) => {
-                console.log(msg.message)
+                this.onGetCallUsers(msg.message[this.chat._id])
             });
 
 
@@ -108,10 +153,29 @@ export class ChatCallComponent implements OnInit, OnDestroy {
 
     }
 
+
     async ngOnInit() {
         const chatId = this.route.snapshot.params.id;
         await this.fetchChatData(chatId);
 
+    }
+
+    toggleCamera() {
+        this.options.hasCamera = !this.options.hasCamera
+        this.socketService.sendMessage(`videocall/update`, {
+            chat: this.chat._id,
+            member: this.me._id,
+            videoOptions: this.options
+        })
+    }
+
+    toggleMic() {
+        this.options.isMuted = !this.options.isMuted
+        this.socketService.sendMessage(`videocall/update`, {
+            chat: this.chat._id,
+            member: this.me._id,
+            videoOptions: this.options
+        })
     }
 
     toggleVideoSetting() {
@@ -134,4 +198,62 @@ export class ChatCallComponent implements OnInit, OnDestroy {
         this.getJoinedUsers.unsubscribe()
         this.leaveUser.unsubscribe()
     }
+
+    private onUserJoined(msg: { member: string, videoOptions: VideoOptions }) {
+        console.log('member', msg.member)
+        console.log('opts', msg.videoOptions)
+        const l = this.participants.find(party => party._id === msg.member)
+        const o = {
+            user: l,
+            videoOptions: msg.videoOptions,
+            isVideoReady: false
+        }
+
+        this.inCallParticipants = [
+            ...this.inCallParticipants,
+            o
+        ]
+        this.setVideoReady(o)
+    }
+
+    private onUserUpdated(msg: { member: string; videoOptions: VideoOptions }) {
+        const o: UserWithVideoSettings = this.inCallParticipants.find(party => party.user._id === msg.member)
+        o.videoOptions = msg.videoOptions
+        this.inCallParticipants = [
+            ...this.inCallParticipants.filter(party => party.user._id !== msg.member),
+            o
+        ]
+    }
+
+    private onUserLeft(msg: string) {
+        this.inCallParticipants = this.inCallParticipants.filter(party => party.user._id !== msg)
+    }
+
+    private onGetCallUsers(msg: any) {
+        console.log('onGetCallUsers', msg.live_members)
+
+
+        const members = Object.entries(msg.live_members).filter(user => user[0] !== this.me._id).map((user:[string, any]): UserWithVideoSettings => {
+            const [k, v] = user
+            // const opts = v.videoOptions;
+            return {
+                user: this.participants.find(participant => participant._id === k),
+                videoOptions: {...v.videoOptions},
+                isVideoReady: false
+            }
+        })
+
+        members.forEach(member => {
+            this.setVideoReady(member)
+        })
+
+
+        this.inCallParticipants = [
+            ...this.inCallParticipants,
+            ...members
+        ]
+        console.log('members', members)
+    }
+
+
 }

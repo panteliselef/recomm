@@ -46,15 +46,19 @@ export class ChatTextAreaComponent implements OnInit {
         this.gifType = 'gif';
 
         this.textareaValue = ''; // reset value
-        this.http.get<Array<any>>('https://emoji-api.com/categories/smileys-emotion?access_key=5e89eb3cb936e10074cc44fbde7f6b4a7422146d').toPromise().then(res => {
 
+        this.http.get<Array<any>>('https://emoji-api.com/categories/smileys-emotion?access_key=5e89eb3cb936e10074cc44fbde7f6b4a7422146d').toPromise().then(res => {
             this.emojis = res.filter(emoji => {
                 return emoji.group !== 'flags';
             });
             this.filteredEmojis = this.emojis;
-
+        }).catch(err => {
+            this.emojis = []
+            this.filteredEmojis = []
+        }).finally(() => {
             this.showLoadingSpinner = false;
         });
+
 
 
         this.toggleableArr = [false, false];

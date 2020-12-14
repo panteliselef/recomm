@@ -1,0 +1,22 @@
+@import "../../../../declarations";
+
+ul.documents {
+    padding: 0 1rem;
+    li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        padding: .5rem;
+        border-bottom: 1px solid $mid-black;
+
+        span {
+            color: $light-black;
+            font-size: .9rem;
+        }
+
+        i {
+            height: 100%;
+        }
+    }
+}

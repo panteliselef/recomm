@@ -10,6 +10,7 @@ import {ActivatedRoute} from "@angular/router";
 export class AppChatBarComponent implements OnInit {
     @Input('chatName') chatName: string;
     @Input('icons') icons: { name: string, onClick: Function }[];
+    @Input('subName') subName: string;
 
     chatStatus: string = 'online';
 

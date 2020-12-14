@@ -7,16 +7,24 @@
 
 
     <main class="">
-        <div class="documents">
+        <ul class="documents">
 
-            <div class="thumbnail" *ngFor="let documentsUrl of imgMessages">
-                <input type="button"
-                    (click)="downloadDocument(documentsUrl.value)"
-                value="{{documentsUrl.value.originalname}}">
-            </div>
+            <li *ngFor="let documentsUrl of fileMessages" (click)="downloadDocument(documentsUrl.value)">
 
-        </div>
+                <div>
+                    <div>
+                        {{documentsUrl.value.originalname}}
+                    </div>
+                    <span>{{documentsUrl.value.size | byteConvert}}</span>
+                </div>
 
-        <div class="in-page-status-info">{{this.imgNum}}</div>
+                <div style="height: 100%"  class="">
+                    <i class="material-icons-round">cloud_download</i>
+                </div>
+            </li>
+
+        </ul>
+
+        <div class="in-page-status-info">{{fileMessages.length}} Documents</div>
     </main>
 </div>

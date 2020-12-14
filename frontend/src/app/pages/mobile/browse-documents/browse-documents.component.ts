@@ -14,8 +14,7 @@ export class BrowseDocumentsComponent implements OnInit {
 
     chat: ChatModel;
     me: UserModel;
-    imgMessages: MessageWithRepliesModel[];
-    imgNum: string;
+    fileMessages: MessageWithRepliesModel[] = [];
 
     constructor(private route: ActivatedRoute,
                 private chatService: ChatsService,
@@ -30,18 +29,10 @@ export class BrowseDocumentsComponent implements OnInit {
         this.chat = await this.chatService.getById(chatId).toPromise();
         this.me = await this.userService.getMe();
 
-        // @ts-ignore
-        this.imgMessages = this.chat.messages.filter<MessageWithRepliesModel>((message: MessageWithRepliesModel): boolean => {
+
+        this.fileMessages = this.chat.messages.filter<MessageWithRepliesModel>((message: MessageWithRepliesModel): message is MessageWithRepliesModel => {
             return message.type === MessageType.FILE;
         });
-
-        console.log(this.imgMessages);
-        if (this.imgMessages.length === 1) {
-            this.imgNum = this.imgMessages.length + ' Document';
-        } else {
-            this.imgNum = this.imgMessages.length + ' Documents';
-        }
-
     }
 
     async downloadDocument(file: { filename: string }) {

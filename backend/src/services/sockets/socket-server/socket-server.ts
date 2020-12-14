@@ -9,7 +9,24 @@ export class SocketServer {
 
   public io: io.Server;
 
-  private videoCallsPerChat: any = {}
+  private videoCallsPerChat: any = {
+    "5fd4ac43ddd9ce020d76f294": {
+      live_members: {
+        // "5fca49c79a6e9e032a811159" : {
+        //   videoOptions: {
+        //     hasCamera: false,
+        //     isMuted: false
+        //   }
+        // },
+        // "5fca49c79a6e9e032a811158" : {
+        //   videoOptions: {
+        //     hasCamera: false,
+        //     isMuted: false
+        //   }
+        // }
+      }
+    }
+  }
 
   constructor() { }
 
@@ -109,23 +126,45 @@ export class SocketServer {
     socket.on('client:event', (eventName: string, msg: any) => {
       const chatlId = msg.chat;
       const userId = msg.member;
+      const videoOpts = msg.videoOptions;
 
       if (eventName === 'videocall/join') {
         
-        if (this.videoCallsPerChat[chatlId]) this.videoCallsPerChat[chatlId].live_members.push(userId)
+        if (this.videoCallsPerChat[chatlId]){
+
+          this.videoCallsPerChat[chatlId].live_members[userId] = {
+            videoOptions: videoOpts
+          }
+        }
         else {
+          // this.videoCallsPerChat[chatlId] = {
+          //   live_members: [userId]
+          // }
+
           this.videoCallsPerChat[chatlId] = {
-            live_members: [userId]
+            live_members: {
+              [userId]: {
+                videoOptions: videoOpts
+              }
+            }
           }
         }
 
         // Broadvcast to others, not the same socket
-        socket.broadcast.emit('server:event', `${chatlId}/videocall/user-joined`, userId);
+        socket.broadcast.emit('server:event', `${chatlId}/videocall/user-joined`, {member: userId,videoOptions: videoOpts})
 
         // Send back to same socket
         socket.emit('server:event', `${chatlId}/videocall/get-users`, this.videoCallsPerChat);
+
+        // Send back to all
+        this.io.emit('server:event', `${chatlId}/videocall/people-in-call`, this.videoCallsPerChat[chatlId]);
       }else if(eventName === 'videocall/leave') {
-        this.videoCallsPerChat[chatlId].live_members.filter((memberId: string) => memberId !== userId);
+        if (this.videoCallsPerChat[chatlId])
+          if(Object.keys(this.videoCallsPerChat[chatlId].live_members).length == 1)
+            this.videoCallsPerChat[chatlId] = null;
+          else
+            this.videoCallsPerChat[chatlId].live_members[userId] = null;
+        // this.videoCallsPerChat[chatlId].live_members.filter((memberId: string) => memberId !== userId);
 
 
         // Broadvcast to others, not the same socket
@@ -134,6 +173,20 @@ export class SocketServer {
         // Send back to same socket
         socket.emit('server:event', `${chatlId}/videocall/get-users`, this.videoCallsPerChat);
 
+        // Send back to all
+        this.io.emit('server:event', `${chatlId}/videocall/people-in-call`, this.videoCallsPerChat[chatlId]);
+      }else if(eventName === 'videocall/update') {
+        this.videoCallsPerChat[chatlId].live_members[userId] = {
+          videoOptions: videoOpts
+        }
+
+
+        // Broadvcast to others, not the same socket
+        socket.broadcast.emit('server:event', `${chatlId}/videocall/user-options-updated`, {member: userId,videoOptions: videoOpts});
+      }else if(eventName === 'videocall/send-users') {
+
+        // Send back to same socket
+        socket.emit('server:event', `${chatlId}/videocall/people-in-call`, this.videoCallsPerChat[chatlId]);
       }
 
 

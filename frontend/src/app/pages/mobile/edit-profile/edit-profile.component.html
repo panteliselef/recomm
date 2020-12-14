@@ -2,7 +2,7 @@
 <div class="page">
 
     <app-bar
-        title="Orestis Faltakas"
+        [title]="me?.getFullName()"
         leadingIcon="arrow_back"
         [hasImage]="false"
         ></app-bar>
@@ -13,23 +13,23 @@
         <img class="profile-img" [src]="me?.getPhoto()">
 
         <ul class="profile-options">
-            <li>
+            <li class="disabled">
                 <i class="material-icons-round">camera_alt</i>
                 <span>Change photo</span>
             </li>
-            <li>
+            <li class="disabled">
                 <i class="material-icons-round">create</i>
                 <span>Edit profile</span>
             </li>
-            <li>
+            <li class="disabled">
                 <i class="material-icons-round">help</i>
                 <span>Help center</span>
             </li>
-            <li>
+            <li class="disabled">
                 <i class="material-icons-round">settings</i>
                 <span>Account settings</span>
             </li>
-            <li>
+            <li routerLink="/signin">
                 <i class="material-icons-round">exit_to_app</i>
                 <span>Log out</span>
             </li>

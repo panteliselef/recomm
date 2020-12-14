@@ -72,25 +72,57 @@
 
     </div>
 
-<!--    <div class="video-collection-container">-->
+<!--    {{inCallParticipants.length}}-->
+
+    <div *ngIf="inCallParticipants.length > 2" class="video-collection-container">
 
 
-<!--        <div class="big-tile">-->
-<!--            <video src="../../../../assets/test.mp4" loop autoplay></video>-->
+        <div class="big-tile">
+            <video *ngIf="inCallParticipants[1]?.isVideoReady" src="../../../../assets/test.mp4" loop autoplay></video>
 
-<!--            <div class="video-info">-->
-<!--                Emma Bailey-->
+            <div *ngIf="!inCallParticipants[1]?.isVideoReady" class="">loading</div>
 
-<!--                <i class="material-icons-round" style="margin-left: .5rem;margin-right: .5rem">graphic_eq</i>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <div class="small-tile">-->
-<!--            <video src="../../../../assets/test.mp4" autoplay></video>-->
-<!--        </div>-->
+            <div class="video-info">
+                {{inCallParticipants[1]?.user.getFullName()}}
+                <i *ngIf="inCallParticipants[1]?.videoOptions.isMuted" class="material-icons-round">graphic_eq</i>
+                <i *ngIf="!inCallParticipants[1]?.videoOptions.isMuted" class="material-icons-round red">mic_off</i>
+            </div>
+        </div>
 
-<!--        <div class="small-tile">-->
-<!--            <video src="../../../../assets/test.mp4" autoplay></video>-->
-<!--        </div>-->
+
+        <div class="small-tile">
+            <video *ngIf="inCallParticipants[0]?.isVideoReady" src="../../../../assets/test.mp4" loop autoplay></video>
+
+            <div *ngIf="!inCallParticipants[0]?.isVideoReady" class="">loading</div>
+
+            <div class="video-info">
+                {{inCallParticipants[0]?.user.fname}}
+                <i *ngIf="inCallParticipants[0]?.videoOptions.isMuted" class="material-icons-round">graphic_eq</i>
+                <i *ngIf="!inCallParticipants[0]?.videoOptions.isMuted" class="material-icons-round red">mic_off</i>
+            </div>
+        </div>
+
+        <div class="small-tile">
+            <video *ngIf="inCallParticipants[2]?.isVideoReady" src="../../../../assets/test.mp4" loop autoplay></video>
+
+            <div *ngIf="!inCallParticipants[2]?.isVideoReady" class="">loading</div>
+            <div class="video-info">
+                {{inCallParticipants[2]?.user.fname}}
+                <i *ngIf="inCallParticipants[2]?.videoOptions.isMuted" class="material-icons-round">graphic_eq</i>
+                <i *ngIf="!inCallParticipants[2]?.videoOptions.isMuted" class="material-icons-round red">mic_off</i>
+            </div>
+        </div>
+
+        <div *ngIf="inCallParticipants[3]" class="small-tile">
+            <video *ngIf="inCallParticipants[3]?.isVideoReady" src="../../../../assets/test.mp4" loop autoplay></video>
+
+            <div *ngIf="!inCallParticipants[3]?.isVideoReady" class="">loading</div>
+            <div class="video-info">
+                {{inCallParticipants[3]?.user.fname}}
+                <i *ngIf="inCallParticipants[3]?.videoOptions.isMuted" class="material-icons-round">graphic_eq</i>
+                <i *ngIf="!inCallParticipants[3]?.videoOptions.isMuted" class="material-icons-round red">mic_off</i>
+            </div>
+        </div>
 
 
 <!--        <div class="small-tile">-->
@@ -106,42 +138,45 @@
 
 
 
-<!--    </div>-->
+    </div>
 
-    <div class="video-collection-container two-p-layout">
+    <div *ngIf="inCallParticipants.length <= 2" class="video-collection-container" [ngClass]="{'two-p-layout': inCallParticipants.length === 2, 'one-p-layout': inCallParticipants.length === 1}">
+        <div *ngFor="let party of inCallParticipants" class="big-tile">
+            <video *ngIf="party?.isVideoReady" src="../../../../assets/test.mp4" loop autoplay></video>
 
-
-        <div class="big-tile">
-            <video src="../../../../assets/test.mp4" loop autoplay></video>
-
-            <div class="video-info">
-                Emma Bailey
-
-                <i class="material-icons-round" style="margin-left: .5rem;margin-right: .5rem">graphic_eq</i>
-            </div>
-        </div>
-        <div class="big-tile">
-            <video src="../../../../assets/test.mp4" loop autoplay></video>
+            <div *ngIf="!party?.isVideoReady" class="">loading</div>
 
             <div class="video-info">
-                Emma Bailey
-
-                <i class="material-icons-round" style="margin-left: .5rem;margin-right: .5rem">graphic_eq</i>
+                {{party?.user.getFullName()}}
+                <i *ngIf="party?.videoOptions.isMuted" class="material-icons-round">graphic_eq</i>
+                <i *ngIf="!party?.videoOptions.isMuted" class="material-icons-round red">mic_off</i>
             </div>
         </div>
+<!--        <div *ngIf="inCallParticipants.length === 2" class="big-tile">-->
+<!--            <video src="../../../../assets/test.mp4" loop autoplay></video>-->
+
+<!--            <div class="video-info">-->
+<!--                {{inCallParticipants[1]?.user.getFullName()}}-->
+
+<!--                <i *ngIf="inCallParticipants[1]?.videoOptions.isMuted" class="material-icons-round" style="margin-left: .5rem;margin-right: .5rem">graphic_eq</i>-->
+<!--                <i *ngIf="!inCallParticipants[1]?.videoOptions.isMuted" class="material-icons-round">mic_off</i>-->
+<!--            </div>-->
+<!--        </div>-->
 
     </div>
 
     <div class="video-control">
 
-        <div class="control-button">
-            <i class="material-icons-round">videocam</i>
+        <div class="control-button" (click)="toggleCamera()" >
+            <i *ngIf="!options.hasCamera" class="material-icons-round">videocam_off</i>
+            <i *ngIf="options.hasCamera" class="material-icons-round">videocam</i>
         </div>
         <div class="control-button primary" (click)="hangUpCall()">
             <i class="material-icons-round">call_end</i>
         </div>
-        <div class="control-button">
-            <i class="material-icons-round">mic</i>
+        <div class="control-button" (click)="toggleMic()">
+            <i *ngIf="options.isMuted" class="material-icons-round">mic</i>
+            <i *ngIf="!options.isMuted" class="material-icons-round">mic_off</i>
         </div>
     </div>
 
