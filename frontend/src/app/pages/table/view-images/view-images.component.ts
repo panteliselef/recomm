@@ -26,6 +26,7 @@ export class ViewImagesComponent implements OnInit {
                 private usersService: UsersService,
                 private chatsService: ChatsService,
                 private socketService: SocketsService) {
+
     }
 
     async chooseChat(chatId: string) {

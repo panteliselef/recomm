@@ -1,13 +1,12 @@
 <div class="page">
     <app-bar
-        title="Project Team"
+        title="{{this.chat.displayName}}"
         leadingIcon="arrow_back"
         [hasImage]="false">
     </app-bar>
 
     <img class="profile-img"
-         src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80">
-
+         [src]="this.chat.photoUrl"/>
     <main class="">
 
 

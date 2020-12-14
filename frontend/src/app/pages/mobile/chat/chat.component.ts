@@ -26,10 +26,10 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
     readonly url: string = 'http://localhost:8080/api/files/download/';
 
 
-    showCallPage: boolean = false;
-    showPrepCall: boolean = false;
+    showCallPage = false;
+    showPrepCall = false;
 
-    videoCallOptions: {isMuted: boolean, hasCamera: boolean} = {isMuted:false,hasCamera:false}
+    videoCallOptions: {isMuted: boolean, hasCamera: boolean} = {isMuted: false, hasCamera: false};
 
     // private URLRegex = new RegExp("([a-zA-Z0-9]+://)?([a-zA-Z0-9_]+:[a-zA-Z0-9_]+@)?([a-zA-Z0-9.-]+\\.[A-Za-z]{2,4})(:[0-9]+)?(/.*)?");
 
@@ -53,6 +53,7 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
     ];
 
     participants: UserModel[];
+    // tslint:disable-next-line:ban-types
     participantsObj: Object;
     chat: ChatModel;
     me: UserModel;
@@ -210,6 +211,6 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
 
     handleVideoCallSetting(options: { isMicEnabled: boolean; isCameraEnabled: boolean }) {
-        console.log(options)
+        console.log(options);
     }
 }
