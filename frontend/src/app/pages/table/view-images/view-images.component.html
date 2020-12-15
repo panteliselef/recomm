@@ -9,20 +9,33 @@
             </span>
         </div>
 
+        <div class="side-nav-item" style="margin-top: 30px"
+             (click)="getAllImages()">
+            <img class="profile-img" [src]="me?.getPhoto()"/>
+            <span class="big">
+                All images
+            </span>
+        </div>
+
 
         <div class="side-nav-divider" style="margin-top: 30px">Chats</div>
 
         <ul>
+<<<<<<< Updated upstream
             <li  *ngFor="let one of this.chats" class="side-nav-item"
                 (click)="chooseChat(one._id)" [routerLink]="one._id">
                 <img class="profile-img" [src]="one.photoUrl" />
+=======
+            <li *ngFor="let one of this.chats" class="side-nav-item"
+                (click)="chooseChat(one._id)">
+                <img class="profile-img" [src]="one.photoUrl"/>
+>>>>>>> Stashed changes
                 <span class="mid">
                     {{one.displayName}}
                 </span>
             </li>
 
         </ul>
-
     </div>
 
 
@@ -32,7 +45,7 @@
             <div style="display: flex; align-items: center">
                 <img *ngIf="this.chat.photoUrl" class="profile-img" [src]="this.chat.photoUrl"/>
                 <div style="display: flex;flex-direction: column; margin-left: .8rem">
-                    <span class="chat-name" >{{this.chat.displayName}}</span>
+                    <span class="chat-name">{{this.chat.displayName}}</span>
                     <span class="chat-status sub-text">Online</span>
                 </div>
 
@@ -51,7 +64,8 @@
 
             <div class="images">
 
-                <div *ngFor="let one of this.imgMessages" class="thumbnail">
+                <div *ngFor="let one of this.imgMessages" class="thumbnail"
+                     (click)="previewImage(one)">
                     <img
                         [src]="url + one.value.filename"/>
 
@@ -60,9 +74,13 @@
 
             </div>
 
+<<<<<<< Updated upstream
             <div style="display: flex; justify-content: center; align-items: center;width: 100%;margin-bottom: 1rem">{{this.imgMessages?.length}} {{this.imgMessages?.length === 1 ? 'image' : 'images' }}</div>
+=======
+            <div
+                style="display: flex; justify-content: center; align-items: center;width: 100%;margin-bottom: 1rem">{{this.imgNum}}</div>
+>>>>>>> Stashed changes
         </div>
-
 
 
     </main>

@@ -17,10 +17,18 @@ export class ViewImagesComponent implements OnInit {
 
     me: UserModel;
     chats: ChatModel[];
+    user: UserModel;
+    senderName: string;
     chat: ChatModel;
     imgMessages: MessageWithRepliesModel[];
+<<<<<<< Updated upstream
 
     inCallChatId: string;
+=======
+    imgNum: string;
+    timeStamp: Date;
+    imgSize: number;
+>>>>>>> Stashed changes
 
     constructor(private router: Router,
                 private usersService: UsersService,
@@ -97,5 +105,35 @@ export class ViewImagesComponent implements OnInit {
         }
 
 
+    }
+
+    async previewImage(photo: MessageWithRepliesModel) {
+        console.log(photo);
+        console.log(this.chats);
+        this.user = await this.usersService.getById(photo.senderId).toPromise();
+        this.senderName = this.user.getFullName();
+        this.timeStamp = photo.timestamp;
+        this.imgSize = photo.value.size;
+        console.log(this.senderName);
+        console.log(photo.timestamp);
+        console.log(photo.value.size);
+    }
+
+
+    async getAllImages() {
+        console.log(this.me);
+        this.chatsInfo();
+        console.log(this.chats);
+
+        this.imgMessages = this.chats.map(value => {
+            return value.messages.filter<MessageWithRepliesModel>((message: MessageWithRepliesModel): message is MessageWithRepliesModel => {
+                return message.type === MessageType.IMAGE_STATIC;
+            });
+        }).reduce((acc, value) => {
+            return [ ...acc, ...value];
+        }, []);
+
+
+        console.log('message ', this.imgMessages);
     }
 }
