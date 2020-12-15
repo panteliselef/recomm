@@ -21,14 +21,11 @@ export class ViewImagesComponent implements OnInit {
     senderName: string;
     chat: ChatModel;
     imgMessages: MessageWithRepliesModel[];
-<<<<<<< Updated upstream
 
     inCallChatId: string;
-=======
     imgNum: string;
     timeStamp: Date;
     imgSize: number;
->>>>>>> Stashed changes
 
     constructor(private router: Router,
                 private usersService: UsersService,
