@@ -2,15 +2,8 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, NavigationEnd, NavigationStart, Router} from '@angular/router';
 import {ChatsService, SocketsService, UsersService} from "../../../global/services";
 import {Observable, Subscription} from "rxjs";
-import {ChatModel, UserModel, VideoOptions} from "../../../global/models";
+import {ChatModel, ParticipantWithLiveStatus, UserModel, VideoOptions} from "../../../global/models";
 import {filter, switchMap} from "rxjs/operators";
-
-interface ParticipantWithLiveStatus {
-    user: UserModel,
-    videoOptions: VideoOptions,
-    isInCall: boolean,
-    device: string
-}
 
 
 @Component({
@@ -344,6 +337,7 @@ export class HomeTableComponent implements OnInit, OnDestroy {
             videoOptions: this.options,
             device: 'TV'
         })
+
 
         this.socketService.sendMessage('getUser', {
             member: this.me._id

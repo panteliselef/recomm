@@ -11,7 +11,11 @@
 
         <div class="side-nav-item" style="margin-top: 30px"
              (click)="getAllImages()">
-            <img class="profile-img" [src]="me?.getPhoto()"/>
+            <!--            <img class="profile-img" [src]="me?.getPhoto()"/>-->
+            <div
+                style="margin-right:1rem; width: 50px;height: 50px; background: #333; border-radius: 50%; display: flex;justify-content: center;align-items: center">
+                <span class="material-icons">collections</span>
+            </div>
             <span class="big">
                 All images
             </span>
@@ -21,15 +25,9 @@
         <div class="side-nav-divider" style="margin-top: 30px">Chats</div>
 
         <ul>
-<<<<<<< Updated upstream
-            <li  *ngFor="let one of this.chats" class="side-nav-item"
-                (click)="chooseChat(one._id)" [routerLink]="one._id">
-                <img class="profile-img" [src]="one.photoUrl" />
-=======
             <li *ngFor="let one of this.chats" class="side-nav-item"
-                (click)="chooseChat(one._id)">
+                (click)="chooseChat(one._id)" [routerLink]="one._id">
                 <img class="profile-img" [src]="one.photoUrl"/>
->>>>>>> Stashed changes
                 <span class="mid">
                     {{one.displayName}}
                 </span>
@@ -51,7 +49,7 @@
 
 
                 <div class="cta-call" (click)="joinAnotherCall()" [ngClass]="{'disabled': inCallChatId === chat._id}">
-                    {{inCallChatId === chat._id? 'In Call' : 'Call Now'}}
+                    {{inCallChatId === chat._id ? 'In Call' : 'Call Now'}}
                 </div>
             </div>
             <div class="">
@@ -74,12 +72,8 @@
 
             </div>
 
-<<<<<<< Updated upstream
-            <div style="display: flex; justify-content: center; align-items: center;width: 100%;margin-bottom: 1rem">{{this.imgMessages?.length}} {{this.imgMessages?.length === 1 ? 'image' : 'images' }}</div>
-=======
             <div
-                style="display: flex; justify-content: center; align-items: center;width: 100%;margin-bottom: 1rem">{{this.imgNum}}</div>
->>>>>>> Stashed changes
+                style="display: flex; justify-content: center; align-items: center;width: 100%;margin-bottom: 1rem">{{this.imgMessages?.length}} {{this.imgMessages?.length === 1 ? 'image' : 'images' }}</div>
         </div>
 
 

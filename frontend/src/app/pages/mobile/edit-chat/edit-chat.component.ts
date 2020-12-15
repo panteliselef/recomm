@@ -11,8 +11,6 @@ import {Subscription} from "rxjs";
 })
 export class EditChatComponent implements OnInit {
 
-    @ViewChild('scroll', {static: false, read: ElementRef}) public scroll: ElementRef<any>;
-
     readonly url: string = 'http://localhost:8080/api/files/download/';
 
 
@@ -26,17 +24,15 @@ export class EditChatComponent implements OnInit {
     constructor(private route: ActivatedRoute,
                 private chatService: ChatsService,
                 private userService: UsersService,
-                private usersService: UsersService,
                 private socketService: SocketsService,
-                private chatsService: ChatsService,
                 private router: Router) {
     }
 
     async ngOnInit() {
         this.chatId = this.route.snapshot.params.id;
-        this.me = await this.usersService.getMe();
+        this.me = await this.userService.getMe();
+        this.chat = await this.chatService.getById(this.chatId).toPromise();
         await this.chatsInfo();
-        console.log(this.chatId);
     }
 
     async goToBrowseImages() {
@@ -49,28 +45,16 @@ export class EditChatComponent implements OnInit {
 
     async chatsInfo() {
 
-        // tslint:disable-next-line:variable-name
-        this.chats = await Promise.all<ChatModel>(this.me.chat_ids.map(async (chat_id: string, index: number) => {
-            return await this.chatsService.getById(chat_id).toPromise();
-        }));
-
-        // tslint:disable-next-line:variable-name
-        this.chats = await Promise.all<ChatModel>(this.chats.map(async (chat: ChatModel) => {
-
-            let member: UserModel;
-            if (chat.participants.length === 2) {
-                console.log(chat.participants);
-                const partId = chat.participants.filter(id => id !== this.me._id)[0];
-                member = await this.usersService.getById(partId).toPromise();
-            }
-            return new ChatModel({
-                ...chat, displayName: member.getFullName(), photoUrl: member.getPhoto()
+        let member: UserModel;
+        if (this.chat.participants.length === 2) {
+            // console.log(chat.participants);
+            const partId = this.chat.participants.filter(id => id !== this.me._id)[0];
+            member = await this.userService.getById(partId).toPromise();
+            this.chat = new ChatModel({
+                ...this.chat, displayName: member.getFullName(), photoUrl: member.getPhoto()
             });
-        }));
+        }
 
-        this.chat = this.chats.find(chat => chat._id === this.chatId);
-
-        console.log(this.chat);
     }
 
 

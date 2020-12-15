@@ -23,7 +23,6 @@ export class ViewImagesComponent implements OnInit {
     imgMessages: MessageWithRepliesModel[];
 
     inCallChatId: string;
-    imgNum: string;
     timeStamp: Date;
     imgSize: number;
 

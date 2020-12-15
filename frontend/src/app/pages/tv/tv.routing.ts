@@ -6,7 +6,7 @@ import {SmartTvDuringCallComponent} from "./smart-tv-during-call/smart-tv-during
 const routes: Routes = [
 
     { path: '' , component: SmartTvComponent},
-    { path: 'call' , component: SmartTvDuringCallComponent},
+    { path: 'call/:id' , component: SmartTvDuringCallComponent},
     {path: '**', redirectTo: '', pathMatch: 'full'}
 
 ];

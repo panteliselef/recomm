@@ -1,4 +1,4 @@
-<main>
+<main *ngIf="!showErrorMessage">
 
     <div class="app-call-bar">
         <img class="profile-img"
@@ -12,43 +12,24 @@
 
 
     <div class="video-collection-container-big" style="margin-bottom: 1rem">
-
-        <div class="big-tile">
-            <video src="../../../../assets/test.mp4" loop autoplay></video>
-
-            <div class="video-info">
-                Emma Bailey
-
-                <i class="material-icons-round" style="margin-left: .5rem;margin-right: .5rem">graphic_eq</i>
-            </div>
-        </div>
-        <div class="big-tile">
-            <video src="../../../../assets/test.mp4" loop autoplay></video>
-
-            <div class="video-info">
-                Emma Bailey
-
+        <div class="big-tile" *ngFor="let member of userMapLayoutBig">
+            <div *ngIf="!member.user">No one here</div>
+            <video *ngIf="member.user" src="../../../../assets/test.mp4" loop autoplay></video>
+            <div *ngIf="member.user" class="video-info">
+                {{member.user.getFullName()}}
                 <i class="material-icons-round" style="margin-left: .5rem;margin-right: .5rem">graphic_eq</i>
             </div>
         </div>
     </div>
 
     <div class="video-collection-container-small">
-
-        <div class="small-tile">
-            <video src="../../../../assets/test.mp4" loop autoplay></video>
-        </div>
-        <div class="small-tile">
-            <video src="../../../../assets/test.mp4" loop autoplay></video>
-        </div>
-        <div class="small-tile">
-            <video src="../../../../assets/test.mp4" loop autoplay></video>
-        </div>
-        <div class="small-tile">
-            <video src="../../../../assets/test.mp4" loop autoplay></video>
-        </div>
-        <div class="small-tile">
-            <video src="../../../../assets/test.mp4" loop autoplay></video>
+        <div class="small-tile" *ngFor="let member of userMapLayoutSmall">
+            <div *ngIf="!member.user">No one here</div>
+            <video *ngIf="member.user" src="../../../../assets/test.mp4" loop autoplay></video>
+            <div *ngIf="member.user" class="video-info">
+                {{member.user.getFullName()}}
+                <i class="material-icons-round" style="margin-left: .5rem;margin-right: .5rem">graphic_eq</i>
+            </div>
         </div>
     </div>
 
@@ -58,4 +39,8 @@
         <i class="material-icons-round">mic</i>
     </div>
 
+</main>
+
+<main *ngIf="showErrorMessage">
+    <h2>{{errorMessage}}</h2>
 </main>

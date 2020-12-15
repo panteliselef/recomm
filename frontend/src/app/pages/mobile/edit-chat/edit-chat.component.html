@@ -1,12 +1,12 @@
 <div class="page">
     <app-bar
-        title="{{this.chat.displayName}}"
+        [title]="chat?.displayName"
         leadingIcon="arrow_back"
         [hasImage]="false">
     </app-bar>
 
-    <img class="profile-img"
-         [src]="this.chat.photoUrl"/>
+    <img *ngIf="chat" class="profile-img"
+         [src]="chat?.photoUrl"/>
     <main class="">
 
 

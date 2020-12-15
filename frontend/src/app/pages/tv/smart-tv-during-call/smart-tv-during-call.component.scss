@@ -1,3 +1,5 @@
+@import "../../../../declarations";
+
 main {
     position: relative;
     height: 100vh;
@@ -39,20 +41,51 @@ main {
         grid-template-rows: 60vh;
         grid-gap: 2rem;
 
-        .big-tile {
-            position: relative;
-            overflow: hidden;
+        //.big-tile {
+        //    position: relative;
+        //    overflow: hidden;
+        //
+        //    .video-info {
+        //        background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.37) 100%);
+        //        position: absolute;
+        //        display: flex;
+        //        justify-content: flex-end;
+        //        align-items: center;
+        //        width: 100%;
+        //        padding: .5rem;
+        //        border-radius: 0 0 5px 5px;
+        //        bottom: 0;
+        //    }
+        //}
+    }
 
-            .video-info {
-                background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.37) 100%);
-                position: absolute;
-                display: flex;
-                justify-content: flex-end;
-                align-items: center;
-                width: 100%;
-                padding: .5rem;
-                border-radius: 0 0 5px 5px;
-                bottom: 0;
+    .big-tile, .small-tile {
+        overflow: hidden;
+        border-radius: 5px;
+        position: relative;
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .video-info {
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.37) 100%);
+            position: absolute;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            width: 100%;
+            padding: .5rem;
+            border-radius: 0 5px 5px 0;
+            bottom: 0;
+
+            i {
+                margin-left: .5rem;
+                margin-right: .5rem;
+
+                &.red {
+                    color: $red-color;
+                }
             }
         }
     }
@@ -68,22 +101,29 @@ main {
         grid-template-columns: repeat(5, 1fr);
         grid-template-rows: 25vh;
         grid-gap: 1rem;
-        .small-tile {
-            position: relative;
-            overflow: hidden;
 
-            .video-info {
-                background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.37) 100%);
-                position: absolute;
-                display: flex;
-                justify-content: flex-end;
-                align-items: center;
-                width: 100%;
-                padding: .5rem;
-                border-radius: 0 0 5px 5px;
-                bottom: 0;
-            }
-        }
+        //.small-tile {
+        //    position: relative;
+        //    overflow: hidden;
+        //
+        //    .video-info {
+        //        background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.37) 100%);
+        //        position: absolute;
+        //        display: flex;
+        //        justify-content: flex-end;
+        //        align-items: center;
+        //        width: 100%;
+        //        padding: .5rem;
+        //        border-radius: 0 0 5px 5px;
+        //        bottom: 0;
+        //    }
+        //
+        //    i {
+        //        font-size: 1rem;
+        //        margin-left: .2rem;
+        //        margin-right: .2rem;
+        //    }
+        //}
     }
 
     .button-container {
