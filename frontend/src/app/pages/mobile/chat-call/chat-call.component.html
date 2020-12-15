@@ -58,7 +58,6 @@
     </div>
     <div class="app-call-bar">
         <img *ngIf="chatPhoto" (click)="hangUpCall()" class="profile-img" [src]="chatPhoto"/>
-
         <div style="display: flex;flex-direction: column; margin-left: .8rem">
             <span class="chat-name" (click)="hangUpCall()">{{chatName}}</span>
             <span class="chat-status sub-text">8 members</span>
@@ -68,11 +67,8 @@
             <i class="material-icons-round">person_add</i>
             <i class="material-icons-round" (click)="toggleVideoSetting()">more_vert</i>
         </div>
-
-
     </div>
 
-<!--    {{inCallParticipants.length}}-->
 
     <div *ngIf="inCallParticipants.length > 2" class="video-collection-container">
 

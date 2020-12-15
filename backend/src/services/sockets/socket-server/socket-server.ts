@@ -17,88 +17,88 @@ export class SocketServer {
 
 
   private videoCallsPerUser: any = {
-    // "5fca49c79a6e9e032a811159": {
-    //   chatId: "5fd4ac43ddd9ce020d76f294",
-    //   device: UserDevice.MOBILE
-    // },
-    // "5fca49c79a6e9e032a811158": {
-    //   chatId: "5fd8b235f5da670b8625b1d1",
-    //   device: UserDevice.MOBILE
-    // },
-    // "5fca49c79a6e9e032a811154": {
-    //   chatId: "5fd8b235f5da670b8625b1d1",
-    //   device: UserDevice.MOBILE
-    // },
-    // "5fca49c79a6e9e032a811157": {
-    //   chatId: "5fd8b235f5da670b8625b1d1",
-    //   device: UserDevice.MOBILE
-    // },
-    // "5fca49c79a6e9e032a811156": {
-    //   chatId: "5fd8b235f5da670b8625b1d1",
-    //   device: UserDevice.MOBILE
-    // },
-    // "5fca49c79a6e9e032a811155": {
-    //   chatId: "5fd8b235f5da670b8625b1d1",
-    //   device: UserDevice.MOBILE
-    // },
-    // "5fca49c79a6e9e032a81115a": {
-    //   chatId: "5fd8b235f5da670b8625b1d1",
-    //   device: UserDevice.MOBILE
-    // },
+    "5fca49c79a6e9e032a811159": {
+      chatId: "5fd8b235f5da670b8625b1d1",
+      device: UserDevice.MOBILE
+    },
+    "5fca49c79a6e9e032a811158": {
+      chatId: "5fd8b235f5da670b8625b1d1",
+      device: UserDevice.MOBILE
+    },
+    "5fca49c79a6e9e032a811154": {
+      chatId: "5fd8b235f5da670b8625b1d1",
+      device: UserDevice.MOBILE
+    },
+    "5fca49c79a6e9e032a811157": {
+      chatId: "5fd8b235f5da670b8625b1d1",
+      device: UserDevice.MOBILE
+    },
+    "5fca49c79a6e9e032a811156": {
+      chatId: "5fd8b235f5da670b8625b1d1",
+      device: UserDevice.MOBILE
+    },
+    "5fca49c79a6e9e032a811155": {
+      chatId: "5fd8b235f5da670b8625b1d1",
+      device: UserDevice.MOBILE
+    },
+    "5fca49c79a6e9e032a81115a": {
+      chatId: "5fd8b235f5da670b8625b1d1",
+      device: UserDevice.MOBILE
+    },
   }
 
   private videoCallsPerChat: any = {
     "5fd8b235f5da670b8625b1d1": {
       live_members: {
-        // "5fca49c79a6e9e032a811159" : {
-        //   device: UserDevice.MOBILE,
-        //   videoOptions: {
-        //     hasCamera: false,
-        //     isMuted: false
-        //   }
-        // },
-        // "5fca49c79a6e9e032a811158" : {
-        //   device: UserDevice.TV,
-        //   videoOptions: {
-        //     hasCamera: false,
-        //     isMuted: false
-        //   }
-        // },
-        // "5fca49c79a6e9e032a811154" : {
-        //   device: UserDevice.MOBILE,
-        //   videoOptions: {
-        //     hasCamera: false,
-        //     isMuted: false
-        //   }
-        // },
-        // "5fca49c79a6e9e032a811157" : {
-        //   device: UserDevice.MOBILE,
-        //   videoOptions: {
-        //     hasCamera: false,
-        //     isMuted: false
-        //   }
-        // },
-        // "5fca49c79a6e9e032a811156" : {
-        //   device: UserDevice.MOBILE,
-        //   videoOptions: {
-        //     hasCamera: false,
-        //     isMuted: false
-        //   }
-        // },
-        // "5fca49c79a6e9e032a811155" : {
-        //   device: UserDevice.MOBILE,
-        //   videoOptions: {
-        //     hasCamera: false,
-        //     isMuted: false
-        //   }
-        // },
-        // "5fca49c79a6e9e032a81115a": {
-        //   device: UserDevice.MOBILE,
-        //   videoOptions: {
-        //     hasCamera: false,
-        //     isMuted: false
-        //   }
-        // },
+        "5fca49c79a6e9e032a811159" : {
+          device: UserDevice.MOBILE,
+          videoOptions: {
+            hasCamera: false,
+            isMuted: false
+          }
+        },
+        "5fca49c79a6e9e032a811158" : {
+          device: UserDevice.TV,
+          videoOptions: {
+            hasCamera: false,
+            isMuted: false
+          }
+        },
+        "5fca49c79a6e9e032a811154" : {
+          device: UserDevice.MOBILE,
+          videoOptions: {
+            hasCamera: false,
+            isMuted: false
+          }
+        },
+        "5fca49c79a6e9e032a811157" : {
+          device: UserDevice.MOBILE,
+          videoOptions: {
+            hasCamera: false,
+            isMuted: false
+          }
+        },
+        "5fca49c79a6e9e032a811156" : {
+          device: UserDevice.MOBILE,
+          videoOptions: {
+            hasCamera: false,
+            isMuted: false
+          }
+        },
+        "5fca49c79a6e9e032a811155" : {
+          device: UserDevice.MOBILE,
+          videoOptions: {
+            hasCamera: false,
+            isMuted: false
+          }
+        },
+        "5fca49c79a6e9e032a81115a": {
+          device: UserDevice.MOBILE,
+          videoOptions: {
+            hasCamera: false,
+            isMuted: false
+          }
+        },
       }
     }
   }
@@ -203,6 +203,7 @@ export class SocketServer {
       const userId = msg.member;
       const videoOpts = msg.videoOptions;
       const device = msg.device;
+      const position = msg.position;
 
       if (eventName === 'videocall/join') {
         
@@ -300,6 +301,10 @@ export class SocketServer {
 
         // Send back to same socket
         socket.emit('server:event', `${userId}/videocall/user-in-chat`, this.videoCallsPerUser[userId]);
+      }else if(eventName === 'videocall/update-position') {
+
+        // Broadvcast to others, not the same socket
+        socket.broadcast.emit('server:event', `${chatId}/videocall/user-position-updated`, {member: userId,position});
       }
 
 

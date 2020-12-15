@@ -1,9 +1,10 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, NavigationEnd, NavigationStart, Router} from '@angular/router';
 import {ChatsService, SocketsService, UsersService} from "../../../global/services";
 import {Observable, Subscription} from "rxjs";
 import {ChatModel, ParticipantWithLiveStatus, UserModel, VideoOptions} from "../../../global/models";
 import {filter, switchMap} from "rxjs/operators";
+import {CdkDragDrop, moveItemInArray, transferArrayItem} from "@angular/cdk/drag-drop";
 
 
 @Component({
@@ -28,18 +29,25 @@ export class HomeTableComponent implements OnInit, OnDestroy {
     inCallChat: ChatModel;
     inCallChatParties: ParticipantWithLiveStatus[] = [];
 
+    allPosIds: string[] = Array(7).fill('').map((item,index )=>`pos${index}`)
+
     options: VideoOptions = {isMuted: false, hasCamera: false}
 
     userIsCurrentlyInChat: boolean = false;
     private allSubs: Subscription;
 
     currentChatIdFromBrowsing: string = ''
+    showViewImages: boolean = true;
+    showManageLayout: boolean = false;
+    showAddPeople: boolean = false;
 
     constructor(private activeRoute: ActivatedRoute, private router: Router, private chatsService: ChatsService, private userService: UsersService, private socketService: SocketsService) {
 
         if (this.activeRoute.snapshot['_routerState'].url.includes('edit-tv-layout')) {
             this.showOnlyParticipants = true;
         }
+
+        console.log(this.allPosIds)
 
 
     }
@@ -57,87 +65,10 @@ export class HomeTableComponent implements OnInit, OnDestroy {
 
         this.subscribeToSocket()
 
-        // fetchProduct(1).subscribe(product => {
-        //     fetchSimilarProducts(product).subscribe(similarProducts => {
-        //     ...
-        //     });
-        // });
-        //
-        // fetchProduct(1).pipe(
-        //     switchMap(product => fetchSimilarProducts(product))
-        // ).subscribe(...)
-
-
-        //         this.getJoinedUsers =  this.socketService
-        //             .syncMessages(`${chatId}/videocall/get-users`)
-        //             .subscribe((msg) => {
-        //                 console.log('GEtting live users',msg.message)
-        //                 Object.entries(msg.message.live_members).map<{member: string, videoOptions: VideoOptions,device: string}>((member:any) => ({
-        //                     member: member[0],
-        //                     ...member[1]
-        //                 })).forEach(msg => {
-        //                     this.updateInCallParticipants(msg)
-        //                 })
-        //             });
-
 
         this.socketService.sendMessage('getUser', {
             member: this.me._id
         })
-
-
-        // this.allSubs = this.socketService
-        //     .syncMessages(`${this.me._id}/videocall/user-in-chat`)
-        //     .subscribe(async (msg: {event: string,message: {chatId: string,device: string}}) => {
-        //
-        //         console.log(msg.message)
-        //
-        //         const message = await this.setUpUserFromOtherDevice(msg.message);
-        //         if(!message) return;
-        //         const chatId = message.chatId;
-        //
-        //         setTimeout(() => {
-        //             this.socketService.sendMessage(`videocall/send-users`, {
-        //                 chat: this.inCallChat._id,
-        //             })
-        //         }, 1000)
-        //
-        //
-        //         this.updatedUser = this.socketService
-        //             .syncMessages(`${chatId}/videocall/user-options-updated`)
-        //             .subscribe((msg: { event: string, message: { member: string, videoOptions: VideoOptions, device: string} }) => {
-        //                 console.log(msg.message)
-        //                 this.updateInCallParticipants(msg.message)
-        //             });
-        //
-        //         this.newJoinedUser = this.socketService
-        //             .syncMessages(`${chatId}/videocall/user-joined`)
-        //             .subscribe((msg: { event: string, message: { member: string, videoOptions: VideoOptions, device: string } }) => {
-        //                 console.log(msg.message)
-        //                 this.updateInCallParticipants(msg.message)
-        //             });
-        //
-        //         this.leaveUser = this.socketService
-        //             .syncMessages(`${chatId}/videocall/user-left`)
-        //             .subscribe((msg) => {
-        //                 console.log(msg.message)
-        //                 this.removeInCallParticipant(msg.message)
-        //             });
-        //
-        //         this.getJoinedUsers =  this.socketService
-        //             .syncMessages(`${chatId}/videocall/get-users`)
-        //             .subscribe((msg) => {
-        //                 console.log('GEtting live users',msg.message)
-        //                 Object.entries(msg.message.live_members).map<{member: string, videoOptions: VideoOptions,device: string}>((member:any) => ({
-        //                     member: member[0],
-        //                     ...member[1]
-        //                 })).forEach(msg => {
-        //                     this.updateInCallParticipants(msg)
-        //                 })
-        //             });
-        //
-        //     });
-
 
     }
 
@@ -147,7 +78,7 @@ export class HomeTableComponent implements OnInit, OnDestroy {
             .syncMessages(`${this.me._id}/videocall/user-in-chat`)
             .subscribe(async (msg: { event: string, message: { chatId: string, device: string } }) => {
 
-                console.log(msg.message)
+                console.log('M',msg.message)
 
                 const message = await this.setUpUserFromOtherDevice(msg.message);
                 if (!message) return;
@@ -314,6 +245,8 @@ export class HomeTableComponent implements OnInit, OnDestroy {
         this.userIsCurrentlyInChat = false;
         this.inCallChat = undefined;
         this.inCallChatParties = [];
+
+        this.subscribeToSocket()
     }
 
 
@@ -325,14 +258,15 @@ export class HomeTableComponent implements OnInit, OnDestroy {
         this.allSubs.unsubscribe()
     }
 
-    callSelected() {
-        console.log(this.currentChatIdFromBrowsing);
+    async callSelected(chatId) {
+        // console.log(this.currentChatIdFromBrowsing);
         this.userIsCurrentlyInChat = true;
 
         this.subscribeToSocket()
 
+        this.inCallChat = await this.chatsService.getById(chatId).toPromise()
         this.socketService.sendMessage(`videocall/join`, {
-            chat: this.currentChatIdFromBrowsing,
+            chat: chatId,
             member: this.me._id,
             videoOptions: this.options,
             device: 'TV'
@@ -342,5 +276,16 @@ export class HomeTableComponent implements OnInit, OnDestroy {
         this.socketService.sendMessage('getUser', {
             member: this.me._id
         })
+    }
+
+    drop(event: CdkDragDrop<ParticipantWithLiveStatus[], any>) {
+        // if (event.previousContainer === event.container) {
+        //     moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+        // } else {
+        //     transferArrayItem(event.previousContainer.data,
+        //         event.container.data,
+        //         event.previousIndex,
+        //         event.currentIndex);
+        // }
     }
 }

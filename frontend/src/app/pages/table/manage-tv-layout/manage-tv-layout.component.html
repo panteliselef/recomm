@@ -3,23 +3,125 @@
     <div>
         <div class="video-collection-container-big" style="margin-bottom: 1rem">
 
-            <div class="big-tile">
+            <div id="pos0"
+                 cdkDropList
+                 [cdkDropListData]="positions0"
+                 [cdkDropListConnectedTo]="getOtherIds('pos0')"
+                 (cdkDropListDropped)="drop($event, 0)"
+                 [cdkDropListEnterPredicate]="evenPredicate"
+                 class="big-tile">
+
+                <div cdkDrag *ngFor="let member of positions0" class="video-info">
+                    <img class="profile-img" [src]="member.user.getPhoto()"/>
+                    <span>
+                        {{member.user.getFullName()}}
+                    </span>
+                </div>
 
             </div>
-            <div class="big-tile"></div>
+            <div id="pos1"
+                 cdkDropList
+                 [cdkDropListData]="positions1"
+                 [cdkDropListConnectedTo]="getOtherIds('pos1')"
+                 (cdkDropListDropped)="drop($event, 1)"
+                 [cdkDropListEnterPredicate]="evenPredicate"
+                 class="big-tile">
+
+                <div cdkDrag *ngFor="let member of positions1" class="video-info">
+                    <img class="profile-img" [src]="member.user.getPhoto()"/>
+                    <span>
+                        {{member.user.getFullName()}}
+                    </span>
+                </div>
+
+            </div>
         </div>
 
         <div class="video-collection-container-small">
 
-            <div class="small-tile">
+            <div id="pos2"
+                 cdkDropList
+                 [cdkDropListData]="positions2"
+                 [cdkDropListConnectedTo]="getOtherIds('pos2')"
+                 (cdkDropListDropped)="drop($event, 2)"
+                 [cdkDropListEnterPredicate]="evenPredicate"
+                 class="small-tile">
+
+                <div cdkDrag *ngFor="let member of positions2" class="video-info">
+                    <img class="profile-img" [src]="member.user.getPhoto()"/>
+                    <span>
+                        {{member.user.getFullName()}}
+                    </span>
+                </div>
+
             </div>
-            <div class="small-tile">
+
+            <div id="pos3"
+                 cdkDropList
+                 [cdkDropListData]="positions3"
+                 [cdkDropListConnectedTo]="getOtherIds('pos3')"
+                 (cdkDropListDropped)="drop($event, 3)"
+                 [cdkDropListEnterPredicate]="evenPredicate"
+                 class="small-tile">
+
+                <div cdkDrag *ngFor="let member of positions3" class="video-info">
+                    <img class="profile-img" [src]="member.user.getPhoto()"/>
+                    <span>
+                        {{member.user.getFullName()}}
+                    </span>
+                </div>
+
             </div>
-            <div class="small-tile">
+
+            <div id="pos4"
+                 cdkDropList
+                 [cdkDropListData]="positions4"
+                 [cdkDropListConnectedTo]="getOtherIds('pos4')"
+                 (cdkDropListDropped)="drop($event, 4)"
+                 [cdkDropListEnterPredicate]="evenPredicate"
+                 class="small-tile">
+
+                <div cdkDrag *ngFor="let member of positions4" class="video-info">
+                    <img class="profile-img" [src]="member.user.getPhoto()"/>
+                    <span>
+                        {{member.user.getFullName()}}
+                    </span>
+                </div>
+
             </div>
-            <div class="small-tile">
+
+            <div id="pos5"
+                 cdkDropList
+                 [cdkDropListData]="positions5"
+                 [cdkDropListConnectedTo]="getOtherIds('pos5')"
+                 (cdkDropListDropped)="drop($event, 5)"
+                 [cdkDropListEnterPredicate]="evenPredicate"
+                 class="small-tile">
+
+                <div cdkDrag *ngFor="let member of positions5" class="video-info">
+                    <img class="profile-img" [src]="member.user.getPhoto()"/>
+                    <span>
+                        {{member.user.getFullName()}}
+                    </span>
+                </div>
+
             </div>
-            <div class="small-tile">
+
+            <div id="pos6"
+                 cdkDropList
+                 [cdkDropListData]="positions6"
+                 [cdkDropListConnectedTo]="getOtherIds('pos6')"
+                 (cdkDropListDropped)="drop($event, 6)"
+                 [cdkDropListEnterPredicate]="evenPredicate"
+                 class="small-tile">
+
+                <div cdkDrag *ngFor="let member of positions6" class="video-info">
+                    <img class="profile-img" [src]="member.user.getPhoto()"/>
+                    <span>
+                        {{member.user.getFullName()}}
+                    </span>
+                </div>
+
             </div>
         </div>
     </div>

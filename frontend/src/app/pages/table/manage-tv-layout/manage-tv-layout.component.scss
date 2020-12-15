@@ -36,17 +36,49 @@ main {
         }
     }
 
+    .big-tile, .small-tile {
+        .video-info {
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            font-size: 2rem;
+
+            img {
+                width: 150px;
+                height: 150px;
+                margin-bottom: 1rem;
+            }
+        }
+    }
+
+    .small-tile {
+        .video-info {
+            font-size: 1rem;
+
+            img {
+                width: 50px;
+                height: 50px;
+            }
+        }
+    }
+
     video {
         border-radius: 5px;
         width: 100%;
         height: 100%;
         object-fit: cover;
     }
+
     .video-collection-container-small {
         display: grid;
-        grid-template-columns: repeat(4, 1fr) 100px;
+        grid-template-columns: repeat(5, 1fr);
         grid-template-rows: 15vh;
         grid-gap: 1rem;
+
         .small-tile {
             position: relative;
             overflow: hidden;
@@ -65,4 +97,15 @@ main {
         font-size: 3rem;
         font-weight: bold;
     }
+}
+
+.cdk-drop-list-receiving {
+    //background-color: red !important;
+
+    border: 2px dashed $orange-color;
+}
+
+.cdk-drop-list-dragging {
+    //background-color: white !important;
+    border: 2px dashed $orange-color;
 }

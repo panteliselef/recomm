@@ -101,6 +101,19 @@ export class SmartTvDuringCallComponent implements OnInit, OnDestroy {
             });
 
 
+        this.updatedUser = this.socketService
+            .syncMessages(`${this.me._id}/videocall/user-in-chat`).pipe(
+                switchMap((msg: { event: string, message: { chatId: string, device: string } }) => {
+                    if (!msg.message) return new Observable(observer => {
+                        observer.next('');
+                    });
+                    return this.socketService.syncMessages(`${msg.message.chatId}/videocall/user-position-updated`)
+                })
+            ).subscribe((msg: { event: string, message: { member: string, position: [number,number]}}) => {
+                console.log("NEW POS",msg.message)
+                if (msg.message) this.handleNewPosition(msg.message)
+            });
+
         this.leaveUser = this.socketService
             .syncMessages(`${this.me._id}/videocall/user-in-chat`).pipe(
                 switchMap((msg: { event: string, message: { chatId: string, device: string } }) => {
@@ -182,7 +195,7 @@ export class SmartTvDuringCallComponent implements OnInit, OnDestroy {
 
     private populateSmallLayout(arr) {
         for (let i = 2; i < arr.length; i++) {
-            arr[i].pos = [1,i];
+            arr[i].pos = [1,i-2];
             this.userMapLayoutSmall[i-2] = arr[i]
         }
         if(arr.length-2 < 5) {
@@ -190,6 +203,10 @@ export class SmartTvDuringCallComponent implements OnInit, OnDestroy {
                 this.userMapLayoutSmall[i-2] = {device: "", videoOptions: undefined, user:undefined, pos:[1,-1]}
             }
         }
+    }
+
+    private getEmptyCell(): ParticipantWithPosNumber {
+        return  {device: "", videoOptions: undefined, user:undefined, pos:[1,-1]}
     }
 
     // private removeInCallParticipant(message: string) {
@@ -318,6 +335,31 @@ export class SmartTvDuringCallComponent implements OnInit, OnDestroy {
             l.pos = [0,pos]
         }
         console.log('User joined', message)
+    }
+
+    private async handleNewPosition(message: { member: string; position: [number, number] }) {
+
+        function updatePos(member: ParticipantWithPosNumber) {
+            member.pos = message.position
+            if(member.pos[0] == 0) {
+                this.userMapLayoutBig[member.pos[1]] = member;
+            }else {
+                this.userMapLayoutSmall[member.pos[1]] = member;
+            }
+        }
+
+        const u = this.everyMember.find(member=>member.user._id === message.member)
+
+
+        const prevPos = u.pos;
+        console.log('Pos',prevPos,message.position)
+        if(prevPos[0] == 0) {
+            this.userMapLayoutBig[prevPos[1]] = this.getEmptyCell()
+        }else {
+            this.userMapLayoutSmall[prevPos[1]] = this.getEmptyCell()
+        }
+
+        updatePos.apply(this,[u])
     }
 
     private handleLeave(message: string) {

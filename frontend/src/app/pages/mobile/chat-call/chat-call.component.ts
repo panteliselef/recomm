@@ -2,15 +2,14 @@ import {Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, V
 import {ChatModel, UserModel, VideoOptions} from "../../../global/models";
 import {ActivatedRoute} from "@angular/router";
 import {ChatsService, SocketsService, UsersService} from "../../../global/services";
-import {HttpClient} from "@angular/common/http";
 import {Subscription} from "rxjs";
 
-interface VCRTMessage {
-    // chat: string,
-    // member: string,
-    // videoOptions: {isMuted: boolean, hasCamera: boolean}
-    live_members: { memberId: string, videoOptions: { isMuted: boolean, hasCamera: boolean } }[]
-}
+// interface VCRTMessage {
+//     // chat: string,
+//     // member: string,
+//     // videoOptions: {isMuted: boolean, hasCamera: boolean}
+//     live_members: { memberId: string, videoOptions: { isMuted: boolean, hasCamera: boolean } }[]
+// }
 
 
 

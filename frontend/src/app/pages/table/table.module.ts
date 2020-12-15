@@ -6,12 +6,15 @@ import {HomeTableComponent} from './home-table/home-table.component';
 import {ViewImagesComponent} from './view-images/view-images.component';
 import {AddPeopleComponent} from './add-people/add-people.component';
 import {ManageTvLayoutComponent} from './manage-tv-layout/manage-tv-layout.component';
+import {DragDropModule} from '@angular/cdk/drag-drop';
+
 
 
 @NgModule({
     imports: [
         CommonModule,
-        TableRoutingModule
+        TableRoutingModule,
+        DragDropModule
     ],
     declarations: [
         HomeTableComponent,

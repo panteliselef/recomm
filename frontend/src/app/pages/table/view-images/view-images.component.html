@@ -48,7 +48,7 @@
                 </div>
 
 
-                <div class="cta-call" (click)="joinAnotherCall()" [ngClass]="{'disabled': inCallChatId === chat._id}">
+                <div class="cta-call" (click)="joinAnotherCall(this.chat._id)" [ngClass]="{'disabled': inCallChatId === chat._id}">
                     {{inCallChatId === chat._id ? 'In Call' : 'Call Now'}}
                 </div>
             </div>

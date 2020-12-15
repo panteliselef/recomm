@@ -9,14 +9,15 @@ const routes: Routes = [
 
     {
         path: '', component: HomeTableComponent, children: [
-            {path: '', redirectTo: 'view-images'},
-            {path: 'add-people', component: AddPeopleComponent,},
-            {
-                path: 'view-images', component: ViewImagesComponent, children: [
-                    {path: ':chatId', component: ViewImagesComponent}
-                ]
-            },
-            {path: 'edit-tv-layout', component: ManageTvLayoutComponent,},
+            // {path: '', redirectTo: 'view-images'},
+            // {path: ':chatId/edit-tv-layout', component: ManageTvLayoutComponent,},
+            // {path: ':chatId/add-people', component: AddPeopleComponent,},
+            // {
+            //     path: 'view-images', component: ViewImagesComponent, children: [
+            //         {path: ':chatId', component: ViewImagesComponent}
+            //     ]
+            // },
+
         ]
     },
     {path: '**', redirectTo: '', pathMatch: 'full'}

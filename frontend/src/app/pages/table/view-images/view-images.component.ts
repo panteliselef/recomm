@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {ChatModel, MessageType, MessageWithRepliesModel, UserModel} from '../../../global/models';
 import {Router} from '@angular/router';
 import {ChatsService, SocketsService, UsersService} from '../../../global/services';
@@ -13,6 +13,7 @@ import {ChatsService, SocketsService, UsersService} from '../../../global/servic
 })
 export class ViewImagesComponent implements OnInit {
 
+    @Output('onCallChat') callChat: EventEmitter<string> = new EventEmitter<string>();
     readonly url: string = 'http://localhost:8080/api/files/download/';
 
     me: UserModel;
@@ -90,7 +91,7 @@ export class ViewImagesComponent implements OnInit {
         }));
     }
 
-    joinAnotherCall() {
+    joinAnotherCall(newChatId: string) {
 
         // Leave previous call
         if(this.inCallChatId) {
@@ -99,6 +100,9 @@ export class ViewImagesComponent implements OnInit {
                 member: this.me._id
             })
         }
+
+        this.inCallChatId = ''
+        this.callChat.emit(newChatId)
 
 
     }
