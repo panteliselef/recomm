@@ -3,6 +3,9 @@ import {ChatModel, MessageType, MessageWithRepliesModel, UserModel} from '../../
 import {Router} from '@angular/router';
 import {ChatsService, SocketsService, UsersService} from '../../../global/services';
 
+import {environment} from "../../../../environments/environment";
+
+
 @Component({
     selector: 'ami-fullstack-view-images',
     templateUrl: './view-images.component.html',
@@ -14,7 +17,7 @@ import {ChatsService, SocketsService, UsersService} from '../../../global/servic
 export class ViewImagesComponent implements OnInit {
 
     @Output('onCallChat') callChat: EventEmitter<string> = new EventEmitter<string>();
-    readonly url: string = 'http://localhost:8080/api/files/download/';
+    readonly url: string = environment.host+'/api/files/download/';
 
     me: UserModel;
     chats: ChatModel[];
@@ -26,15 +29,18 @@ export class ViewImagesComponent implements OnInit {
     inCallChatId: string;
     timeStamp: Date;
     imgSize: number;
+    showImagePreview: boolean;
+    imgSrc: string;
+    showAllImages: boolean = false;
 
     constructor(private router: Router,
                 private usersService: UsersService,
                 private chatsService: ChatsService,
                 private socketService: SocketsService) {
-
     }
 
     async chooseChat(chatId: string) {
+        this.showAllImages = false;
         this.chat = this.chats.find(chat => chat._id === chatId);
 
         this.imgMessages = this.chat.messages.filter<MessageWithRepliesModel>((message: MessageWithRepliesModel): message is MessageWithRepliesModel => {
@@ -58,7 +64,7 @@ export class ViewImagesComponent implements OnInit {
                     .syncMessages(`${msg.message.chatId}/videocall/user-left`)
                     .subscribe((msg) => {
 
-                        if(msg.message === this.me._id) this.inCallChatId = msg.message.chatId
+                        if(msg.message === this.me._id) this.inCallChatId = ''
                         console.log(msg.message)
                     });
             })
@@ -108,22 +114,21 @@ export class ViewImagesComponent implements OnInit {
     }
 
     async previewImage(photo: MessageWithRepliesModel) {
-        console.log(photo);
-        console.log(this.chats);
+
+        this.showImagePreview = true;
         this.user = await this.usersService.getById(photo.senderId).toPromise();
         this.senderName = this.user.getFullName();
         this.timeStamp = photo.timestamp;
         this.imgSize = photo.value.size;
-        console.log(this.senderName);
-        console.log(photo.timestamp);
-        console.log(photo.value.size);
+        this.imgSrc = this.url+photo.value.filename;
+        console.log(photo.value)
     }
 
 
     async getAllImages() {
-        console.log(this.me);
-        this.chatsInfo();
-        console.log(this.chats);
+
+        this.showAllImages = true;
+        // this.chatsInfo();
 
         this.imgMessages = this.chats.map(value => {
             return value.messages.filter<MessageWithRepliesModel>((message: MessageWithRepliesModel): message is MessageWithRepliesModel => {
@@ -135,5 +140,10 @@ export class ViewImagesComponent implements OnInit {
 
 
         console.log('message ', this.imgMessages);
+    }
+
+
+    downloadFileToDevice() {
+        window.location.href = this.imgSrc;
     }
 }

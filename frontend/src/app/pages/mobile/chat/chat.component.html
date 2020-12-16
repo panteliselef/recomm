@@ -7,7 +7,6 @@
     </app-chat-bar>
 
     <main #scroll>
-        <span class="in-page-status-info "> Conversation Started</span>
 
         <div class="msg-group-day" *ngFor="let day of messages">
 
@@ -15,8 +14,10 @@
 
             <ul class="messages">
                 <li *ngFor="let msg of day.messages; trackBy: trackByMethod" class="message-layout">
-                    <img class="profile-img" [src]="participantsObj[msg.senderId].getPhoto()"/>
-                    <div style="width: 100%">
+                    <span *ngIf="msg.type === 'STATUS'" class="in-page-status-info "> {{msg.value}}</span>
+
+                    <img *ngIf="msg.type !== 'STATUS'" class="profile-img" [src]="participantsObj[msg.senderId].getPhoto()"/>
+                    <div *ngIf="msg.type !== 'STATUS'" style="width: 100%">
                         <div class="message-info">
                             <span class="sender-name">{{participantsObj[msg.senderId].getFullName()}}
                                 </span>

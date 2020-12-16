@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-import {ChatModel, UserModel} from '../../models';
+import {ChatModel, MessageType, MessageWithRepliesModel, UserModel} from '../../models';
 import {HttpClient} from '@angular/common/http';
 import {map} from 'rxjs/operators';
 import {environment} from 'src/environments/environment';
@@ -117,6 +117,14 @@ export class UsersService {
             await this.update(contactUser).toPromise();
 
             chatToRedirect = createdChat._id;
+
+
+
+            await this.chatService.pushMessage(createdChat,new MessageWithRepliesModel({
+                type: MessageType.STATUS,
+                senderId: createdChat._id,
+                value: 'Start chatting'
+            })).toPromise()
         }
 
 

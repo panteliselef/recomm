@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ChatsService, UsersService} from "../../../global/services";
-import {ChatModel, UserModel} from "../../../global/models";
+import {ChatModel, MessageType, MessageWithRepliesModel, UserModel} from "../../../global/models";
 import {FileReaderEvent} from "../../../global/interfaces/file-reader-event.interface";
 import {HttpClient} from "@angular/common/http";
 import {environment} from 'src/environments/environment';
@@ -146,7 +146,14 @@ export class NewChatComponent implements OnInit {
             return await this.usersService.update(user).toPromise()
         }));
 
-        console.log("Complete")
+        let o =await this.chatsServices.pushMessage(newChatCreated,new MessageWithRepliesModel({
+            type: MessageType.STATUS,
+            senderId: newChatCreated._id,
+            value: `${this.me.fname} created this chat`
+        })).toPromise()
+
+
+        console.log("Complete",o)
         await this.router.navigate(['/mobile/chats'])
     }
 }

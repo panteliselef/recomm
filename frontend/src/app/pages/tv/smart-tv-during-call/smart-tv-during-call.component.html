@@ -2,11 +2,11 @@
 
     <div class="app-call-bar">
         <img class="profile-img"
-             src="https://images.unsplash.com/photo-1604936725386-22a475291f50?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80"/>
+             [src]="chat.photoUrl"/>
 
         <div style="display: flex;flex-direction: column; margin-left: .8rem">
-            <span class="chat-name">Team Power</span>
-            <span class="chat-members">8 members</span>
+            <span class="chat-name">{{chat?.displayName}}</span>
+            <span class="chat-members">{{chat.participants.length}} members</span>
         </div>
     </div>
 
@@ -14,10 +14,16 @@
     <div class="video-collection-container-big" style="margin-bottom: 1rem">
         <div class="big-tile" *ngFor="let member of userMapLayoutBig">
             <div *ngIf="!member.user">No one here</div>
-            <video *ngIf="member.user" src="../../../../assets/test.mp4" loop autoplay></video>
+<!--            <video *ngIf="member.user" src="../../../../assets/test.mp4" loop autoplay></video>-->
+
+            <video *ngIf="member.user && member.videoOptions.hasCamera" src="../../../../assets/test.mp4" loop autoplay></video>
+            <img *ngIf="member.user && !member.videoOptions.hasCamera" class="profile-img" [src]="member.user.getPhoto()"/>
+
             <div *ngIf="member.user" class="video-info">
                 {{member.user.getFullName()}}
-                <i class="material-icons-round" style="margin-left: .5rem;margin-right: .5rem">graphic_eq</i>
+<!--                <i class="material-icons-round" >graphic_eq</i>-->
+                <i *ngIf="member.videoOptions.isMuted" style="margin-left: .5rem;margin-right: .5rem" class="material-icons-round">graphic_eq</i>
+                <i *ngIf="!member.videoOptions.isMuted" style="margin-left: .5rem;margin-right: .5rem" class="material-icons-round red">mic_off</i>
             </div>
         </div>
     </div>
@@ -25,18 +31,24 @@
     <div class="video-collection-container-small">
         <div class="small-tile" *ngFor="let member of userMapLayoutSmall">
             <div *ngIf="!member.user">No one here</div>
-            <video *ngIf="member.user" src="../../../../assets/test.mp4" loop autoplay></video>
+<!--            <video *ngIf="member.user" src="../../../../assets/test.mp4" loop autoplay></video>-->
+            <video *ngIf="member.user && member.videoOptions.hasCamera" src="../../../../assets/test.mp4" loop autoplay></video>
+            <img *ngIf="member.user && !member.videoOptions.hasCamera" class="profile-img" [src]="member.user.getPhoto()"/>
+
             <div *ngIf="member.user" class="video-info">
                 {{member.user.getFullName()}}
-                <i class="material-icons-round" style="margin-left: .5rem;margin-right: .5rem">graphic_eq</i>
+                <i *ngIf="member.videoOptions.isMuted" style="margin-left: .5rem;margin-right: .5rem" class="material-icons-round">graphic_eq</i>
+                <i *ngIf="!member.videoOptions.isMuted" style="margin-left: .5rem;margin-right: .5rem" class="material-icons-round red">mic_off</i>
             </div>
         </div>
     </div>
 
 
     <div class="button-container">
-        <i class="material-icons-round">videocam</i>
-        <i class="material-icons-round">mic</i>
+        <i *ngIf="options.hasCamera" class="material-icons-round">videocam</i>
+        <i *ngIf="!options.hasCamera" class="material-icons-round">videocam_off</i>
+        <i *ngIf="options.isMuted" class="material-icons-round">mic</i>
+        <i *ngIf="!options.isMuted" class="material-icons-round">mic_off</i>
     </div>
 
 </main>

@@ -44,7 +44,6 @@ export class ManageTvLayoutComponent implements OnInit {
             if(this.positions[pos].length === 1) {
                 this.positions[pos].length = 0
             }
-            this.findAndRemoveFromLayout(event.container.data[0])
 
             copyArrayItem(event.previousContainer.data,
                 event.container.data,
@@ -57,8 +56,6 @@ export class ManageTvLayoutComponent implements OnInit {
             if(this.positions[pos].length === 1) {
                 this.positions[pos].length = 0
             }
-
-            this.findAndRemoveFromLayout(event.container.data[0])
             transferArrayItem(event.previousContainer.data,
                 event.container.data,
                 event.previousIndex,

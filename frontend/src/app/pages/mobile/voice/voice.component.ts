@@ -28,12 +28,10 @@ export class VoiceComponent implements OnInit {
 
     async chatsInfo() {
 
-        // tslint:disable-next-line:variable-name
         this.chats = await Promise.all<ChatModel>(this.me.chat_ids.map(async (chat_id: string, index: number) => {
             return await this.chatsService.getById(chat_id).toPromise();
         }));
 
-        // tslint:disable-next-line:variable-name
         this.chats = await Promise.all<ChatModel>(this.chats.map(async (chat: ChatModel) => {
 
             let member: UserModel;

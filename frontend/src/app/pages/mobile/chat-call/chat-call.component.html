@@ -74,9 +74,13 @@
 
 
         <div class="big-tile">
-            <video *ngIf="inCallParticipants[1]?.isVideoReady" src="../../../../assets/test.mp4" loop autoplay></video>
+<!--            <video *ngIf="inCallParticipants[1]?.isVideoReady" src="../../../../assets/test.mp4" loop autoplay></video>-->
 
             <div *ngIf="!inCallParticipants[1]?.isVideoReady" class="">loading</div>
+
+            <video *ngIf="inCallParticipants[1]?.isVideoReady && inCallParticipants[1]?.videoOptions.hasCamera" src="../../../../assets/test.mp4" loop autoplay></video>
+
+            <img *ngIf="inCallParticipants[1]?.isVideoReady && !inCallParticipants[1]?.videoOptions.hasCamera" class="profile-img" [src]="inCallParticipants[1]?.user.getPhoto()"/>
 
             <div class="video-info">
                 {{inCallParticipants[1]?.user.getFullName()}}
@@ -87,7 +91,9 @@
 
 
         <div class="small-tile">
-            <video *ngIf="inCallParticipants[0]?.isVideoReady" src="../../../../assets/test.mp4" loop autoplay></video>
+            <video *ngIf="inCallParticipants[0]?.isVideoReady && inCallParticipants[0]?.videoOptions.hasCamera" src="../../../../assets/test.mp4" loop autoplay></video>
+
+            <img *ngIf="inCallParticipants[0]?.isVideoReady && !inCallParticipants[0]?.videoOptions.hasCamera" class="profile-img" [src]="inCallParticipants[0]?.user.getPhoto()"/>
 
             <div *ngIf="!inCallParticipants[0]?.isVideoReady" class="">loading</div>
 
@@ -99,7 +105,9 @@
         </div>
 
         <div class="small-tile">
-            <video *ngIf="inCallParticipants[2]?.isVideoReady" src="../../../../assets/test.mp4" loop autoplay></video>
+            <video *ngIf="inCallParticipants[2]?.isVideoReady && inCallParticipants[2]?.videoOptions.hasCamera" src="../../../../assets/test.mp4" loop autoplay></video>
+
+            <img *ngIf="inCallParticipants[2]?.isVideoReady && !inCallParticipants[2]?.videoOptions.hasCamera" class="profile-img" [src]="inCallParticipants[2]?.user.getPhoto()"/>
 
             <div *ngIf="!inCallParticipants[2]?.isVideoReady" class="">loading</div>
             <div class="video-info">
@@ -110,7 +118,9 @@
         </div>
 
         <div *ngIf="inCallParticipants[3]" class="small-tile">
-            <video *ngIf="inCallParticipants[3]?.isVideoReady" src="../../../../assets/test.mp4" loop autoplay></video>
+            <video *ngIf="inCallParticipants[3]?.isVideoReady && inCallParticipants[3]?.videoOptions.hasCamera" src="../../../../assets/test.mp4" loop autoplay></video>
+
+            <img *ngIf="inCallParticipants[3]?.isVideoReady && !inCallParticipants[3]?.videoOptions.hasCamera" class="profile-img" [src]="inCallParticipants[3]?.user.getPhoto()"/>
 
             <div *ngIf="!inCallParticipants[3]?.isVideoReady" class="">loading</div>
             <div class="video-info">

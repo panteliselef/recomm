@@ -5,12 +5,13 @@ import { OK, CREATED, NO_CONTENT } from 'http-status-codes';
 import { NotFound } from 'http-errors';
 import { Document, Schema, Model, Types, model } from 'mongoose';
 import { DIContainer, SocketsService } from '@app/services';
+import { CrudOperations } from '@app/api/shared/interfaces/crud.interface';
 
 
 export class ChatsController {
 
   private Controller = new ResourceController<IChat>(ChatModel);
-  
+
   private videoCallsPerChat: any = {}
 
   /**
@@ -20,7 +21,14 @@ export class ChatsController {
    */
   public applyRoutes(): Router {
     // const Controller = new ResourceController<IChat>(ChatModel)
-    const router = this.Controller.applyRoutes();
+    const router = this.Controller.applyRoutes([
+      { operation: CrudOperations.GetAll },
+      { operation: CrudOperations.GetOne },
+      { operation: CrudOperations.Update },
+      { operation: CrudOperations.Delete }
+    ]);
+
+    router.post('/', this.create()); // Overwriting default
 
     router.post('/:id/pushMessage', this.pushMessageToChat());
 
@@ -30,60 +38,28 @@ export class ChatsController {
 
     router.post('/:id/messages/:mid', this.pushMessageAsReply());
 
-    // // Get All Members of a videocall
-    // router.get('/:id/videocall', this.getAllVideoCallMembers())
-
-    // // User join videocall
-    // router.post('/:id/videocall', this.updateVideoCallMembers())
-
-    // // User leaves videocall
-    // router.delete('/:id/videocall')
-
     return router;
   }
 
-  // public updateVideoCallMembers(id?: string) {
-  //   return async (req: Request, res: Response, next?: NextFunction): Promise<Response> => {
-  //     try {
-  //       const chatlId: any = id || req.params.id;
-  //       const userId: string = req.body.user_id;
+  public create() {
 
-  //       // Sending a broadcast message to all clients
-  //       const socketService = DIContainer.get(SocketsService);
+    return async (req: Request, res: Response, next?: NextFunction): Promise<Response> => {
+      try {
+        const resource = await new ChatModel(req.body)
+          .save();
 
-  //       if(this.videoCallsPerChat[chatlId]) this.videoCallsPerChat[chatlId].live_members.push(userId)
-  //       else {
-  //         this.videoCallsPerChat[chatlId] = {
-  //           live_members : [userId]
-  //         }
-  //       }
+        // Sending a broadcast message to all clients
+        const socketService = DIContainer.get(SocketsService);
+        socketService.broadcast(`newChat`, resource);
+        return res
+          .status(CREATED)
+          .json(resource);
 
-  //       socketService.broadcast(`/${chatlId}/videocall/user-join`, userId);
-
-
-
-  //       return res
-  //         .status(OK)
-  //         .json(this.videoCallsPerChat);
-  //     } catch (e) {
-  //       next(e);
-  //     }
-  //   };
-  // }
-
-  // public getAllVideoCallMembers(id?: string) {
-  //   return async (req: Request, res: Response, next?: NextFunction): Promise<Response> => {
-  //     try {
-  //       const modelId: any = id || req.params.id;
-
-  //       // return res
-  //       //   .status(OK)
-  //       //   .json(resource.messages[0]);
-  //     } catch (e) {
-  //       next(e);
-  //     }
-  //   };
-  // }
+      } catch (e) {
+        next(e);
+      }
+    };
+  }
 
   public getChatMessage(id?: string, mid?: string) {
     return async (req: Request, res: Response, next?: NextFunction): Promise<Response> => {
@@ -93,7 +69,7 @@ export class ChatsController {
 
         const resource = await ChatModel
           .findOne({ _id: modelId }, { messages: { $elemMatch: { _id: Types.ObjectId(submodelId) } } })
-          .orFail( new NotFound())
+          .orFail(new NotFound())
           .exec();
         // resource.messages[0]
 
@@ -123,7 +99,7 @@ export class ChatsController {
               $group: {
                 // _id: "$_id",
                 _id: { $dateToString: { format: '%Y-%m-%d', date: '$messages.timestamp' } },
-                messages: { $push: '$messages'}
+                messages: { $push: '$messages' }
               }
             },
             { $sort: { '_id': 1 } },
@@ -174,7 +150,7 @@ export class ChatsController {
         const resourceChat = await ChatModel
           .findOne({ _id: modelId }, { messages: { $elemMatch: { _id: Types.ObjectId(submodelId) } } })
 
-        if(!resourceChat) throw new NotFound();
+        if (!resourceChat) throw new NotFound();
 
         const message = await new MessageModel(req.body);
 
@@ -205,7 +181,7 @@ export class ChatsController {
 
 
 
-  
+
   public pushMessageToChat(id?: string) {
     return async (req: Request, res: Response, next?: NextFunction): Promise<Response> => {
       try {

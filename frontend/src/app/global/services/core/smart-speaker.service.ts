@@ -6,7 +6,6 @@
  *  - add this file in src/app
  */
 import {Injectable} from '@angular/core';
-// import Artyom from "artyom.js/build/artyom.js";
 import Artyom from '../../../../../node_modules/artyom.js/build/artyom.js';
 
 @Injectable({

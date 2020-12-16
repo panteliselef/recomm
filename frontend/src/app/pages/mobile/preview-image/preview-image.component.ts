@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {ChatModel, MessageType, MessageWithRepliesModel, UserModel} from '../../../global/models';
-import {ActivatedRoute, Router} from '@angular/router';
-import {ChatsService, SocketsService, UsersService} from '../../../global/services';
+import {ChatModel, MessageWithRepliesModel, UserModel} from '../../../global/models';
+import {ActivatedRoute} from '@angular/router';
+import {ChatsService, UsersService} from '../../../global/services';
+import {environment} from "../../../../environments/environment";
 
 @Component({
     selector: 'ami-fullstack-preview-image',
@@ -10,11 +11,11 @@ import {ChatsService, SocketsService, UsersService} from '../../../global/servic
 })
 export class PreviewImageComponent implements OnInit {
 
-    readonly url: string = 'http://localhost:8080/api/files/download/';
+    readonly url: string = `${environment.host}/api/files/download/`;
 
     chat: ChatModel;
     me: UserModel;
-    imgMessages: MessageWithRepliesModel[];
+    imgMessage: MessageWithRepliesModel;
     fileName: string;
     timestamp: Date;
     size: number;
@@ -22,9 +23,7 @@ export class PreviewImageComponent implements OnInit {
 
     constructor(private route: ActivatedRoute,
                 private chatService: ChatsService,
-                private userService: UsersService,
-                private socketService: SocketsService,
-                private router: Router) {
+                private userService: UsersService) {
         const chatId = this.route.snapshot.params.id;
         this.fileName = this.route.snapshot.params.imgFileName;
         this.fetchChatData(chatId);
@@ -34,19 +33,23 @@ export class PreviewImageComponent implements OnInit {
         this.chat = await this.chatService.getById(chatId).toPromise();
         this.me = await this.userService.getMe();
 
-        // @ts-ignore
-        this.imgMessages = this.chat.messages.filter<MessageWithRepliesModel>((message: MessageWithRepliesModel): boolean => {
+        this.imgMessage = this.chat.messages.find<MessageWithRepliesModel>((message: MessageWithRepliesModel): message is MessageWithRepliesModel => {
             return message.value.filename === this.fileName;
         });
 
-        this.timestamp = this.imgMessages[0].timestamp;
-        this.size = this.imgMessages[0].value.size;
+        this.timestamp = this.imgMessage.timestamp;
+        this.size = this.imgMessage.value.size;
 
-        console.log(this.imgMessages);
+        console.log(this.imgMessage);
 
     }
 
     ngOnInit() {
+    }
+
+    downloadFileToDevice() {
+        const file: { filename: string } = this.imgMessage.value;
+        window.location.href = `${this.url}${file.filename}`;
     }
 
 }

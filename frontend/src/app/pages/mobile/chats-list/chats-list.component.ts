@@ -43,6 +43,16 @@ export class ChatsListComponent implements OnInit, OnDestroy {
         this.showLoader = true;
         this.me = await this.usersService.getMe();
 
+        this.socketService
+            .syncMessages(`newChat`)
+            .subscribe((msg: {event: string, message: ChatModel}) => {
+                this.socketService
+                    .syncMessages(`/${msg.message._id}/newMessage`)
+                    .subscribe((msg) => {
+                        this.onReceiveMessage(msg.message._id, msg.message);
+                    });
+            });
+
 
         this.chats = await Promise.all<ChatModel>(this.me.chat_ids.map(async (chat_id: string, index: number) => {
             return await this.chatsService.getById(chat_id).toPromise();

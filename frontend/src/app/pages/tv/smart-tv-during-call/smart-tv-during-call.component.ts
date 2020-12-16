@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {ChatsService, SocketsService, UsersService} from "../../../global/services";
 import {
@@ -20,9 +20,11 @@ import {Observable, Subscription} from "rxjs";
 })
 export class SmartTvDuringCallComponent implements OnInit, OnDestroy {
     private readonly chatId: string;
-    private chat: ChatModel;
+    chat: ChatModel;
     showErrorMessage: boolean = false;
     errorMessage: string = '';
+
+    options: VideoOptions = {hasCamera:false, isMuted: false};
     private allSubs: Subscription;
     private me: UserModel;
     private newJoinedUser: Subscription;
@@ -33,8 +35,7 @@ export class SmartTvDuringCallComponent implements OnInit, OnDestroy {
     userMapLayoutBig: Array<ParticipantWithPosNumber> = Array(2).fill({user: undefined});
     userMapLayoutSmall: Array<ParticipantWithPosNumber> = Array(5).fill({user: undefined});
 
-    everyMember: Array<ParticipantWithPosNumber> = [];
-    private options: VideoOptions;
+    everyMember: ParticipantWithPosNumber[] = [];
 
     constructor(private usersService: UsersService, private route: ActivatedRoute, private chatsService: ChatsService, private socketService: SocketsService, private router: Router) {
         this.chatId = this.route.snapshot.params.id;
@@ -97,7 +98,7 @@ export class SmartTvDuringCallComponent implements OnInit, OnDestroy {
                 })
             ).subscribe((msg: { event: string, message: { member: string, videoOptions: VideoOptions, device: string } }) => {
                 console.log(msg.message)
-                // if (msg.message) this.updateInCallParticipants(msg.message)
+                if (msg.message) this.handleUpdate(msg.message)
             });
 
 
@@ -138,42 +139,27 @@ export class SmartTvDuringCallComponent implements OnInit, OnDestroy {
             ).subscribe(async  (msg: { event: string, message: { live_members: any } }) => {
                 console.log('GEtting live users', msg.message)
                 if (msg.message) {
-                    const everyone: any = Object.entries(msg.message.live_members).map<{ member: string, videoOptions: VideoOptions, device: string }>((member: any) => ({
+                    const everyone: { member: string; videoOptions: VideoOptions; device: string }[] = Object.entries(msg.message.live_members).map<{ member: string, videoOptions: VideoOptions, device: string }>((member: any) => ({
                         member: member[0],
                         ...member[1]
                     }))
 
-                    this.everyMember = await Promise.all<ParticipantWithPosNumber>(everyone.map(async (member,i) => {
-                        const u = await this.usersService.getById(member.member).toPromise()
+                    this.everyMember = await Promise.all<any>(everyone.map(async (member,i) => {
+                        if(this.me._id === member.member) {
+                            this.options = member.videoOptions;
+                        }
+                        const u = await this.usersService.getById(member.member).toPromise();
                         return {
                             user: u,
                             pos: [-1,-1],
-                            videoOptions: {isMuted: false, hasCamera: false},
+                            videoOptions: member.videoOptions,
                             device: ''
                         }
                     }))
 
                     this.populateBigLayout(this.everyMember)
                     this.populateSmallLayout(this.everyMember)
-                    // this.userMapLayoutSmall = everyone.slice(2,7)
 
-
-
-                    // if(i < 2) {
-                    //     this.userMapLayoutBig[i] = {
-                    //         user: u,
-                    //         isInCall: false,
-                    //         videoOptions: {isMuted: false, hasCamera: false},
-                    //         device: ''
-                    //     }
-                    // }else {
-                    //     this.userMapLayoutSmall[i-2] = {
-                    //         user: u,
-                    //         isInCall: false,
-                    //         videoOptions: {isMuted: false, hasCamera: false},
-                    //         device: ''
-                    //     }
-                    // }
 
                     console.log(everyone)
                 }
@@ -364,13 +350,13 @@ export class SmartTvDuringCallComponent implements OnInit, OnDestroy {
 
     private handleLeave(message: string) {
 
-        console.log('TO LEAVE', message, this.me._id === message)
+        // console.log('TO LEAVE', message, this.me._id === message)
         if (this.me._id === message) {
             this.hangUpCall()
             return
         }
 
-        console.log()
+        // console.log()
         const i = this.everyMember.findIndex(member=> member.user._id === message)
         const leaver = this.everyMember[i];
 
@@ -391,5 +377,13 @@ export class SmartTvDuringCallComponent implements OnInit, OnDestroy {
 
         this.everyMember.splice(i, 1);
 
+    }
+
+    private handleUpdate(message: { member: string; videoOptions: VideoOptions; device: string }) {
+        if(this.me._id === message.member) {
+            this.options = message.videoOptions
+        }
+        const i = this.everyMember.find(member=> member.user._id === message.member)
+        i.videoOptions = message.videoOptions
     }
 }
