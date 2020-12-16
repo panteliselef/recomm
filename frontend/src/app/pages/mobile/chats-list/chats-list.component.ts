@@ -48,8 +48,16 @@ export class ChatsListComponent implements OnInit, OnDestroy {
             .subscribe((msg: {event: string, message: ChatModel}) => {
                 this.socketService
                     .syncMessages(`/${msg.message._id}/newMessage`)
-                    .subscribe((msg) => {
-                        this.onReceiveMessage(msg.message._id, msg.message);
+                    .subscribe(async (msg: {event: string, message: MessageWithRepliesModel}) => {
+
+                        const createdChat = await this.chatsService.getById(msg.message.senderId).toPromise()
+                        console.log('Created',createdChat)
+
+                        this.chats = [
+                            ...this.chats,
+                            createdChat
+                        ];
+                        this.onReceiveMessage(msg.message.senderId, msg.message);
                     });
             });
 
@@ -117,6 +125,7 @@ export class ChatsListComponent implements OnInit, OnDestroy {
             }),
             this.getChatLastMessage(this.chats[selectedChatIndex], message)
         ];
+        this.chats = this.chats.sort((a, b) => (new Date(a.more.lastMsg.timestamp).getTime() < new Date(b.more.lastMsg.timestamp).getTime()) ? 1 : -1);
     }
 
     private getChatLastMessage(chat: ChatModel, lastMsg: MessageWithRepliesModel, member?: UserModel) {

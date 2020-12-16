@@ -80,7 +80,7 @@
 
     <div *ngIf="toCreateGroupChat" class="main-button-container">
         <button *ngIf="!isFinalPageVisible" class="main-button" (click)="showFinalPage()"
-                [disabled]="usersSelected ===0 ">{{usersSelected > 0 ? 'Next' : 'Select users'}}</button>
+                [disabled]="usersSelected < 2 ">{{usersSelected > 1 ? 'Next' : 'Select users'}}</button>
         <button *ngIf="isFinalPageVisible" class="main-button" (click)="createGroupChat()"
                 [disabled]="!groupName || !previewPhotoSrc">{{groupName && previewPhotoSrc ? 'Create' : 'Fill Info'}}</button>
     </div>
