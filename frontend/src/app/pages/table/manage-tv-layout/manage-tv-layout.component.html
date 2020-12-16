@@ -126,12 +126,12 @@
         </div>
     </div>
 
-    <div class="action-button">
+    <div class="action-button" (click)="randomizePositions()">
         Pick Random
     </div>
 
     <div style="display: flex;align-items: center; margin-top: 2rem">
-        <i class="material-icons-round" style="font-size: 50px">close</i>
+        <i (click)="onExit.emit()" class="material-icons-round" style="font-size: 50px">close</i>
         <span class="page-title ">TV Layout</span>
         <span class="recomm" style="margin-left: auto; font-size: 1.5rem;font-weight: bold">recomm</span>
     </div>

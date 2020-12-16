@@ -52,6 +52,15 @@ export class HomeTableComponent implements OnInit, OnDestroy {
 
     }
 
+    toggleView(images,layout,addPeople) {
+        this.showViewImages = images;
+        this.showManageLayout = layout;
+        this.showAddPeople = addPeople;
+        if(this.showManageLayout) {
+            this.showOnlyParticipants = true;
+        }
+    }
+
     async ngOnInit() {
 
         const arr = this.router.url.split('/')
@@ -287,5 +296,10 @@ export class HomeTableComponent implements OnInit, OnDestroy {
         //         event.previousIndex,
         //         event.currentIndex);
         // }
+    }
+
+    closeTVLayout($event: any) {
+        this.toggleView(true,false,false);
+        this.showOnlyParticipants = false;
     }
 }

@@ -2,7 +2,7 @@
 
     <div class="">
         <ami-fullstack-add-people *ngIf="showAddPeople"></ami-fullstack-add-people>
-        <ami-fullstack-manage-tv-layout *ngIf="showManageLayout" [inCallChat]="inCallChat"></ami-fullstack-manage-tv-layout>
+        <ami-fullstack-manage-tv-layout *ngIf="showManageLayout" [members]="inCallChatParties" (onExit)="closeTVLayout($event)" [inCallChat]="inCallChat"></ami-fullstack-manage-tv-layout>
         <ami-fullstack-view-images *ngIf="showViewImages" (onCallChat)="callSelected($event)"></ami-fullstack-view-images>
     </div>
 
@@ -26,6 +26,7 @@
 
             <ul class="participants-list"
                 id="usersList"
+                [ngStyle]="{'padding-bottom': showOnlyParticipants? '4rem': '0'}"
                 [cdkDropListData]="inCallChatParties"
                 [cdkDropListConnectedTo]="allPosIds"
 
@@ -62,7 +63,7 @@
                 <i class="material-icons-round">group_add</i>
                 <span class="mid">Add people</span>
             </div>
-            <div *ngIf="!showOnlyParticipants" class="side-nav-item" [routerLink]="'/table/'+ inCallChat?._id+'/edit-tv-layout'">
+            <div *ngIf="!showOnlyParticipants" class="side-nav-item" (click)="toggleView(false,true,false)">
                 <i class="material-icons-round">view_compact</i>
                 <span class="mid">Change TV layout</span>
             </div>
@@ -71,7 +72,6 @@
             <div *ngIf="!showOnlyParticipants" class="call-controls">
 
                 <span style="padding: 1rem">In call with {{inCallChat?.displayName}}</span>
-                <!--                <span>3:41</span>-->
 
                 <div class="video-control">
 
