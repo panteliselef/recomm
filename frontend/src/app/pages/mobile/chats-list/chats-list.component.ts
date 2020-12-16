@@ -53,11 +53,19 @@ export class ChatsListComponent implements OnInit, OnDestroy {
                         const createdChat = await this.chatsService.getById(msg.message.senderId).toPromise()
                         console.log('Created',createdChat)
 
+                        let member: UserModel;
+                        if (createdChat.participants.length === 2) {
+                            const partId = createdChat.participants.filter(id => id !== this.me._id)[0];
+                            member = await this.usersService.getById(partId).toPromise();
+                        }
+
                         this.chats = [
                             ...this.chats,
                             createdChat
                         ];
-                        this.onReceiveMessage(msg.message.senderId, msg.message);
+
+
+                        this.onReceiveMessage(msg.message.senderId, msg.message,member);
                     });
             });
 
@@ -114,8 +122,9 @@ export class ChatsListComponent implements OnInit, OnDestroy {
         await this.router.navigate(['/mobile', 'new-chat']);
     }
 
-    private onReceiveMessage(chat_id: string, message: MessageWithRepliesModel) {
+    private onReceiveMessage(chat_id: string, message: MessageWithRepliesModel, member?: UserModel) {
 
+        console.log('message received',chat_id,message)
         const selectedChatIndex = this.chats.findIndex((chat) => {
             return chat._id === chat_id;
         });
@@ -123,7 +132,7 @@ export class ChatsListComponent implements OnInit, OnDestroy {
             ...this.chats.filter<ChatModel>((chat: ChatModel): chat is ChatModel => {
                 return chat._id !== chat_id;
             }),
-            this.getChatLastMessage(this.chats[selectedChatIndex], message)
+            this.getChatLastMessage(this.chats[selectedChatIndex], message, member)
         ];
         this.chats = this.chats.sort((a, b) => (new Date(a.more.lastMsg.timestamp).getTime() < new Date(b.more.lastMsg.timestamp).getTime()) ? 1 : -1);
     }
