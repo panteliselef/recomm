@@ -13,9 +13,8 @@ export class SmartTvComponent implements OnInit, OnDestroy {
     private me: UserModel;
     private onTVCallSub: Subscription;
 
-    b = Array(6).fill(10);
-    private simpleChats: UserModel[];
-    private groupChats: ChatModel[];
+    simpleChats: UserModel[];
+    groupChats: ChatModel[];
 
     constructor(private socketsService: SocketsService,
                 private usersService: UsersService,

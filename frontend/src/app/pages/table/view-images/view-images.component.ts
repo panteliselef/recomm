@@ -17,7 +17,7 @@ import {environment} from "../../../../environments/environment";
 export class ViewImagesComponent implements OnInit {
 
     @Output('onCallChat') callChat: EventEmitter<string> = new EventEmitter<string>();
-    readonly url: string = environment.host+'/api/files/download/';
+    readonly url: string = environment.host + '/api/files/download/';
 
     me: UserModel;
     chats: ChatModel[];
@@ -32,6 +32,7 @@ export class ViewImagesComponent implements OnInit {
     showImagePreview: boolean;
     imgSrc: string;
     showAllImages: boolean = false;
+    messages: MessageWithRepliesModel[];
 
     constructor(private router: Router,
                 private usersService: UsersService,
@@ -43,9 +44,9 @@ export class ViewImagesComponent implements OnInit {
         this.showAllImages = false;
         this.chat = this.chats.find(chat => chat._id === chatId);
 
-        this.imgMessages = this.chat.messages.filter<MessageWithRepliesModel>((message: MessageWithRepliesModel): message is MessageWithRepliesModel => {
-            return message.type === MessageType.IMAGE_STATIC;
-        });
+
+        await this.fetchPhotos(this.chat._id)
+        this.imgMessages = this.messages;
     }
 
     async ngOnInit() {
@@ -53,9 +54,9 @@ export class ViewImagesComponent implements OnInit {
 
         this.socketService
             .syncMessages(`${this.me._id}/videocall/user-in-chat`)
-            .subscribe(async (msg: {event: string,message: {chatId: string,device: string}}) => {
+            .subscribe(async (msg: { event: string, message: { chatId: string, device: string } }) => {
 
-                if(!msg.message) return
+                if (!msg.message) return
                 console.log(msg.message.chatId)
                 this.inCallChatId = msg.message.chatId
 
@@ -64,13 +65,13 @@ export class ViewImagesComponent implements OnInit {
                     .syncMessages(`${msg.message.chatId}/videocall/user-left`)
                     .subscribe((msg) => {
 
-                        if(msg.message === this.me._id) this.inCallChatId = ''
+                        if (msg.message === this.me._id) this.inCallChatId = ''
                         console.log(msg.message)
                     });
             })
 
 
-        this.socketService.sendMessage('getUser',{
+        this.socketService.sendMessage('getUser', {
             member: this.me._id
         })
 
@@ -78,7 +79,6 @@ export class ViewImagesComponent implements OnInit {
     }
 
     async chatsInfo() {
-
         this.chats = await Promise.all<ChatModel>(this.me.chat_ids.map(async (chat_id: string, index: number) => {
             return await this.chatsService.getById(chat_id).toPromise();
         }));
@@ -93,14 +93,33 @@ export class ViewImagesComponent implements OnInit {
                 });
             }
             return chat;
-
         }));
+    }
+
+    async fetchPhotos(chatid?: string) {
+        let l;
+        if(!chatid) {
+            l = await Promise.all<ChatModel>(this.chats.map(async (chat: ChatModel) => {
+                return await this.chatsService.getById(chat._id).toPromise();
+            }));
+        }else {
+            l = [await this.chatsService.getById(chatid).toPromise()];
+        }
+
+
+        this.messages = l.map(value => {
+            return value.messages.filter<MessageWithRepliesModel>((message: MessageWithRepliesModel): message is MessageWithRepliesModel => {
+                return message.type === MessageType.IMAGE_STATIC;
+            });
+        }).reduce((acc, value) => {
+            return [...acc, ...value];
+        }, []);
     }
 
     joinAnotherCall(newChatId: string) {
 
         // Leave previous call
-        if(this.inCallChatId) {
+        if (this.inCallChatId) {
             this.socketService.sendMessage(`videocall/leave`, {
                 chat: this.inCallChatId,
                 member: this.me._id
@@ -120,25 +139,17 @@ export class ViewImagesComponent implements OnInit {
         this.senderName = this.user.getFullName();
         this.timeStamp = photo.timestamp;
         this.imgSize = photo.value.size;
-        this.imgSrc = this.url+photo.value.filename;
+        this.imgSrc = this.url + photo.value.filename;
         console.log(photo.value)
     }
 
 
     async getAllImages() {
 
+        this.chat = undefined;
         this.showAllImages = true;
-
-        this.imgMessages = this.chats.map(value => {
-            return value.messages.filter<MessageWithRepliesModel>((message: MessageWithRepliesModel): message is MessageWithRepliesModel => {
-                return message.type === MessageType.IMAGE_STATIC;
-            });
-        }).reduce((acc, value) => {
-            return [ ...acc, ...value];
-        }, []);
-
-
-        console.log('message ', this.imgMessages);
+        await this.fetchPhotos();
+        this.imgMessages = this.messages;
     }
 
 
