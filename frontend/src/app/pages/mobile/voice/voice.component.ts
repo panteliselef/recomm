@@ -1,5 +1,5 @@
 import {Component, NgZone, OnDestroy, OnInit} from '@angular/core';
-import {ChatsService, SmartSpeakerService, UsersService} from '../../../global/services';
+import {ChatsService, SmartSpeakerService, SocketsService, UsersService} from '../../../global/services';
 import {ChatModel, UserModel} from '../../../global/models';
 import {ActivatedRoute, Router} from '@angular/router';
 
@@ -14,13 +14,14 @@ export class VoiceComponent implements OnInit {
     me: UserModel;
     public allUsers: UserModel[];
     public user: UserModel;
-    phrase: string;
     chats: ChatModel[];
     contacts: { chatId: string; user: UserModel }[] = [];
+    errorMsg = '';
 
     constructor(private zone: NgZone,
                 private route: ActivatedRoute,
                 private chatsService: ChatsService,
+                private socketService: SocketsService,
                 private speaker: SmartSpeakerService,
                 private router: Router,
                 private usersService: UsersService) {
@@ -29,22 +30,20 @@ export class VoiceComponent implements OnInit {
 
     async chatsInfo() {
 
-        this.chats = await Promise.all<ChatModel>(this.me.chat_ids.map(async (chat_id: string, index: number) => {
-            return await this.chatsService.getById(chat_id).toPromise();
-        }));
 
-        this.chats = await Promise.all<ChatModel>(this.chats.map(async (chat: ChatModel) => {
 
-            let member: UserModel;
-            if (chat.participants.length === 2) {
-                console.log(chat.participants);
-                const partId = chat.participants.filter(id => id !== this.me._id)[0];
-                member = await this.usersService.getById(partId).toPromise();
-            }
-            return new ChatModel({
-                ...chat, displayName: member.getFullName(), photoUrl: member.getPhoto()
-            });
-        }));
+        // this.chats = await Promise.all<ChatModel>(this.chats.map(async (chat: ChatModel) => {
+        //
+        //     let member: UserModel;
+        //     if (chat.participants.length === 2) {
+        //         console.log(chat.participants);
+        //         const partId = chat.participants.filter(id => id !== this.me._id)[0];
+        //         member = await this.usersService.getById(partId).toPromise();
+        //     }
+        //     return new ChatModel({
+        //         ...chat, displayName: member.getFullName(), photoUrl: member.getPhoto()
+        //     });
+        // }));
 
         await this.goToChatImages(this.chats[0]._id);
     }
@@ -72,8 +71,11 @@ export class VoiceComponent implements OnInit {
                 chatId: contact.chat_id
             };
         }));
+        this.chats = await Promise.all<ChatModel>(this.me.chat_ids.map(async (chatId: string, index: number) => {
+            return await this.chatsService.getById(chatId).toPromise();
+        }));
         console.log(this.contacts);
-        this.speaker.addSmartCommand(['join videoCall * on smartphone', 'join videoCall * on Tv'], this.videoCall.bind(this));
+        this.speaker.addSmartCommand(['call *'], this.videoCall.bind(this));
         this.speaker.addSmartCommand('search for *', this.searchFor.bind(this));
         this.speaker.addSmartCommand('images of *', this.showImages.bind(this));
         this.allUsers = await this.usersService
@@ -92,38 +94,53 @@ export class VoiceComponent implements OnInit {
         // word is the name of videoCall
         // check if videoCall exist
         // if (!word) then
-        this.speaker.speak('the videoCall with name ' + word + 'doesnt exist');
-        // if (word)
-        // if index == 0 then go to smartphone
-        // if index == 1 then go to Tv
+        const chat = this.chats.filter(chat => chat.displayName).find(chat => {
+            return chat.displayName.toLowerCase() === word.toLowerCase();
+        });
+
+        const showError = (error) => {
+            return () => {
+                return this.errorMsg = error;
+            };
+        };
+
+
+        if (chat) {
+            this.socketService.sendMessage(`videocall/join`, {
+                chat: chat._id,
+                member: this.me._id,
+                videoOptions: {hasCamera: false, isMuted: false},
+                device: 'TV'
+            });
+
+            await this.zone.run(showError(`Calling ${word}`));
+        } else {
+
+
+            await this.zone.run(showError(`Unable to find ${word}`));
+        }
     }
 
     async searchFor(index, word) {
-        // word is the name of contact
-        // check if contact exist
-        // if (!word) then
 
         this.speaker.speak('See search results', async () => {
             const redirect = (wordW: string) => {
                 return async () => {
-                    return await this.router.navigate(['/mobile', 'search'],{ queryParams: {q: wordW}});
+                    return await this.router.navigate(['/mobile', 'search'], { queryParams: {q: wordW}});
                 };
             };
 
             await this.zone.run(redirect(word));
         });
-
-
-
-
-
-        // if (word)
     }
 
     async showImages(index, word) {
         const l = this.contacts.find(contact => {
             return contact.user.fname.toLowerCase() === word.toLowerCase();
         });
+        if (l) {
+            this.errorMsg = `Cannot find contact with name ${word}`;
+        }
 
         const redirect = (chatId) => {
             return async () => {

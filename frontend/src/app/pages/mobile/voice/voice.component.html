@@ -11,12 +11,12 @@
     <main>
 
         <div class="input-container">
-            <i (click)="startAction()"
-               class="material-icons-round">mic</i>
-
+            <i class="material-icons-round">mic</i>
         </div>
 
-        <span>Listening ...</span>
+        <span *ngIf="errorMsg === '' ">Listening ...</span>
+        <span *ngIf="errorMsg !== '' ">{{errorMsg}}</span>
+
 
     </main>
 
