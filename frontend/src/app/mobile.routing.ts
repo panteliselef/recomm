@@ -15,11 +15,13 @@ import {CalendarComponent} from './pages/mobile/calendar/calendar.component';
 import {SearchComponent} from './pages/mobile/search/search.component';
 import {VoiceComponent} from './pages/mobile/voice/voice.component';
 import {BrowseDocumentsComponent} from './pages/mobile/browse-documents/browse-documents.component';
+import {AddPeopleMobileComponent} from "./pages/mobile/add-people/add-people.component";
 
 const routes: Routes = [
     {path: 'chats', component: ChatsListComponent, },
     {path: 'chats/:id', component: ChatComponent, },
     {path: 'chats/:id/reply/:rid', component: ChatReplyComponent},
+    {path: 'chats/:id/add', component: AddPeopleMobileComponent},
     {path: 'contacts', component: ContactsComponent, },
     {path: 'profile', component: EditProfileComponent},
     {path: 'new-chat', component: NewChatComponent, },

@@ -20,6 +20,7 @@ import {CalendarComponent} from './pages/mobile/calendar/calendar.component';
 import {SearchComponent} from './pages/mobile/search/search.component';
 import {FormsModule} from '@angular/forms';
 import {VoiceComponent} from './pages/mobile/voice/voice.component';
+import {AddPeopleMobileComponent} from "./pages/mobile/add-people/add-people.component";
 
 
 @NgModule({
@@ -36,6 +37,7 @@ import {VoiceComponent} from './pages/mobile/voice/voice.component';
         EditProfileComponent,
         NewChatComponent,
         PrepCallComponent,
+        AddPeopleMobileComponent,
 
         EditChatComponent,
         ChatReplyComponent,

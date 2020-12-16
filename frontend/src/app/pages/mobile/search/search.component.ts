@@ -40,8 +40,9 @@ export class SearchComponent implements OnInit {
             });
             //Exclude myself
             this.usersToShow = Array.from(this.allUsers);
+            if(!this.query) return
             this.searchStr = this.query;
-            this.filterSearchResults(this.searchStr);
+            if(this.searchStr.trim() !== '')this.filterSearchResults(this.searchStr);
         } catch (e) {
             console.error(e);
         }

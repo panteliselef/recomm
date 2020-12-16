@@ -64,7 +64,7 @@
         </div>
 
         <div class="trailing-icons">
-            <i class="material-icons-round">person_add</i>
+<!--            <i class="material-icons-round">person_add</i>-->
             <i class="material-icons-round" (click)="toggleVideoSetting()">more_vert</i>
         </div>
     </div>
@@ -148,7 +148,11 @@
 
     <div *ngIf="inCallParticipants.length <= 2" class="video-collection-container" [ngClass]="{'two-p-layout': inCallParticipants.length === 2, 'one-p-layout': inCallParticipants.length === 1}">
         <div *ngFor="let party of inCallParticipants" class="big-tile">
-            <video *ngIf="party?.isVideoReady" src="../../../../assets/test.mp4" loop autoplay></video>
+<!--            <video *ngIf="party?.isVideoReady" src="../../../../assets/test.mp4" loop autoplay></video>-->
+
+            <video *ngIf="party?.isVideoReady && party?.videoOptions.hasCamera" src="../../../../assets/test.mp4" loop autoplay></video>
+
+            <img *ngIf="party?.isVideoReady && !party?.videoOptions.hasCamera" class="profile-img" [src]="party?.user.getPhoto()"/>
 
             <div *ngIf="!party?.isVideoReady" class="">loading</div>
 

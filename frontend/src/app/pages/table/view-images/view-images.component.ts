@@ -128,7 +128,6 @@ export class ViewImagesComponent implements OnInit {
     async getAllImages() {
 
         this.showAllImages = true;
-        // this.chatsInfo();
 
         this.imgMessages = this.chats.map(value => {
             return value.messages.filter<MessageWithRepliesModel>((message: MessageWithRepliesModel): message is MessageWithRepliesModel => {

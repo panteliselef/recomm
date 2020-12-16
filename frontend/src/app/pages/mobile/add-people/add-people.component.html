@@ -1,0 +1,29 @@
+<div class="page">
+    <app-bar
+        leadingIcon="arrow_back"
+        title="Add People"
+    >
+    </app-bar>
+
+    <main>
+
+        <ul>
+            <li *ngFor="let item of allUsers" (click)="markAsSelected(item.user._id)">
+                <div style="display: flex;align-items: center">
+                    <img class="profile-img" style="flex: 0 0 auto" [src]="item.user.getPhoto()">
+                    <span style="flex: 1 1 100%">{{item.user.getFullName()}}</span>
+                </div>
+                <div class="is-checked visible" style="display: flex;align-items: center">
+                    <span *ngIf="item.isSelected" class="material-icons-round">check_circle</span>
+                    <span *ngIf="!item.isSelected" class="material-icons">radio_button_unchecked</span>
+                </div>
+
+            </li>
+        </ul>
+
+    </main>
+
+    <div class="main-button-container">
+        <button class="main-button" (click)="addPeople()"> Add </button>
+    </div>
+</div>

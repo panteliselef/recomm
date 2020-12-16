@@ -19,6 +19,7 @@ export class EditChatComponent implements OnInit {
     me: UserModel;
     chatName: string;
     chatId: string;
+    userMembers: UserModel[];
 
 
     constructor(private route: ActivatedRoute,
@@ -32,6 +33,9 @@ export class EditChatComponent implements OnInit {
         this.chatId = this.route.snapshot.params.id;
         this.me = await this.userService.getMe();
         this.chat = await this.chatService.getById(this.chatId).toPromise();
+        this.userMembers = await Promise.all<UserModel>(this.chat.participants.map(async (id) =>{
+           return await this.userService.getById(id).toPromise();
+        }))
         await this.chatsInfo();
     }
 

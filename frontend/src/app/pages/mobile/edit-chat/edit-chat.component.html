@@ -23,13 +23,25 @@
             </li>
         </ul>
 
+
+        <span style="margin-top: 1rem">{{userMembers?.length}} MEMBERS</span>
+
+        <ul>
+            <li *ngFor="let item of userMembers" class="member-item">
+                <div style="display: flex;align-items: center">
+                    <img class="profile-img" style="flex: 0 0 auto" [src]="item.getPhoto()">
+                    <span style="flex: 1 1 100%">{{item.getFullName()}}</span>
+                </div>
+            </li>
+        </ul>
+
         <span id="manage"> MANAGE </span>
 
         <ul>
-            <li>
-                <i class="material-icons-round">group</i>
-                <span>All Members</span>
-            </li>
+<!--            <li>-->
+<!--                <i class="material-icons-round">group</i>-->
+<!--                <span>All Members</span>-->
+<!--            </li>-->
             <li>
                 <i class="material-icons-round">exit_to_app</i>
                 <span>Leave Group</span>

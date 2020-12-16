@@ -81,10 +81,6 @@ export class ChatCallComponent implements OnInit, OnDestroy {
         }
         this.inCallParticipants = [meAsParticipant]
         this.setVideoReady(meAsParticipant)
-
-
-        // this.socketService.syncAllMessages().subscribe((msg)=> console.log(msg))
-
         setTimeout(() => {
             this.socketService.sendMessage(`videocall/join`, {
                 chat: this.chat._id,
@@ -93,10 +89,6 @@ export class ChatCallComponent implements OnInit, OnDestroy {
                 device: 'MOBILE'
             })
         }, 1000)
-
-
-        // const l = await this.http.post(`${environment.host}/api/chats/${chatId}/videocall`, {user_id:this.me._id}).toPromise();
-        // console.log(l)
 
 
         // In case of error connection hang up the call
@@ -210,11 +202,6 @@ export class ChatCallComponent implements OnInit, OnDestroy {
     private onUserUpdated(msg: { member: string; videoOptions: VideoOptions }) {
         const o: UserWithVideoSettings = this.inCallParticipants.find(party => party.user._id === msg.member)
         o.videoOptions = msg.videoOptions
-        console.log(o)
-        // this.inCallParticipants = [
-        //     ...this.inCallParticipants.filter(party => party.user._id !== msg.member),
-        //     o
-        // ]
     }
 
     private onUserLeft(msg: string) {
@@ -223,10 +210,8 @@ export class ChatCallComponent implements OnInit, OnDestroy {
 
     private onGetCallUsers(msg: {live_members:any}) {
 
-        console.log(msg.live_members)
         const members = Object.entries(msg.live_members).filter(user => user[0] !== this.me._id).map((user:[string, any]): UserWithVideoSettings => {
             const [k, v] = user
-            // const opts = v.videoOptions;
             return {
                 user: this.participants.find(participant => participant._id === k),
                 videoOptions: {...v.videoOptions},

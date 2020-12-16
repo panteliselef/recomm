@@ -29,7 +29,7 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
     showCallPage = false;
     showPrepCall = false;
 
-    videoCallOptions: {isMuted: boolean, hasCamera: boolean} = {isMuted: false, hasCamera: false};
+    videoCallOptions: { isMuted: boolean, hasCamera: boolean } = {isMuted: false, hasCamera: false};
 
     // private URLRegex = new RegExp("([a-zA-Z0-9]+://)?([a-zA-Z0-9_]+:[a-zA-Z0-9_]+@)?([a-zA-Z0-9.-]+\\.[A-Za-z]{2,4})(:[0-9]+)?(/.*)?");
 
@@ -38,11 +38,6 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
         {
             name: 'call',
             onClick: this.goToChatPrepCallPage.bind(this)
-        },
-        {
-            name: 'person_add',
-            onClick: () => {
-            }
         },
         {
             name: 'more_vert',
@@ -84,6 +79,17 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.chat = await this.chatService.getById(chatId).toPromise();
 
 
+        if (this.chat.participants.length > 2) {
+            this.icons.splice(1, 0, {
+                    name: 'person_add',
+                    onClick: () => {
+                        this.router.navigate(['add'], {relativeTo: this.route})
+                    }
+                }
+            )
+        }
+
+
         this.chatSubscription = this.socketService
             .syncMessages(`/${this.chat._id}/newMessage`)
             .subscribe((msg) => {
@@ -99,20 +105,17 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
 
         this.peopleInVideoCall = this.socketService
             .syncMessages(`${chatId}/videocall/people-in-call`)
-            .subscribe((msg ) => {
+            .subscribe((msg) => {
                 console.log(msg.message)
-                if(!msg.message) {
+                if (!msg.message) {
                     this.icons[0].name = 'call'
                     return;
                 }
-                if(Object.entries(msg.message.live_members).length > 0 ) {
+                if (Object.entries(msg.message.live_members).length > 0) {
                     this.icons[0].name = 'phone_in_talk'
-                }else {
+                } else {
                     this.icons[0].name = 'call'
                 }
-                // this.onUserJoined(msg.message)
-                // this.onUserUpdated(msg.message)
-
             });
 
         this.participants = await Promise.all<UserModel>(this.chat.participants.map(async (memberId) => {
