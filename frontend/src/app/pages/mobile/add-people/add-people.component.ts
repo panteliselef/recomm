@@ -22,6 +22,7 @@ export class AddPeopleMobileComponent implements OnInit {
     async ngOnInit() {
         const chatId = this.route.snapshot.params.id;
         this.me = await this.usersService.getMe();
+        this.me = await this.usersService.getById(this.me._id).toPromise();
         await this.getAllUsers(chatId);
     }
 
@@ -29,34 +30,17 @@ export class AddPeopleMobileComponent implements OnInit {
 
         this.chat = await this.chatService.getById(chatId).toPromise();
 
-
-        this.allUsers = await this.usersService.getAll().toPromise();
-
-        console.log(this.allUsers)
-        console.log(this.chat.participants)
-        this.allUsers = this.allUsers.filter((user) => {
-            return !this.chat.participants.includes(user._id)
-        });
-
-        console.log(this.allUsers)
-        // let l = await Promise.all<UserModel>(this.chat.participants.filter((party:string)=> {
-        //     this.me._id !== party ||
-        // }).map(async (contact) => {
-        //     return await this.usersService.getById(contact.contact_id).toPromise();
-        // }));
-        //
-        // // Exclude myself
-        // l = l.filter<UserModel>((user: UserModel): user is UserModel => {
-        //     return user._id !== this.me._id
-        // })
+        this.allUsers = await Promise.all(this.me.contacts.filter((user) => {
+            return !this.chat.participants.includes(user.contact_id)
+        }).map(async user=> {
+            return await this.usersService.getById(user.contact_id).toPromise()
+        }))
         this.allUsers = this.allUsers.map(user => {
             return {
                 user,
                 isSelected: false
             }
         })
-        //
-        // this.usersToShow = Array.from(this.allUsers);
 
     }
 

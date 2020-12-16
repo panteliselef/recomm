@@ -1,0 +1,114 @@
+@import "../../../../declarations";
+
+.tv-start-container {
+
+
+    display: grid;
+
+    grid-template-columns: 300px 1fr;
+    height: 100vh;
+
+
+    .side-bar {
+        height: inherit;
+        display: flex;
+        flex-direction: column;
+        border-right: 2px solid $mid-black;
+
+        h1 {
+            padding: 1rem;
+        }
+
+
+        div {
+            padding-left: .5rem;
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+            font-size: 30px;
+            i {
+                margin-right: 1rem;
+            }
+
+        }
+    }
+
+
+    main {
+        height: inherit;
+        display: flex;
+        flex-direction: column;
+        //justify-content: center;
+        padding: 2rem;
+        min-height: 700px;
+        position: relative;
+
+
+
+        .direction {
+            width: 500px;
+            position: absolute;
+            bottom: 0;
+            height: 100px;
+            left: calc(50% - 300px);
+            margin-left: -50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+            line-height: 38px;
+            font-weight: bold;
+            background-color: $orange-color;
+            border-radius: 100px 100px 0 0;
+        }
+
+        span.title {
+            text-transform: capitalize;
+            font-weight: 500;
+            color: $light-black;
+            font-size: 1.7rem;
+            margin-top: 2rem;
+        }
+
+
+        .contacts-list {
+            display: flex;
+            flex-wrap: wrap;
+
+            .contact {
+                display: flex;
+                flex: 0 0 250px;
+                flex-direction: column;
+                align-items: center;
+                padding: 1rem 0;
+
+                img.profile-img {
+                    width: 150px;
+                    height: 150px;
+                    margin-bottom: 1.2rem;
+                }
+                .contact-name {
+                    font-weight: 500;
+                    font-size: 30px;
+                    line-height: 38px;
+                    text-align: center;
+                }
+                .contact-status {
+                    margin-top: .5rem;
+                    font-weight: 500;
+                    font-size: 20px;
+                    line-height: 25px;
+                    //color: $light-black;
+                }
+
+                .contact-recom {
+                    margin-top: .5rem;
+                    font-weight: 500;
+                    font-size: 20px;
+                    line-height: 25px;
+                    color: $light-black;
+                }
+            }
+        }
+    }
+}

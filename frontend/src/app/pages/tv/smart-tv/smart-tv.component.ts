@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {SocketsService, UsersService} from "../../../global/services";
+import {ChatsService, SocketsService, UsersService} from "../../../global/services";
 import {Subscription} from "rxjs";
-import {UserModel} from "../../../global/models";
+import {ChatModel, UserModel} from "../../../global/models";
 import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
@@ -13,8 +13,13 @@ export class SmartTvComponent implements OnInit, OnDestroy {
     private me: UserModel;
     private onTVCallSub: Subscription;
 
+    b = Array(6).fill(10);
+    private simpleChats: UserModel[];
+    private groupChats: ChatModel[];
+
     constructor(private socketsService: SocketsService,
                 private usersService: UsersService,
+                private chatsService: ChatsService,
                 private router: Router,
                 private route: ActivatedRoute) {
     }
@@ -26,6 +31,23 @@ export class SmartTvComponent implements OnInit, OnDestroy {
             .subscribe(async (msg: { event: string, message: { chatId: string, device: string } }) => {
                 await this.router.navigate(['call', msg.message.chatId], {relativeTo: this.route });
             });
+
+
+
+        this.simpleChats = await Promise.all(this.me.contacts.map(async contact=> {
+           return await this.usersService.getById(contact.contact_id).toPromise()
+        }))
+
+        console.log(this.simpleChats)
+
+        const l =  await Promise.all(this.me.chat_ids.map(async chatId => {
+            return await this.chatsService.getById(chatId).toPromise();
+        }));
+
+        this.groupChats = l.filter((chat: ChatModel)=> {
+            return chat.participants.length > 2;
+        })
+        console.log(this.groupChats)
     }
 
 

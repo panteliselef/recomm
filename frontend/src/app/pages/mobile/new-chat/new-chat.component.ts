@@ -154,6 +154,6 @@ export class NewChatComponent implements OnInit {
 
 
         console.log("Complete",o)
-        await this.router.navigate(['/mobile/chats'])
+        await this.router.navigate(['/mobile','chats',newChatCreated._id])
     }
 }

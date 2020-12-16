@@ -1,3 +1,53 @@
-<p>smart-tv works!</p>
+<section class="tv-start-container">
 
-<a routerLink="call" >Go to call</a>
+    <div class="side-bar">
+        <h1>recomm</h1>
+
+
+        <div style="flex: 1 1 auto">
+            <i class="material-icons-round" style="font-size: 6rem">cast</i>
+            Join Now
+        </div>
+
+    </div>
+
+    <main>
+
+        <span class="title">Contacts</span>
+
+
+        <div class="contacts-list">
+            <div class="contact" *ngFor="let contact of simpleChats">
+
+                <img class="profile-img" [src]="contact.getPhoto()">
+                <span class="contact-name">{{contact.getFullName()}}</span>
+<!--                <span class="contact-status">Active Now</span>-->
+                <span class="contact-recom">as “{{contact.fname}}”</span>
+
+            </div>
+
+        </div>
+        <span class="title">Group chats</span>
+
+
+        <div class="contacts-list">
+            <div class="contact" *ngFor="let chat of groupChats">
+
+                <img class="profile-img" [src]="chat.photoUrl">
+                <span class="contact-name">{{chat.displayName}}</span>
+<!--                <span class="contact-status">Active Now</span>-->
+                <span class="contact-recom">as “{{chat.displayName}}”</span>
+
+            </div>
+
+        </div>
+
+        <div class="direction">
+            On Voice say “ ... ”
+        </div>
+
+    </main>
+
+
+
+</section>
