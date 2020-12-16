@@ -210,17 +210,20 @@ export class ChatCallComponent implements OnInit, OnDestroy {
     private onUserUpdated(msg: { member: string; videoOptions: VideoOptions }) {
         const o: UserWithVideoSettings = this.inCallParticipants.find(party => party.user._id === msg.member)
         o.videoOptions = msg.videoOptions
-        this.inCallParticipants = [
-            ...this.inCallParticipants.filter(party => party.user._id !== msg.member),
-            o
-        ]
+        console.log(o)
+        // this.inCallParticipants = [
+        //     ...this.inCallParticipants.filter(party => party.user._id !== msg.member),
+        //     o
+        // ]
     }
 
     private onUserLeft(msg: string) {
         this.inCallParticipants = this.inCallParticipants.filter(party => party.user._id !== msg)
     }
 
-    private onGetCallUsers(msg: any) {
+    private onGetCallUsers(msg: {live_members:any}) {
+
+        console.log(msg.live_members)
         const members = Object.entries(msg.live_members).filter(user => user[0] !== this.me._id).map((user:[string, any]): UserWithVideoSettings => {
             const [k, v] = user
             // const opts = v.videoOptions;

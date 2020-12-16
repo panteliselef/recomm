@@ -7,7 +7,7 @@
 
 
     <main class="">
-        <img *ngIf="imgMessages" [src]="url + imgMessages[0].value.filename">
+        <img *ngIf="imgMessage" [src]="url + imgMessage.value.filename">
     </main>
     <ul>
         <li>
@@ -15,7 +15,7 @@
             <span>Sent on</span>
             <span id="date">{{this.timestamp | date: 'mediumDate'}}</span>
         </li>
-        <li>
+        <li style="cursor: pointer" (click)="downloadFileToDevice()">
             <i class="material-icons-round">get_app</i>
             <span>Download</span>
             <span id="size">{{this.size | byteConvert}}</span>

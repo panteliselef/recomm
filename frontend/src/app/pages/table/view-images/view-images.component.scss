@@ -188,3 +188,63 @@ h1 {
         height: 100%;
     }
 }
+
+
+.image-preview-container {
+    position: fixed;
+    top:0;
+    left: 50%;
+    margin-left: -50%;
+    transform: scale(0) translateY(100vh);
+    border-radius: 100px;
+    z-index: 99;
+    width: 100%;
+    background-color: rgba(0,0,0,.9);
+    height: 100vh;
+    transition: all .3s ease;
+    display: flex;
+    justify-content: center;
+
+
+    .image-preview-inside-container {
+        max-width: 1000px;
+        display: grid;
+        grid-template-columns: 1fr 300px;
+        align-items: center;
+        height: inherit;
+    }
+
+    .username {
+        font-weight: bold;
+    }
+
+    img.image-preview {
+        width: 100%;
+        object-fit: contain;
+        border-radius: 10px;
+    }
+
+    .image-info {
+        display: flex;
+        flex-direction: column;
+        padding: 0 1rem;
+        font-size: 1.5rem;
+    }
+
+    .download-button {
+        font-size: 1.2rem;
+        padding: 1rem;
+        width: 100%;
+        text-align: center;
+        border-radius: 100px;
+        margin-top: 1rem;
+        background-color: $orange-color;
+        cursor: pointer;
+    }
+
+    &.visible {
+        border-radius: 0;
+
+        transform: scale(1) translateY(0);
+    }
+}
