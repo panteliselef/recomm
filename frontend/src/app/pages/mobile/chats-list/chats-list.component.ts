@@ -1,9 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ChatsService} from '../../../global/services';
-import {UsersService} from '../../../global/services';
+import {ChatsService, SocketsService, UsersService} from '../../../global/services';
 import {ChatModel, MessageType, MessageWithRepliesModel, UserModel} from '../../../global/models';
 import {Router} from '@angular/router';
-import {SocketsService} from '../../../global/services';
 import {Subscription} from 'rxjs';
 
 @Component({
@@ -21,7 +19,7 @@ export class ChatsListComponent implements OnInit, OnDestroy {
     };
     messages: Object[];
     me: UserModel;
-    chats: ChatModel[];
+    chats: ChatModel[] = [];
     showLoader = true;
     private subscriptions: Subscription[];
 
@@ -43,29 +41,40 @@ export class ChatsListComponent implements OnInit, OnDestroy {
         this.showLoader = true;
         this.me = await this.usersService.getMe();
 
+        this.me = await this.usersService.getById(this.me._id).toPromise()
+        console.log('before', this.chats)
+        console.log('ME',this.me)
+
         this.socketService
             .syncMessages(`newChat`)
             .subscribe((msg: {event: string, message: ChatModel}) => {
+                const chatId = msg.message._id;
                 this.socketService
-                    .syncMessages(`/${msg.message._id}/newMessage`)
+                    .syncMessages(`/${chatId}/newMessage`)
                     .subscribe(async (msg: {event: string, message: MessageWithRepliesModel}) => {
 
-                        const createdChat = await this.chatsService.getById(msg.message.senderId).toPromise()
-                        console.log('Created',createdChat)
+                        if(msg.message.type == MessageType.STATUS) {
+                            const createdChat = await this.chatsService.getById(msg.message.senderId).toPromise()
+                            console.log('Created',createdChat)
 
-                        let member: UserModel;
-                        if (createdChat.participants.length === 2) {
-                            const partId = createdChat.participants.filter(id => id !== this.me._id)[0];
-                            member = await this.usersService.getById(partId).toPromise();
+                            let member: UserModel;
+                            if (createdChat.participants.length === 2) {
+                                const partId = createdChat.participants.filter(id => id !== this.me._id)[0];
+                                member = await this.usersService.getById(partId).toPromise();
+                            }
+
+                            this.chats = [
+                                ...this.chats,
+                                createdChat
+                            ];
+
+
+                            this.onReceiveMessage(msg.message.senderId, msg.message,member);
+                        }else {
+                            this.onReceiveMessage(chatId, msg.message);
                         }
 
-                        this.chats = [
-                            ...this.chats,
-                            createdChat
-                        ];
 
-
-                        this.onReceiveMessage(msg.message.senderId, msg.message,member);
                     });
             });
 
@@ -134,6 +143,8 @@ export class ChatsListComponent implements OnInit, OnDestroy {
             }),
             this.getChatLastMessage(this.chats[selectedChatIndex], message, member)
         ];
+
+        console.log('all new chats',this.chats)
         this.chats = this.chats.sort((a, b) => (new Date(a.more.lastMsg.timestamp).getTime() < new Date(b.more.lastMsg.timestamp).getTime()) ? 1 : -1);
     }
 
