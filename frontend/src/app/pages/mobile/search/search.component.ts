@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {UsersService} from '../../../global/services';
 import {UserModel} from '../../../global/models';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
     selector: 'ami-fullstack-search',
@@ -12,10 +13,12 @@ export class SearchComponent implements OnInit {
     public usersToShow: UserModel[];
     public searchStr: string;
     private me: UserModel;
+    query: string;
 
-    constructor(private users: UsersService) {
+    constructor(private users: UsersService, private route: ActivatedRoute) {
         this.searchStr = '';
         this.allUsers = [];
+        this.query = this.route.snapshot.queryParams.q;
     }
 
     ngOnInit() { this.getAllUsers(); }
@@ -32,11 +35,13 @@ export class SearchComponent implements OnInit {
             this.allUsers = await this.users
                 .getAll()
                 .toPromise();
-            this.allUsers = this.allUsers.filter<UserModel>( (user : UserModel): user is UserModel => {
-                return user._id !== this.me._id
-            })
+            this.allUsers = this.allUsers.filter<UserModel>((user: UserModel): user is UserModel => {
+                return user._id !== this.me._id;
+            });
             //Exclude myself
             this.usersToShow = Array.from(this.allUsers);
+            this.searchStr = this.query;
+            this.filterSearchResults(this.searchStr);
         } catch (e) {
             console.error(e);
         }
