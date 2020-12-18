@@ -3,7 +3,7 @@ import {ChatModel, MessageType, MessageWithRepliesModel, UserModel} from '../../
 import {Router} from '@angular/router';
 import {ChatsService, SocketsService, UsersService} from '../../../global/services';
 
-import {environment} from "../../../../environments/environment";
+import {environment} from '../../../../environments/environment';
 
 
 @Component({
@@ -107,8 +107,9 @@ export class ViewImagesComponent implements OnInit {
         }
 
 
-        this.messages = l.map(value => {
-            return value.messages.filter<MessageWithRepliesModel>((message: MessageWithRepliesModel): message is MessageWithRepliesModel => {
+        this.messages = l.map( (value: ChatModel): MessageWithRepliesModel[] => {
+            return value.messages.filter<MessageWithRepliesModel>(
+                (message: MessageWithRepliesModel): message is MessageWithRepliesModel => {
                 return message.type === MessageType.IMAGE_STATIC;
             });
         }).reduce((acc, value) => {
