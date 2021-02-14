@@ -17,91 +17,47 @@ export class SocketServer {
 
 
   private videoCallsPerUser: any = {
-    "5fca49c79a6e9e032a811159": {
-      chatId: "5fd8b235f5da670b8625b1d1",
-      device: UserDevice.MOBILE
-    },
-    "5fca49c79a6e9e032a811158": {
-      chatId: "5fd8b235f5da670b8625b1d1",
-      device: UserDevice.MOBILE
-    },
-    "5fca49c79a6e9e032a811154": {
-      chatId: "5fd8b235f5da670b8625b1d1",
-      device: UserDevice.MOBILE
-    },
-    "5fca49c79a6e9e032a811157": {
-      chatId: "5fd8b235f5da670b8625b1d1",
-      device: UserDevice.MOBILE
-    },
-    "5fca49c79a6e9e032a811156": {
-      chatId: "5fd8b235f5da670b8625b1d1",
-      device: UserDevice.MOBILE
-    },
-    "5fca49c79a6e9e032a811155": {
-      chatId: "5fd8b235f5da670b8625b1d1",
-      device: UserDevice.MOBILE
-    },
-    "5fca49c79a6e9e032a81115a": {
-      chatId: "5fd8b235f5da670b8625b1d1",
-      device: UserDevice.MOBILE
-    },
-  }
+    // "5fe49239202cd2003160947f": {
+    //   chatId: "5fe492a9202cd20031609497",
+    //   device: UserDevice.MOBILE
+    // },
+    // "5fe49239202cd2003160947e": {
+    //   chatId: "5fe492a9202cd20031609497",
+    //   device: UserDevice.MOBILE
+    // },
+    // "5fe49239202cd20031609484": {
+    //   chatId: "5fe492a9202cd20031609497",
+    //   device: UserDevice.MOBILE
+    // }
+  };
 
   private videoCallsPerChat: any = {
-    "5fd8b235f5da670b8625b1d1": {
+    "5fe492a9202cd20031609497": {
       live_members: {
-        "5fca49c79a6e9e032a811159" : {
-          device: UserDevice.MOBILE,
-          videoOptions: {
-            hasCamera: false,
-            isMuted: false
-          }
-        },
-        "5fca49c79a6e9e032a811158" : {
-          device: UserDevice.TV,
-          videoOptions: {
-            hasCamera: false,
-            isMuted: false
-          }
-        },
-        "5fca49c79a6e9e032a811154" : {
-          device: UserDevice.MOBILE,
-          videoOptions: {
-            hasCamera: false,
-            isMuted: false
-          }
-        },
-        "5fca49c79a6e9e032a811157" : {
-          device: UserDevice.MOBILE,
-          videoOptions: {
-            hasCamera: false,
-            isMuted: false
-          }
-        },
-        "5fca49c79a6e9e032a811156" : {
-          device: UserDevice.MOBILE,
-          videoOptions: {
-            hasCamera: false,
-            isMuted: false
-          }
-        },
-        "5fca49c79a6e9e032a811155" : {
-          device: UserDevice.MOBILE,
-          videoOptions: {
-            hasCamera: false,
-            isMuted: false
-          }
-        },
-        "5fca49c79a6e9e032a81115a": {
-          device: UserDevice.MOBILE,
-          videoOptions: {
-            hasCamera: false,
-            isMuted: false
-          }
-        },
+        // "5fe49239202cd20031609484" : {
+        //   device: UserDevice.MOBILE,
+        //   videoOptions: {
+        //     hasCamera: false,
+        //     isMuted: false
+        //   }
+        // },
+        // "5fe49239202cd2003160947e" : {
+        //   device: UserDevice.TV,
+        //   videoOptions: {
+        //     hasCamera: false,
+        //     isMuted: false
+        //   }
+        // },
+        // "5fe49239202cd2003160947f" : {
+        //   device: UserDevice.MOBILE,
+        //   videoOptions: {
+        //     hasCamera: false,
+        //     isMuted: false
+        //   }
+        // },
       }
     }
-  }
+  };
 
   constructor() { }
 
