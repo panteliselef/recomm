@@ -18,6 +18,10 @@ export class SocketsService {
         this.hostUrl = environment.host;
     }
 
+    public getSocketId() {
+        return this.socket.id;
+    }
+
     /**
      * Init and connect sockets to server
      */
@@ -85,7 +89,6 @@ export class SocketsService {
 
     public sendMessage(eventName: string, msg: any) {
         this.socket.emit('client:event', eventName, msg);
-        console.log(eventName, msg)
     }
 
     //#region Private methods
@@ -142,7 +145,7 @@ export class SocketsService {
         console.log('Socket:connect_error', err);
 
         // If connection error notify subscribers
-        this.onMessageObserver.next({event: "connection_error", msg: "connection_error"});
+        this.onMessageObserver.next({event: 'connection_error', msg: 'connection_error'});
     }
 
     private onError(err) {

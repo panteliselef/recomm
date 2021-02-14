@@ -36,23 +36,23 @@ export class HomeTableComponent implements OnInit, OnDestroy {
     userIsCurrentlyInChat: boolean = false;
     private allSubs: Subscription;
 
-    currentChatIdFromBrowsing: string = ''
-    showViewImages: boolean = true;
-    showManageLayout: boolean = false;
-    showAddPeople: boolean = false;
+    currentChatIdFromBrowsing = '';
+    showViewImages = true;
+    showManageLayout = false;
+    showAddPeople = false;
 
-    constructor(private activeRoute: ActivatedRoute, private router: Router, private chatsService: ChatsService, private userService: UsersService, private socketService: SocketsService) {
+    constructor(
+        private activeRoute: ActivatedRoute,
+        private router: Router,
+        private chatsService: ChatsService,
+        private userService: UsersService, private socketService: SocketsService) {
 
         if (this.activeRoute.snapshot['_routerState'].url.includes('edit-tv-layout')) {
             this.showOnlyParticipants = true;
         }
-
-        console.log(this.allPosIds)
-
-
     }
 
-    toggleView(images,layout,addPeople) {
+    toggleView(images, layout, addPeople) {
         this.showViewImages = images;
         this.showManageLayout = layout;
         this.showAddPeople = addPeople;
@@ -63,21 +63,21 @@ export class HomeTableComponent implements OnInit, OnDestroy {
 
     async ngOnInit() {
 
-        const arr = this.router.url.split('/')
+        const arr = this.router.url.split('/');
 
         this.currentChatIdFromBrowsing = arr[arr.length - 1];
         this.router.events.pipe(filter(event => event instanceof NavigationStart)).subscribe((e: NavigationStart) => {
-            const arr = e.url.split('/')
+            const arr = e.url.split('/');
             this.currentChatIdFromBrowsing = arr[arr.length - 1];
         })
-        this.me = await this.userService.getMe()
+        this.me = await this.userService.getMe();
 
-        this.subscribeToSocket()
+        this.subscribeToSocket();
 
 
         this.socketService.sendMessage('getUser', {
             member: this.me._id
-        })
+        });
 
     }
 
@@ -86,17 +86,14 @@ export class HomeTableComponent implements OnInit, OnDestroy {
         this.allSubs = this.socketService
             .syncMessages(`${this.me._id}/videocall/user-in-chat`)
             .subscribe(async (msg: { event: string, message: { chatId: string, device: string } }) => {
-
-                console.log('M',msg.message)
-
                 const message = await this.setUpUserFromOtherDevice(msg.message);
-                if (!message) return;
+                if (!message) { return; }
 
                 setTimeout(() => {
                     this.socketService.sendMessage(`videocall/send-users`, {
                         chat: this.inCallChat._id,
-                    })
-                }, 1000)
+                    });
+                }, 1000);
             });
 
         this.newJoinedUser = this.socketService

@@ -2,7 +2,7 @@ import {
     AfterViewChecked,
     Component,
     ElementRef, OnDestroy,
-    OnInit, Output,
+    OnInit,
     ViewChild,
     ViewEncapsulation
 } from '@angular/core';
@@ -10,6 +10,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {ChatsService, UsersService, SocketsService} from '../../../global/services';
 import {ChatModel, MessageModel, MessageWithRepliesModel, UserModel} from '../../../global/models';
 import {Subscription} from 'rxjs';
+import {environment} from '../../../../environments/environment';
 
 @Component({
     selector: 'ami-fullstack-chat',
@@ -23,16 +24,13 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     participant: UserModel;
 
-    readonly url: string = 'http://localhost:8080/api/files/download/';
+    readonly url: string = `${environment.host}/api/files/download/`;
 
 
     showCallPage = false;
     showPrepCall = false;
 
     videoCallOptions: { isMuted: boolean, hasCamera: boolean } = {isMuted: false, hasCamera: false};
-
-    // private URLRegex = new RegExp("([a-zA-Z0-9]+://)?([a-zA-Z0-9_]+:[a-zA-Z0-9_]+@)?([a-zA-Z0-9.-]+\\.[A-Za-z]{2,4})(:[0-9]+)?(/.*)?");
-
 
     icons = [
         {
@@ -48,8 +46,7 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
     ];
 
     participants: UserModel[];
-    // tslint:disable-next-line:ban-types
-    participantsObj: Object;
+    participantsObj: {};
     chat: ChatModel;
     me: UserModel;
     chatName: string;
@@ -83,38 +80,37 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
             this.icons.splice(1, 0, {
                     name: 'person_add',
                     onClick: () => {
-                        this.router.navigate(['add'], {relativeTo: this.route})
+                        this.router.navigate(['add'], {relativeTo: this.route});
                     }
                 }
-            )
+            );
         }
 
 
         this.chatSubscription = this.socketService
             .syncMessages(`/${this.chat._id}/newMessage`)
-            .subscribe((msg) => {
-                this.onReceiveMessage(msg.message);
+            .subscribe(async (msg: {event: string, message: { message: MessageWithRepliesModel, chatId: string} }) => {
+                this.onReceiveMessage(msg.message.message);
             });
 
         setTimeout(() => {
             this.socketService.sendMessage(`videocall/send-users`, {
                 chat: this.chat._id,
                 member: this.me._id,
-            })
-        }, 1000)
+            });
+        }, 1000);
 
         this.peopleInVideoCall = this.socketService
             .syncMessages(`${chatId}/videocall/people-in-call`)
             .subscribe((msg) => {
-                console.log(msg.message)
                 if (!msg.message) {
-                    this.icons[0].name = 'call'
+                    this.icons[0].name = 'call';
                     return;
                 }
-                if (Object.entries(msg.message.live_members).length > 0) {
-                    this.icons[0].name = 'phone_in_talk'
+                if (msg.message.live_members && Object.entries(msg.message.live_members).length > 0) {
+                    this.icons[0].name = 'phone_in_talk';
                 } else {
-                    this.icons[0].name = 'call'
+                    this.icons[0].name = 'call';
                 }
             });
 

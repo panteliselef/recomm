@@ -42,6 +42,7 @@
         padding: 2rem;
         min-height: 700px;
         position: relative;
+        overflow-x: scroll;
 
 
 
@@ -73,8 +74,8 @@
 
         .contacts-list {
             display: flex;
-            flex-wrap: wrap;
-
+            //flex-wrap: wrap;
+            max-width: 100%;
             .contact {
                 display: flex;
                 flex: 0 0 250px;
